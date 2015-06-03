@@ -56,11 +56,11 @@ HOWTO deploy on Linode
 
 ###Create database and then execute sql file in dbstructure/
 	$ mysql -u root -p
-	mysql> CREATE DATABASE avati;
-	mysql> GRANT ALL PRIVILEGES ON avati.* TO 'avati'@'localhost' IDENTIFIED BY 'avati';
+	mysql> CREATE DATABASE duang;
+	mysql> GRANT ALL PRIVILEGES ON duang.* TO 'duang'@'localhost' IDENTIFIED BY 'duang';
 	mysql> exit
-	$ mysql -u avati -p --database=avati < dbstructure/avati.sql
-	$ mysql -u avati -p --database=avati < dbstructure/data.sql
+	$ mysql -u duang -p --database=duang < dbstructure/duang.sql
+	$ mysql -u duang -p --database=duang < dbstructure/data.sql
 
 ###Install Torndb
     $ pip install torndb
@@ -87,9 +87,9 @@ HOWTO deploy on Linode
 ###Create symbolic links to conf files
 	$ cd /etc/nginx 
 	$ rm nginx.conf
-	$ ln -s ~/www/avati/conf/nginx.conf nginx.conf 
+	$ ln -s ~/www/duang.tv/conf/nginx.conf nginx.conf 
 	$ cd
-	$ ln -s ~/www/avati/conf/supervisord.conf supervisord.conf  
+	$ ln -s ~/www/duang.tv/conf/supervisord.conf supervisord.conf  
 
 ###Create nginx user
 	$ adduser --system --no-create-home --disabled-login --disabled-password --group nginx 
@@ -104,7 +104,7 @@ HOWTO deploy on Linode
 ###Visit your public IP address and enjoy!
 
 ###Update your web app
-	$ cd ~/www/avati
+	$ cd ~/www/duang.tv
 	$ git pull
 
 

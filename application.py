@@ -29,14 +29,14 @@ from jinja2 import Environment, FileSystemLoader
 
 define("port", default = 80, help = "run on the given port", type = int)
 define("mysql_host", default = "localhost", help = "community database host")
-define("mysql_database", default = "avati", help = "community database name")
-define("mysql_user", default = "avati", help = "community database user")
-define("mysql_password", default = "avati", help = "community database password")
+define("mysql_database", default = "duang", help = "community database name")
+define("mysql_user", default = "duang", help = "community database user")
+define("mysql_password", default = "duang", help = "community database password")
 
 class Application(tornado.web.Application):
     def __init__(self):
         settings = dict(
-            blog_title = u"avati",
+            blog_title = u"duang",
             template_path = os.path.join(os.path.dirname(__file__), "templates"),
             static_path = os.path.join(os.path.dirname(__file__), "static"),
             root_path = os.path.join(os.path.dirname(__file__), "/"),

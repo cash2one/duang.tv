@@ -623,3 +623,23 @@ a.tb:hover {
     margin-left: auto;
     margin-right: auto;
 }
+.video-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: sub;
+  background-size: 16px 16px;
+  margin-right: 5px;
+}
+.video-qq {
+  background-image: url(/static/img/qq.png);
+}
+.video-sina {
+  background-image: url(/static/img/sina.jpg);
+}
+.video-cntv {
+  background-image: url(/static/img/cntv.gif);
+}
+.video-letv {
+  background-image: url(/static/img/letv.ico);
+}
