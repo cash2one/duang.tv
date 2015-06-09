@@ -143,12 +143,12 @@ CREATE TABLE `post` (
   `reply_num` int(11) DEFAULT 0,
   `view_num` int(11) DEFAULT 0,
   `follow_num` int(11) DEFAULT 0,
-  `anon` int(11) DEFAULT 0,
   `author_id` int(11) DEFAULT NULL,
   `updated` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 
 -- ----------------------------
 --  Table structure for `feed`
@@ -156,26 +156,25 @@ CREATE TABLE `post` (
 DROP TABLE IF EXISTS `feed`;
 CREATE TABLE `feed` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `tag_id` int(11) DEFAULT NULL,
+  `feed_title` text,
+  `feed_type` text,
+  `post_type` text,
   `post_id` int(11) DEFAULT NULL,
-  `reply_id` int(11) DEFAULT NULL,
-  `feed_type` int(11) DEFAULT NULL,
+  `updated` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
--- ----------------------------
---  Table structure for `feed_type`
--- ----------------------------
-DROP TABLE IF EXISTS `feed_type`;
-CREATE TABLE `feed_type` (
+DROP TABLE IF EXISTS `live`;
+CREATE TABLE `live` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `feed_text` text,
+  `game` text,
+  `team` text,
+  `post_id` int(11) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
 
 -- ----------------------------
 --  Table structure for `vote`
@@ -217,12 +216,9 @@ CREATE TABLE `tag` (
   `intro` text,
   `tag_type` int(11) DEFAULT 1,
   `category` int(11) DEFAULT 1,
-  `question_num` int(11) DEFAULT 0,
   `post_num` int(11) DEFAULT 0,
   `follow_num` int(11) DEFAULT 0,
   `is_new` int(11) DEFAULT NULL,
-  `post_add` int(11) DEFAULT NULL,
-  `user_add` int(11) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -374,29 +370,20 @@ CREATE TABLE `ads` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `item`
+--  Table structure for `video`
 -- ----------------------------
-DROP TABLE IF EXISTS `item`;
-CREATE TABLE `item` (
+DROP TABLE IF EXISTS `video`;
+CREATE TABLE `video` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sku` text,
   `name` text,
   `img` text,
-  `price` text,
   `link` text,
-  `cps_link` text,
   `vendor` text,
+  `vendor_id` text,
   `view_num` int(11) DEFAULT 0,
-  `add_num` int(11) DEFAULT 0,
-  `like_num` int(11) DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `like_item`;
-CREATE TABLE `like_item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `author_id` int(11) DEFAULT NULL,
-  `item_id` int(11) DEFAULT NULL,
+  `up_num` int(11) DEFAULT 0,
+  `down_num` int(11) DEFAULT 0,
+  `updated` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

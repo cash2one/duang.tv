@@ -87,9 +87,9 @@ HOWTO deploy on Linode
 ###Create symbolic links to conf files
 	$ cd /etc/nginx 
 	$ rm nginx.conf
-	$ ln -s ~/www/duang.tv/conf/nginx.conf nginx.conf 
+	$ ln -s ~/www/duang/conf/nginx.conf nginx.conf 
 	$ cd
-	$ ln -s ~/www/duang.tv/conf/supervisord.conf supervisord.conf  
+	$ ln -s ~/www/duang/conf/supervisord.conf supervisord.conf  
 
 ###Create nginx user
 	$ adduser --system --no-create-home --disabled-login --disabled-password --group nginx 
@@ -104,7 +104,7 @@ HOWTO deploy on Linode
 ###Visit your public IP address and enjoy!
 
 ###Update your web app
-	$ cd ~/www/duang.tv
+	$ cd ~/www/duang
 	$ git pull
 
 

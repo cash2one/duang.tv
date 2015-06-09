@@ -498,10 +498,10 @@ a.tb:link, a.tb:visited, a.tb:active {
   text-align: right;
 }
 a.tb:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-  color: #000;
-  text-decoration: none;
-  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: #000 !important;
+  text-decoration: none !important;
+  border-radius: 15px !important;
 }
 .reply_content {
   font-size: 14px;
@@ -511,15 +511,14 @@ a.tb:hover {
   word-wrap: break-word;
   margin-top: 5px;
 }
-.thank_area {
+.op_area {
   display: inline-block;
   padding: 2px 5px 2px 5px;
   line-height: 12px;
 }
-.feed a.thank {
+.feed a.op {
   display: inline-block;
   line-height: 12px;
-  visibility: hidden;
 }
 .no {
   font-size: 9px;
@@ -642,4 +641,37 @@ a.tb:hover {
 }
 .video-letv {
   background-image: url(/static/img/letv.ico);
+}
+
+.zbx-content {
+  border: 1px solid #efefef;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.zbx-content  img {
+  clear: both;
+ display: block;
+ margin:auto;
+}
+
+.zero {
+  display: none;
+}
+.voted {
+  background-color: #f8f8f8;
+}
+.reply-card .editor-wrapper .note-editor {
+  width: 600px;
+}
+.share-img {
+  background: none !important;
+  float: none !important;
+  margin: 0 !important;
+}
+.user-follow {
+  padding: 10px;
+}
+.card.setting {
+  padding:10px;
 }

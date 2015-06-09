@@ -7,7 +7,7 @@ import uuid
 import hashlib
 import Image
 import StringIO
-import time
+import datetime,time
 import json
 import re
 import urllib2
@@ -53,6 +53,23 @@ class IndexHandler(BaseHandler):
         template_variables["gen_random"] = gen_random
         p = int(self.get_argument("p", "1"))
 
+        now_time = datetime.datetime.now()
+        yes_time = now_time + datetime.timedelta(days=-1)
+
+        print now_time.strftime('%Y-%m-%d %H:%M:%S')
+        print yes_time.strftime('%Y-%m-%d %H:%M:%S')
+
+        template_variables["football_videos"] = self.feed_model.get_index_feeds("football", "video", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
+        template_variables["football_news"] = self.feed_model.get_index_feeds("football", "new", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
+        template_variables["basketball_videos"] = self.feed_model.get_index_feeds("basketball", "video", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
+        template_variables["basketball_news"] = self.feed_model.get_index_feeds("basketball", "new", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
+
+        pass_time = now_time + datetime.timedelta(hours=-2)
+        future_time = now_time + datetime.timedelta(days=+14)
+        print pass_time.strftime('%Y-%m-%d %H:%M:%S')
+        print future_time.strftime('%Y-%m-%d %H:%M:%S')
+        template_variables["lives"] = self.live_model.get_index_lives(pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
+
         if is_mobile_browser(self):
             self.render("mobile/index.html", **template_variables)
         else:
@@ -65,7 +82,7 @@ class PostHandler(BaseHandler):
         template_variables["gen_random"] = gen_random
         sort = self.get_argument('sort', "voted")
         p = int(self.get_argument("p", "1"))
-
+        template_variables["current_time"] = time.strftime('%Y-%m-%d %H:%M:%S')
         
         template_variables["related_posts"] = self.post_tag_model.get_post_related_posts(post_id)
         template_variables["tags"] = self.post_tag_model.get_post_all_tags(post_id)
@@ -80,7 +97,7 @@ class PostHandler(BaseHandler):
                 replys = self.reply_model.get_post_all_replys_sort_by_created(post_id, user_info.uid, current_page = p)
                 template_variables["sort"] = "created"
             template_variables["replys"] = replys
-            template_variables["follow"] = self.follow_model.get_follow(user_info.uid, post_id, post.post_type)
+            template_variables["follow"] = self.follow_model.get_follow(user_info.uid, post_id, 'p')
             template_variables["thank"] = self.thank_model.get_thank(user_info.uid, post.author_id, post_id, 'post')
             template_variables["report"] = self.report_model.get_report(user_info.uid, post.author_id, post_id, 'post')
             votesList = []
@@ -449,15 +466,6 @@ class ReplyHandler(BaseHandler):
                 feed_type = 8
                 notice_type = 8
                 notice_type2 = 14
-            # add feed: user 回答了问题
-            feed_info = {
-                "user_id": self.current_user["uid"],           
-                "post_id": post.id,
-                "reply_id": reply_id,
-                "feed_type": feed_type,
-                "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-            }
-            self.feed_model.add_new_feed(feed_info)
 
             # add notice: user 回答了问题
             if user_info.uid != post.author_id:
@@ -532,28 +540,16 @@ class FollowHandler(BaseHandler):
             follow = self.follow_model.get_follow(user_info.uid, obj_id, obj_type)
             if(follow):
                 self.follow_model.delete_follow_by_id(follow.id)
-                if obj_type=='q' or obj_type=='p':
-                    if obj_type == 'q':
-                        feed_type = 3
-                    else:
-                        feed_type = 9
-                    self.feed_model.delete_feed_by_user_post__and_type(user_info.uid,  obj_id, feed_type)
-
+                if obj_type=='p':
                     post = self.post_model.get_post_by_post_id(obj_id)
                     self.post_model.update_post_by_post_id(post.id, {"follow_num": post.follow_num-1})
 
-                    follows = self.follow_model.get_post_all_follows(obj_id)
-                    if len(follows) <= THRESHOLD:
-                        if obj_type == 'q':
-                            feed_type = 4                         
-                        else:
-                            feed_type = 10
-                        self.feed_model.delete_feed_by_post_and_type(obj_id, feed_type)
                 if obj_type=='u':
                     # update user_info
                     user = self.user_model.get_user_by_uid(obj_id)
                     self.user_model.update_user_info_by_user_id(obj_id, {"followers": user.followers-1})
                     self.user_model.update_user_info_by_user_id(user_info.uid, {"followees": user_info.followees-1})
+
                 if obj_type=='t':
                     tag = self.tag_model.get_tag_by_tag_id(obj_id)
                     self.tag_model.update_tag_by_tag_id(tag.id, {"follow_num": tag.follow_num-1})
@@ -586,27 +582,14 @@ class FollowHandler(BaseHandler):
                     self.user_model.update_user_info_by_user_id(obj_id, {"followers": user.followers+1})
                     self.user_model.update_user_info_by_user_id(user_info.uid, {"followees": user_info.followees+1})
 
-                if obj_type=='q' or obj_type=='p':
-                    if obj_type == 'q':
-                        feed_type = 3
-                        notice_type = 2
-                    else:
-                        feed_type = 9
-                        notice_type = 9
-                    # add feed: user 关注了问题
-                    feed_info = {
-                        "user_id": user_info["uid"],           
-                        "post_id": obj_id,
-                        "feed_type": feed_type,
-                        "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-                    }
-                    self.feed_model.add_new_feed(feed_info)
+                if obj_type=='p':
+                    notice_type = 2
 
                     post = self.post_model.get_post_by_post_id(obj_id)
                     self.post_model.update_post_by_post_id(post.id, {"follow_num": post.follow_num+1})
 
                     # add notice: user 关注了问题
-                    if post.author_id != user_info["uid"]:
+                    if post.author_id != None and post.author_id != user_info["uid"]:
                         notice_info = {
                             "author_id": post.author_id,
                             "user_id": user_info["uid"],           
@@ -615,23 +598,6 @@ class FollowHandler(BaseHandler):
                             "created": time.strftime('%Y-%m-%d %H:%M:%S'),
                         }
                         self.notice_model.add_new_notice(notice_info)
-
-                    follows = self.follow_model.get_post_all_follows(obj_id)
-                    if len(follows) > THRESHOLD:
-                        tags = self.post_tag_model.get_post_all_tags(obj_id)
-                        if obj_type == 'q':
-                            feed_type = 4
-                        else:
-                            feed_type = 10
-                        for tag in tags["list"]:
-                            # add feed: tag 下很多人关注了问题
-                            feed_info = {
-                                "tag_id": tag.id,           
-                                "post_id": obj_id,
-                                "feed_type": feed_type,
-                                "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-                            }
-                            self.feed_model.add_new_feed(feed_info)
             self.write(lib.jsonp.print_JSON({
                     "success": 1,
                     "message": "successed",
@@ -651,10 +617,6 @@ class VotePostHandler(BaseHandler):
             post = self.post_model.get_post_by_post_id(post_id)
             vote = self.vote_model.get_vote_by_user_and_post(user_info.uid, post_id)
             post_author = self.user_model.get_user_by_uid(post.author_id)
-            if post.post_type == 'q':
-                feed_type = 13;
-            else:
-                feed_type = 15;
 
             if vote:
                 if vote_type==vote.up_down:
@@ -662,16 +624,7 @@ class VotePostHandler(BaseHandler):
                     if vote.up_down=='up':
                         # cancel up vote
                         self.post_model.update_post_by_post_id(post.id, {"up_num": post.up_num-1})
-                        feed = self.feed_model.get_feed_user_vote_post_feed(user_info.uid, post.id)
-                        if feed:
-                            self.feed_model.delete_feed_by_id(feed.id)
-
-                        if post.up_num-1 <= THRESHOLD:
-                            if post.post_type == 'q':
-                                feed_type2 = 14;
-                            else:
-                                feed_type2 = 16;
-                            self.feed_model.delete_feed_by_post_and_type(post_id, feed_type2)
+                        
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend-1})
                         self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post_id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(post_author.uid, {"income": post_author.income-1, "up_num": post_author.up_num-1})
@@ -683,46 +636,14 @@ class VotePostHandler(BaseHandler):
                     if vote.up_down=='up':
                         # cancel up vote
                         self.post_model.update_post_by_post_id(post.id, {"up_num": post.up_num-1, "down_num": post.down_num+1})
-                        feed = self.feed_model.get_feed_user_vote_post_feed(user_info.uid, post.id)
-                        if feed:
-                            self.feed_model.delete_feed_by_id(feed.id)
-
-                        if post.up_num-1 <= THRESHOLD:
-                            if post.post_type == 'q':
-                                feed_type2 = 14;
-                            else:
-                                feed_type2 = 16;
-                            self.feed_model.delete_feed_by_post_and_type(post_id, feed_type2)
+                    
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend-1})
                         self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post_id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(post_author.uid, {"income": post_author.income-1, "up_num": post_author.up_num-1, "down_num": post_author.down_num+1})
                         self.balance_model.add_new_balance({"author_id":  post_author.uid, "balance_type": 8, "amount": -1, "balance": post_author.income-post_author.expend, "post_id": post_id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                     else:
                         self.post_model.update_post_by_post_id(post.id, {"up_num": post.up_num+1, "down_num": post.down_num-1})
-                        # add feed: user 赞同了回答
-                        feed_info = {
-                            "user_id": user_info.uid,           
-                            "post_id": post_id,
-                            "feed_type": feed_type,
-                            "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-                        }
-                        self.feed_model.add_new_feed(feed_info)
-
-                        if post.up_num+1 > THRESHOLD:
-                            tags = self.post_tag_model.get_post_all_tags(post.id)
-                            if post.post_type == 'q':
-                                feed_type2 = 14;
-                            else:
-                                feed_type2 = 16;
-                            for tag in tags["list"]:
-                                # add feed: tag 下很多人关注了问题
-                                feed_info2 = {
-                                    "tag_id": tag.id,           
-                                    "post_id": post.id,
-                                    "feed_type": feed_type2,
-                                    "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-                                }
-                                self.feed_model.add_new_feed(feed_info2)
+                        
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend+1})
                         self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post_id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
                         self.user_model.update_user_info_by_user_id(post_author.uid, {"income": post_author.income+1,  "up_num": post_author.up_num+1, "down_num": post_author.down_num-1})
@@ -733,35 +654,7 @@ class VotePostHandler(BaseHandler):
                 if vote_type=='up':
                     self.post_model.update_post_by_post_id(post.id, {"up_num": post.up_num+1})
 
-                    # add feed: user 赞同了回答
-                    feed_info = {
-                        "user_id": user_info.uid,           
-                        "post_id": post_id,
-                        "feed_type": feed_type,
-                        "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-                    }
-                    self.feed_model.add_new_feed(feed_info)
-
-                    if post.up_num+1 > THRESHOLD:
-                            tags = self.post_tag_model.get_post_all_tags(post.id)
-                            if post.post_type == 'q':
-                                feed_type2 = 14
-                            else:
-                                feed_type2 = 16
-                            for tag in tags["list"]:
-                                # add feed: tag 下很多人关注了问题
-                                feed_info2 = {
-                                    "tag_id": tag.id,           
-                                    "post_id": post.id,
-                                    "feed_type": feed_type2,
-                                    "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-                                }
-                                self.feed_model.add_new_feed(feed_info2)
-
-                    if post.post_type == 'q':
-                        notice_type = 16
-                    else:
-                        notice_type = 17
+                    notice_type = 16
                     # add notice: 赞了你的问题
                     notice_info = {
                         "author_id": post.author_id,
@@ -797,26 +690,12 @@ class VoteReplyHandler(BaseHandler):
             vote = self.vote_model.get_vote_by_user_and_reply(user_info.uid, reply_id)
             post = self.post_model.get_post_by_post_id(reply.post_id)
             reply_author = self.user_model.get_user_by_uid(reply.author_id)
-            if post.post_type == 'q':
-                feed_type = 5;
-            else:
-                feed_type = 11;
-
+            
             if vote:
                 if vote_type==vote.up_down:
                     self.vote_model.delete_vote_by_id(vote.id)
                     if vote.up_down=='up':
                         self.reply_model.update_reply_by_id(reply.id, {"up_num": reply.up_num-1})
-                        feed = self.feed_model.get_feed_user_vote_reply_feed(user_info.uid, reply.id)
-                        if feed:
-                            self.feed_model.delete_feed_by_id(feed.id)
-
-                        if reply.up_num-1 <= THRESHOLD:
-                            if post.post_type == 'q':
-                                feed_type2 = 6;
-                            else:
-                                feed_type2 = 12;
-                            self.feed_model.delete_feed_by_reply_and_type(reply_id, feed_type2)
 
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend-1})
                         self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
@@ -829,16 +708,6 @@ class VoteReplyHandler(BaseHandler):
                     if vote.up_down=='up':
                         self.reply_model.update_reply_by_id(reply.id, {"up_num": reply.up_num-1, "down_num": reply.down_num+1})
                         self.user_model.update_user_info_by_user_id(reply_author.uid, {"up_num": reply_author.up_num-1, "down_num": reply_author.down_num+1})
-                        feed = self.feed_model.get_feed_user_vote_reply_feed(user_info.uid, reply.id)
-                        if feed:
-                            self.feed_model.delete_feed_by_id(feed.id)
-
-                        if reply.up_num-1 <= THRESHOLD:
-                            if post.post_type == 'q':
-                                feed_type2 = 6;
-                            else:
-                                feed_type2 = 12;
-                            self.feed_model.delete_feed_by_reply_and_type(reply_id, feed_type2)
 
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend-1})
                         self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 7, "amount": 1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
@@ -846,33 +715,6 @@ class VoteReplyHandler(BaseHandler):
                         self.balance_model.add_new_balance({"author_id":  reply_author.uid, "balance_type": 8, "amount": -1, "balance": reply_author.income-reply_author.expend, "post_id": post.id, "reply_id": reply.id, "user_id":  user_info.uid, "created": time.strftime('%Y-%m-%d %H:%M:%S')}) 
                     else:
                         self.reply_model.update_reply_by_id(reply.id, {"up_num": reply.up_num+1, "down_num": reply.down_num-1})
-                        
-                        # add feed: user 赞同了回答
-                        feed_info = {
-                            "user_id": user_info.uid,           
-                            "post_id": reply.post_id,
-                            "reply_id": reply.id,
-                            "feed_type": feed_type,
-                            "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-                        }
-                        self.feed_model.add_new_feed(feed_info)
-
-                        if reply.up_num+1 > THRESHOLD:
-                            tags = self.post_tag_model.get_post_all_tags(post.id)
-                            if post.post_type == 'q':
-                                feed_type2 = 6;
-                            else:
-                                feed_type2 = 12;
-                            for tag in tags["list"]:
-                                # add feed: tag 下很多人关注了问题
-                                feed_info2 = {
-                                    "tag_id": tag.id,           
-                                    "post_id": post.id,
-                                    "reply_id": reply_id,
-                                    "feed_type": feed_type2,
-                                    "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-                                }
-                                self.feed_model.add_new_feed(feed_info2)
 
                         self.user_model.update_user_info_by_user_id(user_info.uid, {"expend": user_info.expend+1})
                         self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 5, "amount": -1, "balance": user_info.income-user_info.expend, "post_id": post.id, "reply_id": reply.id, "user_id": post.author_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})  
@@ -884,37 +726,7 @@ class VoteReplyHandler(BaseHandler):
                 if vote_type=='up':
                     self.reply_model.update_reply_by_id(reply.id, {"up_num": reply.up_num+1})
 
-                    # add feed: user 赞同了回答
-                    feed_info = {
-                        "user_id": user_info.uid,           
-                        "post_id": reply.post_id,
-                        "reply_id": reply.id,
-                        "feed_type": feed_type,
-                        "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-                    }
-                    self.feed_model.add_new_feed(feed_info)
-
-                    if reply.up_num+1 > THRESHOLD:
-                            tags = self.post_tag_model.get_post_all_tags(post.id)
-                            if post.post_type == 'q':
-                                feed_type2 = 6
-                            else:
-                                feed_type2 = 12
-                            for tag in tags["list"]:
-                                # add feed: tag 下很多人关注了问题
-                                feed_info2 = {
-                                    "tag_id": tag.id,           
-                                    "post_id": post.id,
-                                    "reply_id": reply_id,
-                                    "feed_type": feed_type2,
-                                    "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-                                }
-                                self.feed_model.add_new_feed(feed_info2)
-
-                    if post.post_type == 'q':
-                        notice_type = 4
-                    else:
-                        notice_type = 11
+                    notice_type = 4
                     # add notice: 赞同了你的回答
                     notice_info = {
                         "author_id": reply.author_id,
@@ -1079,16 +891,10 @@ class DeleteReplyHandler(BaseHandler):
             self.thank_model.delete_thank_by_reply_id(reply_id)
             self.report_model.delete_report_by_reply_id(reply_id)
             self.reply_model.delete_reply_by_id(reply_id)
-            self.feed_model.delete_feed_by_reply_id(reply_id)
             self.notice_model.delete_notice_by_reply_id(reply_id)
 
-            post = self.post_model.get_post_by_post_id(reply.post_id)
-            if post.post_type=='q':
-                # update user_info
-                self.user_model.update_user_info_by_user_id(user_info.uid, {"answers": user_info.answers-1})
-            else:
-                # update user_info
-                self.user_model.update_user_info_by_user_id(user_info.uid, {"comments": user_info.comments-1})
+            # update user_info
+            self.user_model.update_user_info_by_user_id(user_info.uid, {"comments": user_info.comments-1})
 
             self.write(lib.jsonp.print_JSON({
                     "success": 1,

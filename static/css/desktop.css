@@ -332,12 +332,9 @@ a {
     border-top-color: #fff;
 }
 .btn-follow {
-    width: 232px;
+    width: 250px;
 }
-.box {
-    padding: 20px 0;
-    border-bottom: 1px solid #EEE;
-}
+
 .promote-link {
     margin-top: 10px;
     text-align: center;
@@ -361,9 +358,12 @@ a {
     float: left;
     margin-right: 30px;
 }
-.share-img {
-    width: 28px;
-    height: 28px;
+.bdsharebuttonbox {
+    display: inline-flex;
+}
+.bdsharebuttonbox  a {
+    background: none;
+    float: none;
 }
 .share-text {
     color: #5490c3;
@@ -496,7 +496,7 @@ a {
     margin-bottom: 30px;
 }
 .tab-pane {
-    padding-top: 30px;
+    padding-top: 10px;
 }
 #c4-header-bg-container {
     position: relative;
@@ -575,9 +575,7 @@ a {
 .about-channel-link-text {
     vertical-align: middle;
 }
-#gh-banner {
-    margin-bottom: 30px;
-}
+
 .user-text {
     text-align: center;
     color: #fff;
@@ -726,8 +724,8 @@ a.tag:hover, h4.tag:hover {
 }
 .save-btn input {
     position: absolute;
-    top: 0;
-    right: 60px;
+      top: 8px;
+  right: 10px;
 }
 .form-group label, legend {
     color: #666;
@@ -791,7 +789,7 @@ a.tag:hover, h4.tag:hover {
     display: none !important;
 }
 .setting-card .form-group {
-    width: 313px;
+      width: 325px;
     float: left;
 }
 .form-group.left {
@@ -886,28 +884,7 @@ i.icon {
     background-color: #f8f8f8;
     border: 1 solid #e7e7e7;
 }
-.bds_tsina {
-    width: 115px !important;
-    height: 28px !important;
-    background: url(http://mmm-static.qiniudn.com/weibo.png-28px) 0 0 no-repeat !important;
-    background-size: 28px 28px !important;
-    font-size: 13px !important;
-    padding-left: 32px !important;
-    line-height: 26px !important;
-    color: #5490c3 !important;
-    margin: 0 !important;
-}
-.bds_weixin {
-    width: 115px !important;
-    height: 28px !important;
-    background: url(http://mmm-static.qiniudn.com/weixin.png-28px) 0 0 no-repeat !important;
-    background-size: 28px 28px !important;
-    font-size: 13px !important;
-    padding-left: 32px !important;
-    line-height: 26px !important;
-    color: #5490c3 !important;
-    margin: 0 !important;
-}
+
 #bdshare_weixin_qrcode_dialog {
     height: 308px !important;
 }
@@ -1006,15 +983,15 @@ a:focus {
 }
 #editPostBtn {
     position: absolute;
-    right: 65px;
-    margin-top: 5px;
+    right: 17px;
+  margin-top: 8px;
     padding: 3px 10px;
     z-index: 999;
 }
 #editCancelBtn {
     position: absolute;
-    right: 135px;
-    margin-top: 5px;
+      right: 90px;
+  margin-top: 8px;
     padding: 3px 0px;
     width: 40px;
     z-index: 999;

@@ -41,3 +41,16 @@ class PostModel(Query):
     def delete_post_by_post_id(self, post_id):
         where = "post.id = %s" % post_id
         return self.where(where).delete()
+
+    def get_user_all_posts(self, author_id, num = 10, current_page = 1):
+        where = "post.author_id = %s" % author_id
+        join = "LEFT JOIN user AS author_user ON post.author_id = author_user.uid"
+        order = "post.created DESC, post.id DESC"
+        field = "post.*, \
+                author_user.username as author_username, \
+                author_user.avatar as author_avatar"
+        return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
+
+    def get_user_all_posts_count(self, author_id):
+        where = "post.author_id = %s" % author_id
+        return self.where(where).count()

@@ -140,6 +140,10 @@ class BaseHandler(tornado.web.RequestHandler):
     def item_model(self):
         return self.application.item_model
 
+    @property
+    def live_model(self):
+        return self.application.live_model
+
 '''
     @property
     def write_error(self, **kwargs):

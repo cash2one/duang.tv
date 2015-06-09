@@ -23,6 +23,7 @@ class Filters():
         #self.jinja2.filters["tojson"] = json.JSONEncoder().encode
         self.jinja2.filters["tojson"] = dumps
         self.jinja2.filters["pretty_date"] = self.pretty_date
+        self.jinja2.filters["get_weekday"] = self.get_weekday
         self.jinja2.filters["desktop_content_process"] = self.desktop_content_process
         self.jinja2.filters["mobile_content_process"] = self.mobile_content_process
         self.jinja2.filters["index_content_process"] = self.index_content_process
@@ -133,6 +134,30 @@ class Filters():
         if day_diff < 365:
             return str(day_diff / 30) + " 月前"
         return str(day_diff / 365) + " 天前"
+
+    def get_weekday(self, time = False):
+        if time == None:
+            return time
+
+        from datetime import datetime
+        i = time.weekday()
+        week = ''
+        if i == 0:
+            week = '星期一'
+        if i == 1:
+            week = '星期二'
+        if i == 2:
+            week = '星期三'
+        if i == 3:
+            week = '星期四'
+        if i == 4:
+            week = '星期五'
+        if i == 5:
+            week = '星期六'
+        if i == 6:
+            week = '星期日'
+        
+        return week
 
     def index_content_process(self, content):
         if None==content:
