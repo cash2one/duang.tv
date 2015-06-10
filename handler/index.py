@@ -83,6 +83,8 @@ class PostHandler(BaseHandler):
         sort = self.get_argument('sort', "voted")
         p = int(self.get_argument("p", "1"))
         template_variables["current_time"] = time.strftime('%Y-%m-%d %H:%M:%S')
+
+        template_variables["videos"] = self.video_model.get_post_videos(post_id)
         
         template_variables["related_posts"] = self.post_tag_model.get_post_related_posts(post_id)
         template_variables["tags"] = self.post_tag_model.get_post_all_tags(post_id)

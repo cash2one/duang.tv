@@ -144,6 +144,14 @@ class BaseHandler(tornado.web.RequestHandler):
     def live_model(self):
         return self.application.live_model
 
+    @property
+    def video_model(self):
+        return self.application.video_model
+
+    @property
+    def section_model(self):
+        return self.application.section_model
+
 '''
     @property
     def write_error(self, **kwargs):

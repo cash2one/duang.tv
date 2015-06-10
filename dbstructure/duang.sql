@@ -376,14 +376,31 @@ DROP TABLE IF EXISTS `video`;
 CREATE TABLE `video` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text,
+  `head_name` text,
   `img` text,
+  `orginal_link` text,
   `link` text,
+  `post_id` int(11) DEFAULT NULL,
   `vendor` text,
-  `vendor_id` text,
+  `vid` text,
   `view_num` int(11) DEFAULT 0,
   `up_num` int(11) DEFAULT 0,
   `down_num` int(11) DEFAULT 0,
+  `section_id` int(11) DEFAULT 0,
+  `video_order` int(11) DEFAULT 0,
   `updated` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `section`
+-- ----------------------------
+DROP TABLE IF EXISTS `section`;
+CREATE TABLE `section` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `section_name` text,
+  `section_order` int(11) DEFAULT 0,
+  `section_type` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
