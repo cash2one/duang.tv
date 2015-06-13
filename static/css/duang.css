@@ -566,7 +566,7 @@ a.tb:hover {
   overflow: hidden;
   margin: 0;
 }
-.item-title {
+.video-title {
   font-size: 16px;
   color: #444;
   background-image: -webkit-linear-gradient(270deg, #fff 0%, #f8f8f8 100%);
@@ -582,14 +582,14 @@ a.tb:hover {
   cursor: pointer;
 }
 
-.item-title:hover {
+.video-title:hover {
   background-image: -webkit-linear-gradient(270deg, #fff 0%, #eeeeee 100%);
   background-image: -moz-linear-gradient(270deg, #fff 0%, #eeeeee 100%);
   background-image: -o-linear-gradient(270deg, #fff 0%, #eeeeee 100%);
   background-image: -ms-linear-gradient(270deg, #fff 0%, #eeeeee 100%);
   background-image: linear-gradient(-180deg, #fff 0%, #eeeeee 100%);
 }
-.zbx-item {
+.zbx-video {
   padding: 0.5em 0;
 }
 
@@ -603,15 +603,15 @@ a.tb:hover {
   text-align: center;
 }
 
-.zbx-item .votes {
+.zbx-video .votes {
     float: right;
   font-size: 12px;
 }
 
-.zbx-item .votes .vote{
+.zbx-video .votes .vote{
     vertical-align: sub;
 }
-.item-content {
+.video-content {
   border: 1px solid #efefef;
   padding: 5px 5px 0 5px;
     border-bottom-left-radius: 4px;

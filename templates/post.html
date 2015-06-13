@@ -62,22 +62,26 @@
                 </div>
                 <div class="section-content">
                     {% endif %}
-                    <div class="zbx-item">
-                        <div class="item-title" data-src="{{video.link}}">
-                            <div id="video-{{video.link}}" class="votes">
-                                <a href="javascript:" class="vote">
+                    <div class="zbx-video">
+                        <div class="video-title" data-src="{{video.link}}">
+                            <div class="votes">
+                                <a href="javascript:" class="vote up vote-video {%if video.vote_up_down and video.vote_up_down=='up'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="赞同" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{video.id}}"
+                data-type="up">
                                     <li class="fa fa-chevron-up"></li>
+                                    <span class="count {% if video.up_num == 0 %}zero{% endif %}">{{video.up_num}}</span>
                                 </a>
-                                &nbsp;
-                                <a href="javascript:" class="vote">
+
+                                <a href="javascript:" class="vote down vote-video {%if video.vote_up_down and video.vote_up_down=='down'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="反对，不会显示你的姓名" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{video.id}}"
+                data-type="down">
                                     <li class="fa fa-chevron-down"></li>
+                                    <span class="count {% if video.down_num == 0 %}zero{% endif %}">{{video.down_num}}</span>
                                 </a>
                             </div>
                             <h3> <i class="video-icon video-{{video.vendor}}"></i>
                                 {{video.name}}
                             </h3>
                         </div>
-                        <div class="item-content" style="display: none"></div>
+                        <div class="video-content" style="display: none"></div>
                     </div>
                     {% endfor %}
                 </div>
@@ -126,7 +130,7 @@
                     <div class="fr">
                         <div class="op_area" style="display:none;">
                             <a style="color: #ccc;" id="r{{post.post_type}}{{reply.id}}" class="op {% if reply.reply_report_id %}reported{%else%}report{% endif %} {%if user_info == none%}unlogin{%endif%}" {% if reply.reply_report_id==none or user_info==none%}href="javascript:;" {% endif %} {%if user_info==none%}data-link="{{link}}"
-                    data-link2="{{link2}}" {%endif%} data-id="{{reply.id}}" data-type="r{{post.post_type}}" {% if reply.reply_report_id==none%}data-toggle="modal" data-target="#reportModal" {%endif%}>{% if reply.reply_report_id %}已举报{% else %}举报{% endif %}</a>
+                    data-link2="{{link2}}" {%endif%} data-id="{{reply.id}}" data-type="rp" {% if reply.reply_report_id==none%}data-toggle="modal" data-target="#reportModal" {%endif%}>{% if reply.reply_report_id %}已举报{% else %}举报{% endif %}</a>
                             &nbsp; &nbsp; &nbsp;
                             <a href="#;" class="op">回复 Ta</a>
                         </div>
@@ -710,6 +714,53 @@
             });
         });
 
+        $(document).on('click', '.vote-video', function() {
+            var vote_id = $(this).attr('data-id');
+            var vote_type = $(this).attr('data-type');
+            var vote_btn = $(this);
+            var vote_up = $(this).parent().find('.up');
+            var vote_down = $(this).parent().find('.down');
+            var vote_up_num = $(this).parent().find('.up').find('.count');
+            var vote_down_num = $(this).parent().find('.down').find('.count');
+            $.getJSON('/vote/video/' + vote_id + '?vote=' + vote_type, function(data) {
+                if (data.success != 0) {
+                    if (vote_btn.hasClass('voted')) {
+                        vote_btn.removeClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                        }
+                    } else {
+                        vote_btn.addClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) + 1);
+                            if (vote_down.hasClass('voted')) {
+                                vote_down.removeClass('voted');
+                                vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                            }
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) + 1);
+                            if (vote_up.hasClass('voted')) {
+                                vote_up.removeClass('voted');
+                                vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                            }
+                        }
+                    }
+                    if ('0' == vote_up_num.text()) {
+                        vote_up_num.addClass('zero');
+                    } else {
+                        vote_up_num.removeClass('zero');
+                    }
+                    if ('0' == vote_down_num.text()) {
+                        vote_down_num.addClass('zero');
+                    } else {
+                        vote_down_num.removeClass('zero');
+                    }
+                }
+            });
+        });
+
         $(document).on('click', '.invite', function() {
             var post_id = $(this).attr('data-id');
 
@@ -992,16 +1043,16 @@
           }
         });
 
-        $(document).on('click', '.item-title', function() {
-          var item_content = $(this).parent().find('.item-content');
-          if (item_content.is(":hidden")) {
+        $(document).on('click', '.video-title', function() {
+          var video_content = $(this).parent().find('.video-content');
+          if (video_content.is(":hidden")) {
             var video_src = $(this).attr('data-src');
             video_src = '<iframe webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" height="411" width="648" src="'+video_src+'" frameborder="0"></iframe>';
-            item_content.html(video_src);
+            video_content.html(video_src);
           } else {
-            item_content.html('');
+            video_content.html('');
           }
-          item_content.toggle();
+          video_content.toggle();
         });
 
 

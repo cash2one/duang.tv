@@ -12,11 +12,11 @@ class VoteModel(Query):
         super(VoteModel, self).__init__()
 
     def get_vote_by_user_and_reply(self, author_id, reply_id):
-        where = "author_id = %s AND reply_id = %s" % (author_id, reply_id)
+        where = "vote.author_id = %s AND vote.obj_id = %s AND vote.obj_type = 'reply'" % (author_id, reply_id)
         return self.where(where).find()
 
     def get_vote_by_user_and_post(self, author_id, post_id):
-        where = "author_id = %s AND post_id = %s" % (author_id, post_id)
+        where = "vote.author_id = %s AND vote.post_id = %s AND vote.obj_type = 'post'" % (author_id, post_id)
         return self.where(where).find()
 
     def delete_vote_by_id(self, vote_id):
@@ -24,7 +24,7 @@ class VoteModel(Query):
         return self.where(where).delete()
 
     def delete_vote_by_reply_id(self, reply_id):
-        where = "vote.reply_id = %s " % reply_id
+        where = "vote.obj_id = %s AND vote.obj_type = 'reply'" % reply_id
         return self.where(where).delete()
 
     def update_vote_by_id(self, vote_id, vote_info):
@@ -33,7 +33,7 @@ class VoteModel(Query):
 
     def add_new_vote(self, vote_info):
         return self.data(vote_info).add()
-
+'''
     def get_reply_all_up_votes(self, reply_id, num = 3, current_page = 1):
         where = "vote.reply_id = %s AND vote.up_down = 'up'" % reply_id
         join = "LEFT JOIN user ON vote.author_id = user.uid"
@@ -43,4 +43,4 @@ class VoteModel(Query):
                 user.sign as author_sign, \
                 user.avatar as author_avatar"
         return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
-
+'''

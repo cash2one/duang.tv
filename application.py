@@ -146,6 +146,8 @@ class Application(tornado.web.Application):
         self.live_model = self.loader.use("live.model")
         self.video_model = self.loader.use("video.model")
         self.section_model = self.loader.use("section.model")
+        self.object_video_model = self.loader.use("object_video.model")
+        self.section_video_model = self.loader.use("section_video.model")
 
         # Have one global session controller
         self.session_manager = SessionManager(settings["cookie_secret"], ["127.0.0.1:11211"], 0)

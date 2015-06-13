@@ -21,11 +21,3 @@ class VideoModel(Query):
     def delete_video_by_post_id(self, post_id):
         where = "video.post_id = %s " % post_id
         return self.where(where).delete()
-
-    def get_post_videos(self, post_id):
-        where = "video.post_id = %s" % post_id
-        join = "LEFT JOIN section ON video.section_id = section.id"
-        order = "section.section_order ASC, section.id ASC, video.video_order DESC, video.created DESC, video.id DESC"
-        field = "video.*, \
-                section.section_name as section_name"
-        return self.where(where).join(join).order(order).field(field).select()

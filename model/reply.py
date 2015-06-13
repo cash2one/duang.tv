@@ -18,7 +18,7 @@ class ReplyModel(Query):
     def get_post_all_replys_sort_by_voted(self, post_id, user_id, num = 50, current_page = 1):
         where = "reply.post_id = %s" % post_id
         join = "LEFT JOIN user ON reply.author_id = user.uid \
-                LEFT JOIN vote ON vote.author_id = %s AND reply.id = vote.reply_id \
+                LEFT JOIN vote ON vote.author_id = %s AND reply.id = vote.obj_id AND vote.obj_type = 'reply'\
                 LEFT JOIN thank ON thank.from_user = %s AND thank.to_user = reply.author_id AND thank.obj_id = reply.id AND thank.obj_type = 'reply' \
                 LEFT JOIN report ON report.from_user = %s AND report.to_user = reply.author_id AND report.obj_id = reply.id AND report.obj_type = 'reply'" % (user_id, user_id, user_id)
         order = "reply.up_num DESC, reply.down_num ASC,  reply.created ASC"

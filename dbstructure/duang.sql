@@ -182,8 +182,8 @@ CREATE TABLE `live` (
 DROP TABLE IF EXISTS `vote`;
 CREATE TABLE `vote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `post_id` int(11) DEFAULT NULL,
-  `reply_id` int(11) DEFAULT NULL,
+  `obj_id` int(11) DEFAULT NULL,
+  `obj_type` text,
   `up_down` text,
   `author_id` int(11) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
@@ -380,16 +380,38 @@ CREATE TABLE `video` (
   `img` text,
   `orginal_link` text,
   `link` text,
-  `post_id` int(11) DEFAULT NULL,
   `vendor` text,
   `vid` text,
   `view_num` int(11) DEFAULT 0,
   `up_num` int(11) DEFAULT 0,
   `down_num` int(11) DEFAULT 0,
-  `section_id` int(11) DEFAULT 0,
-  `video_order` int(11) DEFAULT 0,
   `updated` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `object_video`
+-- ----------------------------
+DROP TABLE IF EXISTS `object_video`;
+CREATE TABLE `object_video` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `video_id` int(11) DEFAULT NULL,
+  `obj_id` int(11) DEFAULT NULL,
+  `obj_type` text,
+  `oreder_num` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `section_video`
+-- ----------------------------
+DROP TABLE IF EXISTS `section_video`;
+CREATE TABLE `section_video` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `video_id` int(11) DEFAULT NULL,
+  `section_id` int(11) DEFAULT NULL,
+  `post_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

@@ -2,6 +2,18 @@ INSERT INTO `section` VALUES (1, '全场集锦', 0, 'football');
 INSERT INTO `section` VALUES (2, '进球视频', 0, 'football');
 INSERT INTO `section` VALUES (3, '精彩花絮', 0, 'football');
 
+INSERT INTO `object_video` VALUES (1, 1, 1, 'post');
+INSERT INTO `object_video` VALUES (2, 2, 1, 'post');
+INSERT INTO `object_video` VALUES (3, 3, 1, 'post');
+INSERT INTO `object_video` VALUES (4, 4, 1, 'post');
+INSERT INTO `object_video` VALUES (5, 5, 1, 'post');
+
+INSERT INTO `section_video` VALUES (1, 1, 3, 1);
+INSERT INTO `section_video` VALUES (2, 2, 3, 1);
+INSERT INTO `section_video` VALUES (3, 3, 2, 1);
+INSERT INTO `section_video` VALUES (4, 4, 1, 1);
+INSERT INTO `section_video` VALUES (5, 5, 1, 1);
+
 INSERT INTO `video` VALUES (1, '里皮看台观战恒大生死战 球迷翘首睹真容', '', '', '', 'http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138126657&as=0', 1, 'sina', '', 0, 0, 0, 3, 0, NULL, '2015-06-11 00:50:24');
 INSERT INTO `video` VALUES (2, '恒大开场收噩耗 张琳芃膝盖受伤无奈离场', '', '', '', 'http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138126983&as=0', 1, 'sina', '', 0, 0, 0, 3, 0, NULL, '2015-06-11 00:50:24');
 INSERT INTO `video` VALUES (3, '高拉特角球甩头破门 詹俊：犀牛望月', '', '', '', 'http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138127179&as=0', 1, 'sina', '', 0, 0, 0, 2, 0, NULL, '2015-06-11 00:50:24');
