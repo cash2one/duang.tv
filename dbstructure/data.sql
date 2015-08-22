@@ -2,11 +2,11 @@ INSERT INTO `section` VALUES (1, '全场集锦', 0, 'football');
 INSERT INTO `section` VALUES (2, '进球视频', 0, 'football');
 INSERT INTO `section` VALUES (3, '精彩花絮', 0, 'football');
 
-INSERT INTO `object_video` VALUES (1, 1, 1, 'post');
-INSERT INTO `object_video` VALUES (2, 2, 1, 'post');
-INSERT INTO `object_video` VALUES (3, 3, 1, 'post');
-INSERT INTO `object_video` VALUES (4, 4, 1, 'post');
-INSERT INTO `object_video` VALUES (5, 5, 1, 'post');
+INSERT INTO `object_video` VALUES (1, 1, 1, 'post', 0);
+INSERT INTO `object_video` VALUES (2, 2, 1, 'post', 0);
+INSERT INTO `object_video` VALUES (3, 3, 1, 'post', 0);
+INSERT INTO `object_video` VALUES (4, 4, 1, 'post', 0);
+INSERT INTO `object_video` VALUES (5, 5, 1, 'post', 0);
 
 INSERT INTO `section_video` VALUES (1, 1, 3, 1);
 INSERT INTO `section_video` VALUES (2, 2, 3, 1);
@@ -14,11 +14,11 @@ INSERT INTO `section_video` VALUES (3, 3, 2, 1);
 INSERT INTO `section_video` VALUES (4, 4, 1, 1);
 INSERT INTO `section_video` VALUES (5, 5, 1, 1);
 
-INSERT INTO `video` VALUES (1, '里皮看台观战恒大生死战 球迷翘首睹真容', '', '', '', 'http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138126657&as=0', 1, 'sina', '', 0, 0, 0, 3, 0, NULL, '2015-06-11 00:50:24');
-INSERT INTO `video` VALUES (2, '恒大开场收噩耗 张琳芃膝盖受伤无奈离场', '', '', '', 'http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138126983&as=0', 1, 'sina', '', 0, 0, 0, 3, 0, NULL, '2015-06-11 00:50:24');
-INSERT INTO `video` VALUES (3, '高拉特角球甩头破门 詹俊：犀牛望月', '', '', '', 'http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138127179&as=0', 1, 'sina', '', 0, 0, 0, 2, 0, NULL, '2015-06-11 00:50:24');
-INSERT INTO `video` VALUES (4, '亚冠-高拉特双响张琳芃伤退 恒大2-0城南进8强', '', '', '', 'http://img1.c0.letv.com/ptv/player/swfPlayer.swf?autoPlay=1&isPlayerAd=0&id=22845366', 1, 'letv', '', 0, 0, 0, 1, 0, NULL, '2015-06-11 00:50:24');
-INSERT INTO `video` VALUES (5, '亚冠-高拉特双响张琳芃伤退 恒大2-0城南进8强', '', '', '', 'http://player.cntv.cn/flashplayer/players/htmls/smallwindow.html?pid=654b7d1ed3e6433fa3e626e072c0c696', 1, 'cntv', '', 0, 0, 0, 1, 0, NULL, '2015-06-11 00:50:24');
+INSERT INTO `video` VALUES (1, '里皮看台观战恒大生死战 球迷翘首睹真容', '', '', '', 'http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138126657&as=0', 'sina', '', 0, 0, 0, NULL, '2015-06-11 00:50:24');
+INSERT INTO `video` VALUES (2, '恒大开场收噩耗 张琳芃膝盖受伤无奈离场', '', '', '', 'http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138126983&as=0', 'sina', '', 0, 0, 0, NULL, '2015-06-11 00:50:24');
+INSERT INTO `video` VALUES (3, '高拉特角球甩头破门 詹俊：犀牛望月', '', '', '', 'http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138127179&as=0', 'sina', '', 0, 0, 0, NULL, '2015-06-11 00:50:24');
+INSERT INTO `video` VALUES (4, '亚冠-高拉特双响张琳芃伤退 恒大2-0城南进8强', '', '', '', 'http://img1.c0.letv.com/ptv/player/swfPlayer.swf?autoPlay=1&isPlayerAd=0&id=22845366', 'letv', '', 0, 0, 0, NULL, '2015-06-11 00:50:24');
+INSERT INTO `video` VALUES (5, '亚冠-高拉特双响张琳芃伤退 恒大2-0城南进8强', '', '', '', 'http://player.cntv.cn/flashplayer/players/htmls/smallwindow.html?pid=654b7d1ed3e6433fa3e626e072c0c696', 'cntv', '', 0, 0, 0, NULL, '2015-06-11 00:50:24');
 
 
 INSERT INTO `feed` VALUES (1, '图-国青小将惊艳女友', 'basketball', 'new', 1, '2015-06-07 00:08:26', '2015-06-07 00:08:26');

@@ -399,7 +399,7 @@ CREATE TABLE `object_video` (
   `video_id` int(11) DEFAULT NULL,
   `obj_id` int(11) DEFAULT NULL,
   `obj_type` text,
-  `oreder_num` int(11) DEFAULT 0,
+  `order_num` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
