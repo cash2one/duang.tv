@@ -43,6 +43,14 @@ class Post_tagModel(Query):
                 author_user.avatar as author_avatar"
         return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
 
+    def get_tag_all_feeds(self, tag_id, num = 10, current_page = 1):
+        where = "post_tag.tag_id = %s" % tag_id
+        join = "LEFT JOIN post ON post_tag.post_id = post.id\
+                LEFT JOIN feed ON post.id = feed.post_id"
+        order = "feed.updated DESC, feed.id DESC"
+        field = "feed.*"
+        return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
+
     def get_post_related_posts(self, post_id, num = 5, current_page = 1):
         where = "post_tag.post_id = %s" % post_id
         join = "RIGHT JOIN post_tag AS related_post_tag ON (post_tag.tag_id = related_post_tag.tag_id AND related_post_tag.post_id != post_tag.post_id)\

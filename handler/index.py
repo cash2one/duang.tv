@@ -28,6 +28,7 @@ from lib.xss import XssCleaner
 from lib.utils import find_mentions
 from lib.reddit import hot
 from lib.utils import pretty_date
+from lib.dateencoder import DateEncoder
 from pyquery import PyQuery as pyq
 
 from lib.mobile import is_mobile_browser
@@ -44,6 +45,9 @@ access_key = "DaQzr1UhFQD6im_kJJjZ8tQUKQW7ykiHo4ZWfC25"
 secret_key = "Ge61JJtUSC5myXVrntdVOqAZ5L7WpXR_Taa9C8vb"
 q = Auth(access_key, secret_key)
 bucket = BucketManager(q)
+
+page_days = 1
+all_pages = 2
 
 THRESHOLD = 2
 class IndexHandler(BaseHandler):
@@ -74,6 +78,131 @@ class IndexHandler(BaseHandler):
             self.render("mobile/index.html", **template_variables)
         else:
             self.render("index.html", **template_variables)
+
+class LiveHandler(BaseHandler):
+    def get(self, template_variables = {}):
+        user_info = self.current_user
+        template_variables["user_info"] = user_info
+        template_variables["gen_random"] = gen_random
+        p = int(self.get_argument("p", "1"))
+        template_variables["active_nav"] = "直播"
+
+        now_time = datetime.datetime.now()
+        yes_time = now_time + datetime.timedelta(days=-1)
+
+        pass_time = now_time + datetime.timedelta(hours=-2)
+        future_time = now_time + datetime.timedelta(days=+14)
+        template_variables["lives"] = self.live_model.get_index_lives(pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
+
+        if is_mobile_browser(self):
+            self.render("mobile/live.html", **template_variables)
+        else:
+            self.render("live.html", **template_variables)
+
+class NbaHandler(BaseHandler):
+    def get(self, template_variables = {}):
+        user_info = self.current_user
+        template_variables["user_info"] = user_info
+        template_variables["gen_random"] = gen_random
+        p = int(self.get_argument("p", "1"))
+
+        today_time = datetime.date.today()
+
+        basketball_videos = []
+        basketball_news = []
+        for i in range((p-1)*page_days, p*page_days):
+            time2 = today_time + datetime.timedelta(days=-i)
+            time1 = time2 + datetime.timedelta(days=-1)
+            basketball_videos.append(self.feed_model.get_index_feeds("basketball", "video", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S')))
+            basketball_news.append(self.feed_model.get_index_feeds("basketball", "new", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S')))
+        
+        template_variables["basketball_videos"] = basketball_videos
+        template_variables["basketball_news"] = basketball_news
+        template_variables["last_page"] = all_pages
+        template_variables["page"] = p
+
+        all_navs = self.nav_model.get_all_navs_by_type("basketball")
+        all_subnavs = self.nav_model.get_all_subnavs_by_type("basketball")
+
+        template_variables["all_navs"] = all_navs
+        template_variables["all_subnavs"] = all_subnavs
+        template_variables["active_nav"] = "NBA"
+
+        if is_mobile_browser(self):
+            self.render("nba.html", **template_variables)
+        else:
+            self.render("nba.html", **template_variables)
+
+class FootballHandler(BaseHandler):
+    def get(self, template_variables = {}):
+        user_info = self.current_user
+        template_variables["user_info"] = user_info
+        template_variables["gen_random"] = gen_random
+        p = int(self.get_argument("p", "1"))
+
+        today_time = datetime.date.today()
+
+        basketball_videos = []
+        basketball_news = []
+        for i in range((p-1)*page_days, p*page_days):
+            time2 = today_time + datetime.timedelta(days=-i)
+            time1 = time2 + datetime.timedelta(days=-1)
+            basketball_videos.append(self.feed_model.get_index_feeds("basketball", "video", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S')))
+            basketball_news.append(self.feed_model.get_index_feeds("basketball", "new", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S')))
+        
+        template_variables["basketball_videos"] = basketball_videos
+        template_variables["basketball_news"] = basketball_news
+        template_variables["last_page"] = all_pages
+        template_variables["page"] = p
+
+        all_navs = self.nav_model.get_all_navs_by_type("basketball")
+        all_subnavs = self.nav_model.get_all_subnavs_by_type("basketball")
+
+        template_variables["all_navs"] = all_navs
+        template_variables["all_subnavs"] = all_subnavs
+        template_variables["active_nav"] = "足球"
+
+        if is_mobile_browser(self):
+            self.render("football.html", **template_variables)
+        else:
+            self.render("football.html", **template_variables)
+
+class GetNavHandler(BaseHandler):
+    def get(self, nav_id, template_variables = {}):
+        p = int(self.get_argument("p", "1"))
+        nav = self.nav_model.get_nav_by_nav_id(nav_id)
+        if nav and nav.tag_id:
+            nav_feeds = self.post_tag_model.get_tag_all_feeds(nav.tag_id, current_page = p)
+            feeds_json = json.dumps(nav_feeds, cls=DateEncoder)
+        
+            self.write(feeds_json)
+        else:
+            nav_feeds = self.post_tag_model.get_tag_all_feeds(-1, current_page = p)
+            feeds_json = json.dumps(nav_feeds, cls=DateEncoder)
+        
+            self.write(feeds_json)
+            self.write("")
+
+class BbsHandler(BaseHandler):
+    def get(self, template_variables = {}):
+        user_info = self.current_user
+        template_variables["user_info"] = user_info
+        template_variables["gen_random"] = gen_random
+        p = int(self.get_argument("p", "1"))
+        template_variables["page"] = p
+        template_variables["last_page"] = all_pages
+
+        all_navs = self.nav_model.get_all_navs_by_type("basketball")
+        all_subnavs = self.nav_model.get_all_subnavs_by_type("basketball")
+
+        template_variables["all_navs"] = all_navs
+        template_variables["all_subnavs"] = all_subnavs
+        template_variables["active_nav"] = "社区"
+
+        if is_mobile_browser(self):
+            self.render("bbs.html", **template_variables)
+        else:
+            self.render("bbs.html", **template_variables)
 
 class PostHandler(BaseHandler):
     def get(self, post_id, template_variables = {}):
@@ -1606,106 +1735,4 @@ class GetTagHandler(BaseHandler):
         else:
             follow = None
         tag_tip = self.render_string("tooltip/tag-tip.html", user_info=user_info, follow=follow, view_tag=view_tag, follow_users=follow_users)
-        self.write(tag_tip)
-
-
-class MenuManager:
-    accessUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=appid&secret=secret"
-    delMenuUrl = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token="
-    createUrl = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token="
-    getMenuUri="https://api.weixin.qq.com/cgi-bin/menu/get?access_token="
-    def getAccessToken(self):
-        f = urllib.request.urlopen(self.accessUrl)
-        accessT = f.read().decode("utf-8")
-        jsonT = json.loads(accessT)
-        return jsonT["access_token"]
-    def delMenu(self, accessToken):
-        html = urllib.request.urlopen(self.delMenuUrl + accessToken)
-        result = json.loads(html.read().decode("utf-8"))
-        return result["errcode"]
-    def createMenu(self, accessToken):
-        menu = '''{
-                    "button":[
-                        {
-                            "type":"click",
-                            "name":"今日歌曲",
-                            "key":"V1001_TODAY_MUSIC"
-                        },
-                        {
-                            "type":"view",
-                            "name":"歌手简介",
-                            "url":"http://www.qq.com/"
-                        },
-                        {
-                            "name":"菜单",
-                            "sub_button":[
-                                {
-                                    "type":"click",
-                                    "name":"hello word",
-                                    "key":"V1001_HELLO_WORLD"
-                                },
-                                {
-                                    "type":"click",
-                                    "name":"赞一下我们",
-                                    "key":"V1001_GOOD"
-                                }
-                            ]
-                        }
-                    ]
-                }'''
-        html = urllib.request.urlopen(self.createUrl + accessToken, menu.encode("utf-8"))
-        result = json.loads(html.read().decode("utf-8"))
-        return result["errcode"]
-    def getMenu(self):
-        html = urllib.request.urlopen(self.getMenuUri + accessToken)
-        print(html.read().decode("utf-8"))
-
-# for weixin test
-class SDJHandler(BaseHandler):
-    def get(self, template_variables = {}):
-        #获取微信公众平台发送的验证参数
-        signature = self.get_argument('signature', '')
-        timestamp = self.get_argument('timestamp', '')
-        nonce = self.get_argument('nonce', '')
-        echostr = self.get_argument('echostr', '')
-        #定义token，需要和Web页面上填写的一致
-        token = 'songdaojia'
-        #将参数放入列表中，并排序
-        list=[token,timestamp,nonce]
-        list.sort()
-        #加密列表中的参数
-        sha1=hashlib.sha1()
-        map(sha1.update,list)
-        #比较加密结果
-        hashcode=sha1.hexdigest()
-        if hashcode == signature:
-            self.write(echostr)
-            wx = MenuManager()
-            accessToken = wx.getAccessToken()
-            wx.getMenu()
-        else:
-            self.write('error,code 403')
-
-    def post(self):
-        body = self.request.body
-        data = ET.fromstring(body)
-        tousername = data.find('ToUserName').text
-        fromusername = data.find('FromUserName').text
-        createtime = data.find('CreateTime').text
-        msgtype = data.find('MsgType').text
-        content = data.find('Content').text
-        msgid = data.find('MsgId').text
-
-        if content.strip() in ('ls','pwd','w','uptime'):
-            result = commands.getoutput(content)
-        else:
-            result = '不可以哦!!!'
-        textTpl = """<xml>
-                        <ToUserName><![CDATA[%s]]></ToUserName>
-                        <FromUserName><![CDATA[%s]]></FromUserName>
-                        <CreateTime>%s</CreateTime>
-                        <MsgType><![CDATA[%s]]></MsgType>
-                        <Content><![CDATA[%s]]></Content>
-                    </xml>"""
-        out = textTpl % (fromusername, tousername, str(int(time.time())), msgtype, result)
-        self.write(out)    
+        self.write(tag_tip)   

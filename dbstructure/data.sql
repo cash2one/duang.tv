@@ -1,3 +1,42 @@
+INSERT INTO `nav` VALUES (1, "全部", NULL, "basketball", 1, NULL, 0);
+INSERT INTO `nav` VALUES (2, "骑士", 1, "basketball", 2, NULL, 0);
+INSERT INTO `nav` VALUES (3, "湖人", 1, "basketball", 3, NULL, 0);
+INSERT INTO `nav` VALUES (4, "火箭", 1, "basketball", 4, NULL, 0);
+INSERT INTO `nav` VALUES (5, "中国男篮", 1, "basketball", 5, NULL, 0);
+INSERT INTO `nav` VALUES (6, "雷霆", 1, "basketball", 6, NULL, 0);
+INSERT INTO `nav` VALUES (7, "快船", 1, "basketball", 7, NULL, 0);
+INSERT INTO `nav` VALUES (8, "马刺", 1, "basketball", 8, NULL, 0);
+INSERT INTO `nav` VALUES (9, "热火", 1, "basketball", 9, NULL, 0);
+INSERT INTO `nav` VALUES (10, "公牛", 1, "basketball", 10, NULL, 0);
+INSERT INTO `nav` VALUES (11, "小牛", 1, "basketball", 11, NULL, 0);
+INSERT INTO `nav` VALUES (12, "勇士", 1, "basketball", 12, NULL, 0);
+INSERT INTO `nav` VALUES (13, "老鹰", 1, "basketball", 13, NULL, 0);
+INSERT INTO `nav` VALUES (14, "诸强", NULL, "basketball", 14, NULL, 0);
+INSERT INTO `nav` VALUES (15, "其他", NULL, "basketball", 15, NULL, 0);
+
+INSERT INTO `nav` VALUES (16, "推荐视频", NULL, "basketball", 1, 1, 1);
+INSERT INTO `nav` VALUES (17, "最新视频", NULL, "basketball", 2, 1, 1);
+INSERT INTO `nav` VALUES (18, "推荐新闻", NULL, "basketball", 3, 1, 1);
+INSERT INTO `nav` VALUES (19, "最新新闻", NULL, "basketball", 4, 1, 1);
+
+INSERT INTO `nav` VALUES (20, "詹姆斯", 1, "basketball", 1, 2, 1);
+INSERT INTO `nav` VALUES (21, "欧文", 1, "basketball", 2, 2, 1);
+
+INSERT INTO `nav` VALUES (22, "科比", 1, "basketball", 1, 3, 1);
+INSERT INTO `nav` VALUES (23, "林书豪", 1, "basketball", 2, 3, 1);
+INSERT INTO `nav` VALUES (24, "纳什", 1, "basketball", 3, 3, 1);
+INSERT INTO `nav` VALUES (25, "奥尼尔", 1, "basketball", 4, 3, 1);
+
+
+
+INSERT INTO `post_tag` VALUES (1, 1, 1);
+INSERT INTO `post_tag` VALUES (2, 1, 2);
+INSERT INTO `post_tag` VALUES (3, 1, 3);
+
+INSERT INTO `tag` VALUES (1, "广州恒大", "", "", 1, 1, 0, 0, 0, "2015-08-27 00:00:00");
+INSERT INTO `tag` VALUES (2, "亚冠", "", "", 1, 1, 0, 0, 0, "2015-08-27 00:00:00");
+INSERT INTO `tag` VALUES (3, "高拉特", "", "", 1, 1, 0, 0, 0, "2015-08-27 00:00:00");
+
 INSERT INTO `section` VALUES (1, '全场集锦', 0, 'football');
 INSERT INTO `section` VALUES (2, '进球视频', 0, 'football');
 INSERT INTO `section` VALUES (3, '精彩花絮', 0, 'football');
@@ -158,231 +197,3 @@ INSERT INTO `balance_type` VALUES (12, '邀请成功', '邀请', '成功');
 INSERT INTO `ads` VALUES (1, 1, 1, 'http://mmm-cdn.qiniudn.com/1111.png', '/');
 
 INSERT INTO `post` VALUES (1, '亚冠-高拉特双响张琳芃伤退 恒大2-0城南进8强', '', 'video', '', 0, 0, 0, 0, 0, 1, NULL, NULL);
-update post set content='<div class="zbx-section">
-        <div class="section-title">
-        <span>-</span>
-        <h2>
-
-        全场集锦
-        </h2>
-
-        </div>
-        <div class="section-content">
-        <div class="zbx-item">
-        <div class="item-title" data-src="http://static.video.qq.com/TPout.swf?auto=1&vid=s00165sk3j7">
-        <div id="topic_194476_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(194476);" class="vote"><li class="fa fa-chevron-up"></li> &nbsp;5</a> &nbsp;<a href="javascript:" onclick="downVoteTopic(194476);" class="vote"><li class="fa fa-chevron-down"></li></a></div>
-        
-        <h3>
-<i class="video-icon video-qq"></i>
-        亚冠-高拉特双响张琳芃伤退 恒大2-0城南进8强 
-        </h3>
-        </div>
-        <div class="item-content" style="display: none">
-        </div>
-        </div>
-
-        <div class="zbx-item">
-        <div class="item-title" data-src="http://player.cntv.cn/flashplayer/players/htmls/smallwindow.html?pid=654b7d1ed3e6433fa3e626e072c0c696">
-        <div id="topic_194476_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(194476);" class="vote"><li class="fa fa-chevron-up"></li> &nbsp;252</a> &nbsp;<a href="javascript:" onclick="downVoteTopic(194476);" class="vote"><li class="fa fa-chevron-down"></li></a></div>
-        <h3>
-        <i class="video-icon video-cntv"></i>
-        亚冠-高拉特双响张琳芃伤退 恒大2-0城南进8强 
-        </h3>
-        </div>
-        <div class="item-content" style="display: none">
-        </div>
-        </div>
-
-        <div class="zbx-item">
-        <div class="item-title" data-src="http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138127377&as=0">
-        <div id="topic_194476_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(194476);" class="vote"><li class="fa fa-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(194476);" class="vote"><li class="fa fa-chevron-down"></li></a></div>
-        <h3>
-        <i class="video-icon video-sina"></i>
-        亚冠-高拉特双响张琳芃伤退 恒大2-0城南进8强 
-        </h3>
-        </div>
-        <div class="item-content" style="display: none">
-        </div>
-        </div>
-
-        <div class="zbx-item">
-        <div class="item-title" data-src="http://img1.c0.letv.com/ptv/player/swfPlayer.swf?autoPlay=1&isPlayerAd=0&id=22845366">
-        <div id="topic_194476_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(194476);" class="vote"><li class="fa fa-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(194476);" class="vote"><li class="fa fa-chevron-down"></li></a></div>
-        <h3>
-        <i class="video-icon video-letv"></i>
-        亚冠-高拉特双响张琳芃伤退 恒大2-0城南进8强 
-        </h3>
-        </div>
-        <div class="item-content" style="display: none">
-        </div>
-        </div>
-        </div>
-          
-
-        </div>
-
-        <div class="zbx-section">
-        <div class="section-title">
-        <span>-</span>
-        <h2>
-        进球视频
-        </h2>
-        </div>
-        <div class="section-content">
-        <div class="zbx-item">
-        <div class="item-title" data-src="http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138127179&as=0">
-        <div id="topic_194476_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(194476);" class="vote"><li class="fa fa-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(194476);" class="vote"><li class="fa fa-chevron-down"></li></a></div>
-        <h3>
-        <i class="video-icon video-sina"></i>
-        高拉特角球甩头破门 詹俊：犀牛望月  
-        </h3>
-        </div>
-        <div class="item-content" style="display: none">
-        </div>
-        </div>
-
-        <div class="zbx-item">
-        <div class="item-title" data-src="http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138127049&as=0">
-        <div id="topic_194476_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(194476);" class="vote"><li class="fa fa-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(194476);" class="vote"><li class="fa fa-chevron-down"></li></a></div>
-        <h3>
-        <i class="video-icon video-sina"></i>
-        黄博文重炮打手造点 高拉特爆射扳平 
-        </h3>
-        </div>
-        <div class="item-content" style="display: none">
-        </div>
-        </div>
-        </div>
-          
-
-        </div>
-
-
-        <div class="zbx-section">
-        <div class="section-title">
-        <span>-</span>
-        <h2>
-        精彩花絮
-        </h2>
-        </div>
-        <div class="section-content">
-        <div class="zbx-item">
-        <div class="item-title" data-src="http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138142448&as=0">
-        <div id="topic_194476_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(194476);" class="vote"><li class="fa fa-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(194476);" class="vote"><li class="fa fa-chevron-down"></li></a></div>
-        <h3>
-        <i class="video-icon video-sina"></i>
-        曾诚读秒力扑必进球 哨响全场欢庆晋级  
-        </h3>
-        </div>
-        <div class="item-content" style="display: none">
-        </div>
-        </div>
-
-        <div class="zbx-item">
-        <div class="item-title" data-src="http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138127229&as=0">
-        <div id="topic_194476_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(194476);" class="vote"><li class="fa fa-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(194476);" class="vote"><li class="fa fa-chevron-down"></li></a></div>
-        <h3>
-        <i class="video-icon video-sina"></i>
-        韩铁卫诈伤难逃金哨法眼 悻悻起身继续比赛 
-        </h3>
-        </div>
-        <div class="item-content" style="display: none">
-        </div>
-        </div>
-
-        <div class="zbx-item">
-        <div class="item-title" data-src="http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138127153&as=0">
-        <div id="topic_194476_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(194476);" class="vote"><li class="fa fa-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(194476);" class="vote"><li class="fa fa-chevron-down"></li></a></div>
-        <h3>
-        <i class="video-icon video-sina"></i>
-        城南角球冷箭兜射 立柱救险恒大逃过一劫   
-        </h3>
-        </div>
-        <div class="item-content" style="display: none">
-        </div>
-        </div>
-
-        <div class="zbx-item">
-        <div class="item-title" data-src="http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138126983&as=0">
-        <div id="topic_194476_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(194476);" class="vote"><li class="fa fa-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(194476);" class="vote"><li class="fa fa-chevron-down"></li></a></div>
-        <h3>
-        <i class="video-icon video-sina"></i>
-        恒大开场收噩耗 张琳芃膝盖受伤无奈离场   
-        </h3>
-        </div>
-        <div class="item-content" style="display: none">
-        </div>
-        </div>
-
-        <div class="zbx-item">
-        <div class="item-title" data-src="http://p.you.video.sina.com.cn/swf/quotePlayer20130723_V4_4_42_4.swf?vid=138126657&as=0">
-        <div id="topic_194476_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(194476);" class="vote"><li class="fa fa-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(194476);" class="vote"><li class="fa fa-chevron-down"></li></a></div>
-        <h3>
-        <i class="video-icon video-sina"></i>
-        里皮看台观战恒大生死战 球迷翘首睹真容  
-        </h3>
-        </div>
-        <div class="item-content" style="display: none">
-        </div>
-        </div>
-
-
-        </div>
-          
-
-        </div>
-
-
-        <div class="zbx-section">
-        <div class="section-title">
-        <span>+</span>
-        <h2>
-
-        技术统计
-        </h2>
-
-        </div>
-        <div class="section-content" style="display: none">
-        <div class="zbx-content">
-
-        <img alt="亚冠-高拉特2球 恒大2-0总分3-2胜城南晋级八强" src="http://img4.cache.netease.com/sports/2015/5/27/20150527222157397e8.jpg" style="vertical-align: top; border: 0px; font-family: simsun; font-size: 12px; line-height: normal; text-align: -webkit-center;">
-        
-        </div>
-        </div>
-          
-
-        </div>
-
-        <div class="zbx-section">
-        <div class="section-title">
-        <span>+</span>
-        <h2>
-
-        完整战报
-        </h2>
-
-        </div>
-        <div class="section-content" style="display: none">
-        <div class="zbx-content">
-        <p style="border: 0px; margin-top: 20px; margin-right: auto; margin-left: auto; font-family: Simsun; text-indent: 2em;">北京时间5月27日晚20时，2015赛季亚冠联赛八分之一淘汰赛第二回合一场焦点战在天河体育中心展开，中超冠军广州恒大坐镇主场迎来韩国城南FC的挑战。上半场刚开场不久，张琳芃就因伤提前下场，随后，高拉特点球为恒大先拔头筹；下半场，高拉特头球再次破门为恒大锁定胜局，最终，恒大在主场2-0战胜了城南FC，从而以3-2的总比分连续第四年晋级亚冠八强。</p>
-        <p style="border: 0px; margin-top: 20px; margin-right: auto; margin-left: auto; font-family: Simsun; text-indent: 2em;">在双方首回合的比赛中，广州恒大客场1-2负于城南FC队，因此“华南虎”本场必须要在主场拿下对手，方能挺进八强。纵观亚冠历史，恒大面对韩国球队战绩不算太亮眼，此前11战3胜5平3负，不过，在最近4次在主场对K联赛球队2胜2平保持不败。而城南FC在亚冠赛场共10次面对中超球队，结果取得6胜2平2负的优势战绩，近3次客场对阵中国球队取得全胜，且是零失球。本场比赛，恒大方面继续派出高拉特一名外援，而邹正代替红牌停赛的李学鹏出场；而城南方面；首回合进球的约尔吉尼奥和金斗炫继续联袂首发。</p>
-        <p style="border: 0px; margin-top: 20px; margin-right: auto; margin-left: auto; font-family: Simsun; text-indent: 2em;">随着主裁伊尔马托夫的一声哨响，比赛正式开始。刚开场，城南外援布埃诺就因为侵犯邹正被黄牌警告。第5分钟，恒大遭遇当头一棒。张琳芃在拼抢中和对方球员相撞，膝盖被狠狠崴了一下，卡纳瓦罗无奈用荣昊将其换下。</p>
-        <p style="border: 0px; margin-top: 20px; margin-right: auto; margin-left: auto; font-family: Simsun; text-indent: 2em;">随后，恒大借助主场气势频频向城南腹地发起猛攻。第12分钟，荣昊右路拿球，顺势一扣摆脱防守队员再传中路，郜林头球后蹭，可惜没人包抄到位。</p>
-		</div>
-        
-        </div>
-          
-
-        </div>' where id=1;
-

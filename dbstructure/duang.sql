@@ -200,7 +200,6 @@ CREATE TABLE `post_tag` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `post_id` int(11) DEFAULT NULL,
   `tag_id` int(11) DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -424,5 +423,20 @@ CREATE TABLE `section` (
   `section_name` text,
   `section_order` int(11) DEFAULT 0,
   `section_type` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `nav`
+-- ----------------------------
+DROP TABLE IF EXISTS `nav`;
+CREATE TABLE `nav` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nav_name` text,
+  `tag_id` int(11) DEFAULT NULL,
+  `nav_type` text,
+  `order_num` int(11) DEFAULT 0,
+  `parent_id` int(11) DEFAULT NULL,
+  `is_sub` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

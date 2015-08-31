@@ -160,6 +160,10 @@ class BaseHandler(tornado.web.RequestHandler):
     def section_video_model(self):
         return self.application.section_video_model
 
+    @property
+    def nav_model(self):
+        return self.application.nav_model
+
 '''
     @property
     def write_error(self, **kwargs):

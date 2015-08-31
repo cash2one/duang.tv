@@ -54,11 +54,20 @@
                     </form>
                     
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="/tags">直播</a>
+                        <li {%if active_nav == '直播'%}class="active"{%endif%}>
+                            <a href="/live">直播</a>
+                        </li>
+                        <li {%if active_nav == 'NBA'%}class="active"{%endif%}>
+                            <a href="/nba">NBA</a>
+                        </li>
+                        <li {%if active_nav == '足球'%}class="active"{%endif%}>
+                            <a href="/football">足球</a>
+                        </li>
+                        <li {%if active_nav == '社区'%}class="active"{%endif%}>
+                            <a href="/bbs">社区</a>
                         </li>
                         {%if user_info%}
-                        <li class="dropdown">
+                        <li class="dropdown {%if view_user and user_info.uid == view_user.uid%}active{%endif%}">
                             <a href="/u/{{ user_info.username}}" class="dropdown-toggle nav-username" data-toggle="dropdown">
 
                             {{ user_info.username }}
@@ -78,17 +87,10 @@
                                 </li>
                             </ul>
                         </li>
-                        {%else%}
-                        <li>
-                            <a class="nav-signup" href="javascript:;">视频</a>
-                        </li>
-                        <li>
-                            <a class="unlogin" href="javascript:;" {%if user_info==none%}{%if link2%}data-link="{{link}}" data-link2="{{link2}}" {%endif%}{%endif%}>社区</a>
-                        </li>
                         {%endif%}
                         <li class="">
-                            <a class="nav-btn {%if user_info == none%}unlogin{%endif%}" href="{% if user_info == none %}javascript:;{%else%}/new{%endif%}" {%if user_info==none%}data-link="new" {%endif%}>
-                                <button class="btn btn-default">登录 or 注册</button>
+                            <a class="nav-btn {%if user_info == none%}unlogin{%endif%}" href="{% if user_info == none %}javascript:;{%else%}/new{%endif%}">
+                                <button class="btn btn-default">{% if user_info == none %}登录 or 注册{%else%}发布新帖{%endif%}</button>
                             </a>
                         </li>
                     </ul>

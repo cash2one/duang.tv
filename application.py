@@ -104,8 +104,13 @@ class Application(tornado.web.Application):
             (r"/item/(\d+)", handler.index.ItemHandler),
             (r"/like/(\d+)", handler.index.LikeItemHandler),
             #(r".*", handler.index.PageNotFoundHandler)
-            #
-            (r"/songdaojia", handler.index.SDJHandler),
+
+            (r"/get/nav/(\d+)", handler.index.GetNavHandler),
+
+            (r"/nba", handler.index.NbaHandler),
+            (r"/football", handler.index.FootballHandler),
+            (r"/bbs", handler.index.BbsHandler),
+            (r"/live", handler.index.LiveHandler),
         ]
 
         tornado.web.Application.__init__(self, handlers, **settings)
@@ -148,6 +153,7 @@ class Application(tornado.web.Application):
         self.section_model = self.loader.use("section.model")
         self.object_video_model = self.loader.use("object_video.model")
         self.section_video_model = self.loader.use("section_video.model")
+        self.nav_model = self.loader.use("nav.model")
 
         # Have one global session controller
         self.session_manager = SessionManager(settings["cookie_secret"], ["127.0.0.1:11211"], 0)

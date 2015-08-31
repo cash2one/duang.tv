@@ -30,9 +30,13 @@ body {
     vertical-align: middle;
  }
 
-  .nav-tab .main-tab a.actived {
+  .nav-tab .main-tab a.nav-actived {
 background-color: #ed5945;
 color: #fff;
+ }
+
+   .nav-tab .sub-tab a.subnav-actived {
+font-weight: bold;
  }
 
  .nav-tab a:hover {
@@ -54,6 +58,7 @@ color: #fff;
   font-size: 12px;
   line-height: 120%;
   text-align: left;
+  margin-right: 20px;
 }
 
 body {
@@ -190,7 +195,7 @@ ul.tags>li {
 ul.tags *, ul.tags *:before, ul.tags *:after {
   box-sizing: border-box;
 }
-.tag, ul.tags>li>a, ul.tags>li>span {
+ul.tags>li>a, ul.tags>li>span {
   display: inline-block;
   border-radius: 100px;
   background: transparent;
@@ -674,4 +679,34 @@ a.tb:hover {
 }
 .card.setting {
   padding:10px;
+}
+
+.nav-card, .nav-bar {
+  margin-bottom: 20px;
+}
+
+.tag:link, .tag:visited {
+    padding: 5px 10px 5px 10px;
+    line-height: 100%;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    margin: 0px 5px 0px 5px;
+    display: inline-block;
+}
+.tag:hover {
+    color: #fff;
+    text-decoration: none;
+}
+a:link, a:visited, a:active {
+    color: #778087;
+    text-decoration: none;
+    word-break: break-all;
+}
+.card.new {
+    padding: 10px;
+}
+#type_tab {
+  padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }

@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-<title>提问 or 发帖 - 买买买</title>
+<title>发帖 - 直波侠</title>
 {% endblock %}
 
 {% block stylesheet %}
@@ -12,13 +12,10 @@
 
 {% block main %}
 <div class="col-xs-12 col-md-9">
-    <div class="new">
+    <div class="card new">
         <ul id="type_tab" class="nav nav-tabs" role="tablist" id="myTab">
             <li class="active">
-                <a href="#question" role="tab" data-toggle="tab">问 答</a>
-            </li>
-            <li>
-                <a href="#post" role="tab" data-toggle="tab">文 章</a>
+                <a href="#post" role="tab" data-toggle="tab">新 帖</a>
             </li>
         </ul>
 
@@ -64,48 +61,46 @@
 </div>
 
 <div class=" col-xs-12 col-md-3">
-    <div class="sidenav container-box">
-        <ul class="nav nav-list">
+    <div class="card">
+<ul class="nav nav-list">
             <li class="nav-item">
-                <a href="/u/{{user_info.username}}"> <i class="icon-home"></i>
-                    我的主页
+                <a class="unlogin" href="javascript:;" data-link="user"> <i class="icon-home"></i>
+                我的主页
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/follows/{{user_info.username}}"> <i class="icon-follow"></i>
-                    我的所有关注
+                <a class="unlogin" href="javascript:;" data-link="follows"> <i class="icon-follow"></i>
+                我的所有关注
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/notifications">
+                <a class="unlogin" href="javascript:;" data-link="notifications">
                     <i class="icon-message"></i>
-                    我的消息 {%if notice_count%}
-                    <span class="badge message-badge">{{notice_count}}</span>
-                    {%endif%}
-                </a>
+                    我的消息 
+                                    </a>
             </li>
 
             <li class="nav-item">
-                <a href="/invitations">
+                <a class="unlogin" href="javascript:;" data-link="invitations">
                     <i class="icon-invitation"></i>
-                    邀请我回答的问题
-                </a>
+                    邀请我回答的问题 
+                                    </a>
             </li>
             <li class="nav-item">
-                <a href="javascript:;" class="comingsoon">
+                <a class="unlogin" href="javascript:;" data-link="list">
                     <i class="icon-list"></i>
                     欲望清单
                 </a>
             </li>
             <li class="divider"></li>
             <li class="nav-item">
-                <a href="javascript:;" id="inviteJoin" {% if user_info !=none%}data-toggle="modal" data-target="#inviteJoinModal" {%endif%}>
+                <a class="unlogin" href="javascript:;" id="inviteJoin">
                     <i class="icon-invite"></i>
                     邀请朋友加入
                 </a>
             </li>
         </ul>
-    </div>
+</div>
 </div>
 
 <div id="inviteJoinModal" class="modal fade">

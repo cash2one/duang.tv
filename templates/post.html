@@ -111,7 +111,11 @@
 
 <div class="card reply-card">
     <div class="feed">
-        <div class="fr" style="margin: -3px -5px 0px 0px;"></div>
+        <div class="fr" style="margin: -3px -5px 0px 0px;">
+            {% for tag in tags.list %}
+            <a href="/tag/{{tag.tag_name}}" class="tag">{{tag.tag_name}}</a>
+            {% endfor %}
+        </div>
         <span class="gray">
             {{post.reply_num}} 回复 &nbsp; <strong class="snow">|</strong>
             &nbsp;{{current_time}}
