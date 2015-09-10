@@ -164,6 +164,14 @@ class BaseHandler(tornado.web.RequestHandler):
     def nav_model(self):
         return self.application.nav_model
 
+    @property
+    def post_node_model(self):
+        return self.application.post_node_model
+
+    @property
+    def node_model(self):
+        return self.application.node_model
+
 '''
     @property
     def write_error(self, **kwargs):

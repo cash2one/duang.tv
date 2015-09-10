@@ -199,6 +199,9 @@ class BbsHandler(BaseHandler):
         template_variables["all_subnavs"] = all_subnavs
         template_variables["active_nav"] = "社区"
 
+        all_posts = self.post_model.get_all_bbs_posts(current_page = p)
+        template_variables["all_posts"] = all_posts
+
         if is_mobile_browser(self):
             self.render("bbs.html", **template_variables)
         else:
@@ -292,6 +295,17 @@ class GetTagsHandler(BaseHandler):
 
         self.write(json.dumps(allTagJson))
         
+class GetNodesHandler(BaseHandler):
+    def get(self, template_variables = {}):
+        user_info = self.current_user
+        template_variables["user_info"] = user_info
+        allNodes = self.node_model.get_all_nodes()
+        allNodeJson = []
+        for node in allNodes:
+            allNodeJson.append(node.name)
+
+        self.write(json.dumps(allNodeJson))
+        
             
 
 
@@ -312,8 +326,6 @@ class NewHandler(BaseHandler):
         user_info = self.current_user
         template_variables = {}
 
-        post_type = self.get_argument('t', "q")
-
         # validate the fields
         form = NewForm(self)
 
@@ -328,7 +340,7 @@ class NewHandler(BaseHandler):
             "reply_num": 0,
             "view_num": 1,
             "follow_num": 1,
-            "post_type": post_type,
+            "post_type": "bbs",
             "updated": time.strftime('%Y-%m-%d %H:%M:%S'),
             "created": time.strftime('%Y-%m-%d %H:%M:%S'),
         }
@@ -336,68 +348,13 @@ class NewHandler(BaseHandler):
         post_id = self.post_model.add_new_post(post_info)
         self.redirect("/p/"+str(post_id))
 
-        if post_type == 'q':
-            feed_type = 1
-            notice_type = 6
-        else:
-            feed_type = 7
-            notice_type = 13
+        notice_type = 6
 
-        # add feed: user 提出了问题
-        feed_info = {
-            "user_id": self.current_user["uid"],           
-            "post_id": post_id,
-            "feed_type": feed_type,
-            "created": time.strftime('%Y-%m-%d %H:%M:%S'),
-        }
-        self.feed_model.add_new_feed(feed_info)
-
-        # add follow
-        follow_info = {
-            "author_id": self.current_user["uid"],
-            "obj_id": post_id,
-            "obj_type": post_type,
-            "created": time.strftime('%Y-%m-%d %H:%M:%S')
-        }
-        self.follow_model.add_new_follow(follow_info)
-
-        # process tags
-        tagStr = form.tag.data
-        print tagStr
-        if tagStr:
-            tagNames = tagStr.split(',') 
-            for tagName in tagNames:  
-                tag = self.tag_model.get_tag_by_tag_name(tagName)
-                if tag:
-                    self.post_tag_model.add_new_post_tag({"post_id": post_id, "tag_id": tag.id})
-                    if(post_type == 'q'):
-                        self.tag_model.update_tag_by_tag_id(tag.id, {"question_num": tag.question_num+1})
-                    else:
-                        self.tag_model.update_tag_by_tag_id(tag.id, {"post_num": tag.post_num+1})
-                else:
-                    if(post_type == 'q'):
-                        tag_info = {
-                            "name": tagName, 
-                            "question_num": 1, 
-                            "is_new": 1, 
-                            "post_add": post_id, 
-                            "user_add":  self.current_user["uid"], 
-                            "created": time.strftime('%Y-%m-%d %H:%M:%S')
-                        }
-                    else:
-                        tag_info = {
-                            "name": tagName, 
-                            "post_num": 1, 
-                            "is_new": 1, 
-                            "post_add": post_id, 
-                            "user_add":  self.current_user["uid"], 
-                            "created": time.strftime('%Y-%m-%d %H:%M:%S')
-                        }                  
-                    tag_id = self.tag_model.add_new_tag(tag_info)
-                    self.post_tag_model.add_new_post_tag({"post_id": post_id, "tag_id": tag_id})
-                    category = self.category_model.get_category_by_id(1)
-                    self.category_model.update_category_by_id(1, {"tag_num":category.tag_num+1})
-
+        # process node
+        nodeStr = form.node.data
+        node = self.node_model.get_node_by_node_name(nodeStr)
+        print node.name
+        self.post_node_model.add_new_post_node({"post_id": post_id, "node_id": node.id})
 
         # create @username notification
         for username in set(find_mentions(form.content.data)):
@@ -422,10 +379,8 @@ class NewHandler(BaseHandler):
             self.notice_model.add_new_notice(notice_info)
 
         # update user_info
-        if post_type == 'q':
-            self.user_model.update_user_info_by_user_id(user_info.uid, {"questions": user_info.questions+1, "expend": user_info.expend+20})
-        else:
-            self.user_model.update_user_info_by_user_id(user_info.uid, {"posts": user_info.posts+1, "expend": user_info.expend+20})
+        self.user_model.update_user_info_by_user_id(user_info.uid, {"posts": user_info.posts+1, "expend": user_info.expend+20})
+
         self.balance_model.add_new_balance({"author_id":  user_info.uid, "balance_type": 2, "amount": -20, "balance": user_info.income-user_info.expend-20, "post_id": post_id, "created": time.strftime('%Y-%m-%d %H:%M:%S')})
 
 
@@ -593,14 +548,9 @@ class ReplyHandler(BaseHandler):
                 "updated": time.strftime('%Y-%m-%d %H:%M:%S'),
             })
 
-            if post.post_type == 'q':
-                feed_type = 2
-                notice_type = 1
-                notice_type2 = 7
-            else:
-                feed_type = 8
-                notice_type = 8
-                notice_type2 = 14
+            feed_type = 2
+            notice_type = 1
+            notice_type2 = 7
 
             # add notice: user 回答了问题
             if user_info.uid != post.author_id:
@@ -1328,7 +1278,6 @@ class NoticeHandler(BaseHandler):
         if(user_info):
             template_variables["active_tab"] = "me"
             template_variables["notices"] = self.notice_model.get_user_all_notices(user_info.uid, current_page = p)
-            template_variables["feeds"] = self.follow_model.get_user_all_follow_post_feeds(user_info.uid, current_page = p)
             if user_info.view_follow:
                 template_variables["post_count"] = self.follow_model.get_user_all_follow_post_feeds_count(user_info.uid, user_info.view_follow, time.strftime('%Y-%m-%d %H:%M:%S'))
             else:

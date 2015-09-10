@@ -1,3 +1,6 @@
+INSERT INTO `node` VALUES (1, "广州恒大", "", "", 1, 0, "2015-08-27 00:00:00");
+INSERT INTO `post_node` VALUES (1, 1, 1);
+
 INSERT INTO `nav` VALUES (1, "全部", NULL, "basketball", 1, NULL, 0);
 INSERT INTO `nav` VALUES (2, "骑士", 1, "basketball", 2, NULL, 0);
 INSERT INTO `nav` VALUES (3, "湖人", 1, "basketball", 3, NULL, 0);

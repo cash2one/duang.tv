@@ -111,6 +111,7 @@ class Application(tornado.web.Application):
             (r"/football", handler.index.FootballHandler),
             (r"/bbs", handler.index.BbsHandler),
             (r"/live", handler.index.LiveHandler),
+            (r"/get/nodes", handler.index.GetNodesHandler),
         ]
 
         tornado.web.Application.__init__(self, handlers, **settings)
@@ -154,6 +155,9 @@ class Application(tornado.web.Application):
         self.object_video_model = self.loader.use("object_video.model")
         self.section_video_model = self.loader.use("section_video.model")
         self.nav_model = self.loader.use("nav.model")
+        self.post_node_model = self.loader.use("post_node.model")
+        self.node_model = self.loader.use("node.model")
+
 
         # Have one global session controller
         self.session_manager = SessionManager(settings["cookie_secret"], ["127.0.0.1:11211"], 0)

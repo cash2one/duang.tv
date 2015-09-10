@@ -18,8 +18,8 @@ class NewForm(Form):
          validators.Required(message = "请填写帖子简介"),
      ])
  
-     tag= TextField('Tag', [
-         validators.Required(message = "请填写帖子标签"),
+     node= TextField('Node', [
+         validators.Required(message = "请填写帖子节点"),
      ])
 
 

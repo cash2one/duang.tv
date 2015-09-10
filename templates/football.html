@@ -126,45 +126,31 @@
 
 <div class=" col-xs-12 col-md-3">
 <div class="card">
-<ul class="nav nav-list">
-            <li class="nav-item">
-                <a class="unlogin" href="javascript:;" data-link="user"> <i class="icon-home"></i>
-                我的主页
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="unlogin" href="javascript:;" data-link="follows"> <i class="icon-follow"></i>
-                我的所有关注
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="unlogin" href="javascript:;" data-link="notifications">
-                    <i class="icon-message"></i>
-                    我的消息 
-                                    </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="unlogin" href="javascript:;" data-link="invitations">
-                    <i class="icon-invitation"></i>
-                    邀请我回答的问题 
-                                    </a>
-            </li>
-            <li class="nav-item">
-                <a class="unlogin" href="javascript:;" data-link="list">
-                    <i class="icon-list"></i>
-                    欲望清单
-                </a>
-            </li>
-            <li class="divider"></li>
-            <li class="nav-item">
-                <a class="unlogin" href="javascript:;" id="inviteJoin">
-                    <i class="icon-invite"></i>
-                    邀请朋友加入
-                </a>
-            </li>
-        </ul>
-</div>
+                        <div class="cell">
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                <tbody><tr>
+                                    <td width="48" valign="top"><a href="/u/{{user_info.username}}"><img src="{{user_info.avatar}}" class="avatar" border="0" align="default" style="max-width: 48px; max-height: 48px;"></a></td>
+                                    <td width="10" valign="top"></td>
+                                    <td width="auto" align="left"><span class="bigger"><a href="/u/{{user_info.username}}">{{user_info.username}}</a></span>
+                                        
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                            <div class="sep10"></div>
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 5px;margin-bottom: 5px;">
+                                <tbody><tr>
+                                    <td width="33%" align="center"><a href="/my/nodes" class="dark" style="display: block;"><span class="bigger">2</span><div class="sep3"></div><span class="fade-header">节点收藏</span></a></td>
+                                    <td width="34%" style="border-left: 1px solid rgba(100, 100, 100, 0.1); border-right: 1px solid rgba(100, 100, 100, 0.1);" align="center"><a href="/my/topics" class="dark" style="display: block;"><span class="bigger">513</span><div class="sep3"></div><span class="fade-header">主题收藏</span></a></td>
+                                    <td width="33%" align="center"><a href="/my/following" class="dark" style="display: block;"><span class="bigger">3</span><div class="sep3"></div><span class="fade-header">特别关注</span></a></td>
+                                </tr>
+                            </tbody></table>
+                        </div>
+                        
+                        
+                        
+                        <div class="inner"><div class="fr" id="money"><a href="/balance" class="balance_area" style="">70 <img src="//cdn.v2ex.com/static/img/silver.png" alt="S" align="absmiddle" border="0" style="padding-bottom: 2px;"> 12 <img src="//cdn.v2ex.com/static/img/bronze.png" alt="B" align="absmiddle" border="0"></a></div><a href="/notifications" class="fade-header">0 条未读提醒</a></div>
+                        
+                    </div>
 
 <div class="card">
 <div class="feed">

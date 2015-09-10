@@ -144,6 +144,7 @@ CREATE TABLE `post` (
   `view_num` int(11) DEFAULT 0,
   `follow_num` int(11) DEFAULT 0,
   `author_id` int(11) DEFAULT NULL,
+  `last_reply` int(11) DEFAULT NULL,
   `updated` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -438,5 +439,31 @@ CREATE TABLE `nav` (
   `order_num` int(11) DEFAULT 0,
   `parent_id` int(11) DEFAULT NULL,
   `is_sub` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `node`
+-- ----------------------------
+DROP TABLE IF EXISTS `node`;
+CREATE TABLE `node` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text,
+  `thumb` text,
+  `intro` text,
+  `post_num` int(11) DEFAULT 0,
+  `follow_num` int(11) DEFAULT 0,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `post_node`
+-- ----------------------------
+DROP TABLE IF EXISTS `post_node`;
+CREATE TABLE `post_node` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `post_id` int(11) DEFAULT NULL,
+  `node_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
