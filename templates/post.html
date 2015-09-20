@@ -57,10 +57,12 @@
             {% endif %}
         {% set s = video.section_name %}
             <div class="zbx-section">
+                {% if video.section_name %}
                 <div class="section-title">
                     <span>-</span>
                     <h2>{{video.section_name}}</h2>
                 </div>
+                {%endif%}
                 <div class="section-content">
                     {% endif %}
                     <div class="zbx-video">

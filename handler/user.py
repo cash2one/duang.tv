@@ -4,7 +4,6 @@
 # Copyright 2013 meiritugua.com
 
 import uuid
-import uuid
 import hashlib
 import Image
 import StringIO

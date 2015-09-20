@@ -160,7 +160,9 @@ CREATE TABLE `feed` (
   `feed_title` text,
   `feed_type` text,
   `post_type` text,
+  `feed_uuid` text,
   `post_id` int(11) DEFAULT NULL,
+  `post_id2` int(11) DEFAULT NULL,
   `updated` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -465,5 +467,21 @@ CREATE TABLE `post_node` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `post_id` int(11) DEFAULT NULL,
   `node_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `zbb`;
+CREATE TABLE `zbb` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` text,
+  `url` text,
+  `post_type` text,
+  `feed_type` text,
+  `content` text,
+  `replys` text,
+  `post_id` int(11) DEFAULT NULL,
+  `video_num` int(11) DEFAULT NULL,
+  `updated` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

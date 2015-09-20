@@ -213,8 +213,7 @@ ul.tags *:after {
     box-sizing: border-box;
 }
 
-ul.tags>li>a,
-ul.tags>li>span {
+.video-tag {
     display: inline-block;
     border-radius: 100px;
     background: transparent;
@@ -231,7 +230,7 @@ ul.tags>li>span {
     transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
 
-ul.tags>li>a:hover {
+.video-tag:hover {
     border-color: #8d9aa5;
     color: #657380;
 }
@@ -723,6 +722,10 @@ a.tb:hover {
     background-image: url(/static/img/letv.ico);
 }
 
+.video-youku {
+    background-image: url(/static/img/youku.png);
+}
+
 .zbx-content {
     border: 1px solid #efefef;
     padding: 10px;
@@ -826,4 +829,10 @@ html,body{height:100%}
     padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
+}
+.video-tag span {
+    color: #333;
+}
+.video-tag a {
+    margin-left: 10px;
 }
