@@ -101,7 +101,8 @@
             </div>
         </div>
 
-        <div class="container">
+        <div class="global_wrap">
+    <div class="container global_container">
             {% block main %}{% endblock %} {%if user_info==none%}
             <div id="loginModal" class="modal fade" {%if link%}data-link="{{link}}" {%endif%} {%if link2%}data-link2="{{link2}}" {%endif%}>
                 <div class="modal-dialog">
@@ -329,6 +330,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
         <div class="global_footer">
             <div class="footer_inner clear">
