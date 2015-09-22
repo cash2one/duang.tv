@@ -63,10 +63,12 @@ class IndexHandler(BaseHandler):
         print now_time.strftime('%Y-%m-%d %H:%M:%S')
         print yes_time.strftime('%Y-%m-%d %H:%M:%S')
 
+        template_variables["football_games"] = self.feed_model.get_index_feeds("football", "game", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
         template_variables["football_videos"] = self.feed_model.get_index_feeds("football", "video", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
-        template_variables["football_news"] = self.feed_model.get_index_feeds("football", "new", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
+        
+        template_variables["basketball_games"] = self.feed_model.get_index_feeds("basketball", "game", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
         template_variables["basketball_videos"] = self.feed_model.get_index_feeds("basketball", "video", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
-        template_variables["basketball_news"] = self.feed_model.get_index_feeds("basketball", "new", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
+        
 
         pass_time = now_time + datetime.timedelta(hours=-2)
         future_time = now_time + datetime.timedelta(days=+14)

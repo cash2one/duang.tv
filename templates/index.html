@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        {%if football_videos or football_news%}
+        {%if football_games.list or football_videos.list%}
         <div class="card">
             <div class="nav-tab">
                 <div class="main-tab">
@@ -39,21 +39,29 @@
                     <a href="" class="tab-item">足球精选</a>
                 </div>
             </div>
-            {%if football_videos%}
+            {%if football_games.list%}
             <div class="feed">
                 <div class="feed-down">
                     <ul class="tags">
-                        {% for feed in football_videos %}
-                        <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
+                        {% for feed in football_games.list %}
+                        <li class="video-tag"><span>{{feed.feed_title}}</span>
+                            {%if feed.post_id%}
+                            <a class="" href="/p/{{feed.post_id}}">集锦</a>
+                            {%endif%}
+                            {%if feed.post_id2%}
+                            <a class="" href="/p/{{feed.post_id2}}">录像</a>
+                            {%endif%}
+                        </li>
                         {%endfor%}
                     </ul>
                 </div>
             </div>
-            {%endif%} {%if football_news%}
+            {%endif%} 
+            {%if football_videos.list%}
             <div class="feed">
                 <div class="feed-down">
                     <ul class="tags">
-                        {% for feed in football_news %}
+                        {% for feed in football_videos.list %}
                         <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
                         {% endfor %}
                     </ul>
@@ -61,7 +69,8 @@
             </div>
             {%endif%}
         </div>
-        {%endif%} {%if basketball_videos or basketball_news%}
+        {%endif%} 
+        {%if basketball_games.list or basketball_videos.list%}
         <div class="card">
             <div class="nav-tab">
                 <div class="main-tab">
@@ -69,21 +78,22 @@
                     <a href="" class="tab-item">篮球推荐</a>
                 </div>
             </div>
-            {%if basketball_videos%}
+            {%if basketball_games.list%}
             <div class="feed">
                 <div class="feed-down">
                     <ul class="tags">
-                        {% for feed in basketball_videos %}
+                        {% for feed in basketball_games.list %}
                         <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
                         {%endfor%}
                     </ul>
                 </div>
             </div>
-            {%endif%} {%if basketball_news%}
+            {%endif%} 
+            {%if basketball_videos.list%}
             <div class="feed">
                 <div class="feed-down">
                     <ul class="tags">
-                        {% for feed in basketball_news %}
+                        {% for feed in basketball_videos.list %}
                         <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
                         {%endfor%}
                     </ul>

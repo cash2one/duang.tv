@@ -128,47 +128,6 @@ CREATE TABLE `reply` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
--- ----------------------------
---  Table structure for `post`
--- ----------------------------
-DROP TABLE IF EXISTS `post`;
-CREATE TABLE `post` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` text,
-  `content` text,
-  `post_type` text,
-  `thumb` text,
-  `up_num` int(11) DEFAULT 0,
-  `down_num` int(11) DEFAULT 0,
-  `reply_num` int(11) DEFAULT 0,
-  `view_num` int(11) DEFAULT 0,
-  `follow_num` int(11) DEFAULT 0,
-  `author_id` int(11) DEFAULT NULL,
-  `last_reply` int(11) DEFAULT NULL,
-  `updated` datetime DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
-
--- ----------------------------
---  Table structure for `feed`
--- ----------------------------
-DROP TABLE IF EXISTS `feed`;
-CREATE TABLE `feed` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `feed_title` text,
-  `feed_type` text,
-  `post_type` text,
-  `feed_uuid` text,
-  `post_id` int(11) DEFAULT NULL,
-  `post_id2` int(11) DEFAULT NULL,
-  `updated` datetime DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
-
 DROP TABLE IF EXISTS `live`;
 CREATE TABLE `live` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -372,52 +331,6 @@ CREATE TABLE `ads` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `video`
--- ----------------------------
-DROP TABLE IF EXISTS `video`;
-CREATE TABLE `video` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text,
-  `head_name` text,
-  `img` text,
-  `orginal_link` text,
-  `link` text,
-  `vendor` text,
-  `vid` text,
-  `view_num` int(11) DEFAULT 0,
-  `up_num` int(11) DEFAULT 0,
-  `down_num` int(11) DEFAULT 0,
-  `updated` datetime DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Table structure for `object_video`
--- ----------------------------
-DROP TABLE IF EXISTS `object_video`;
-CREATE TABLE `object_video` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `video_id` int(11) DEFAULT NULL,
-  `obj_id` int(11) DEFAULT NULL,
-  `obj_type` text,
-  `order_num` int(11) DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Table structure for `section_video`
--- ----------------------------
-DROP TABLE IF EXISTS `section_video`;
-CREATE TABLE `section_video` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `video_id` int(11) DEFAULT NULL,
-  `section_id` int(11) DEFAULT NULL,
-  `post_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
--- ----------------------------
 --  Table structure for `section`
 -- ----------------------------
 DROP TABLE IF EXISTS `section`;
@@ -470,6 +383,9 @@ CREATE TABLE `post_node` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+
+
+
 DROP TABLE IF EXISTS `zbb`;
 CREATE TABLE `zbb` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -481,6 +397,91 @@ CREATE TABLE `zbb` (
   `replys` text,
   `post_id` int(11) DEFAULT NULL,
   `video_num` int(11) DEFAULT NULL,
+  `updated` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `section_video`
+-- ----------------------------
+DROP TABLE IF EXISTS `section_video`;
+CREATE TABLE `section_video` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `video_id` int(11) DEFAULT NULL,
+  `section_id` int(11) DEFAULT NULL,
+  `post_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `object_video`
+-- ----------------------------
+DROP TABLE IF EXISTS `object_video`;
+CREATE TABLE `object_video` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `video_id` int(11) DEFAULT NULL,
+  `obj_id` int(11) DEFAULT NULL,
+  `obj_type` text,
+  `order_num` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `video`
+-- ----------------------------
+DROP TABLE IF EXISTS `video`;
+CREATE TABLE `video` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text,
+  `head_name` text,
+  `img` text,
+  `orginal_link` text,
+  `link` text,
+  `vendor` text,
+  `vid` text,
+  `view_num` int(11) DEFAULT 0,
+  `up_num` int(11) DEFAULT 0,
+  `down_num` int(11) DEFAULT 0,
+  `updated` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `feed`
+-- ----------------------------
+DROP TABLE IF EXISTS `feed`;
+CREATE TABLE `feed` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `feed_title` text,
+  `feed_type` text,
+  `post_type` text,
+  `feed_uuid` text,
+  `post_id` int(11) DEFAULT NULL,
+  `post_id2` int(11) DEFAULT NULL,
+  `updated` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `post`
+-- ----------------------------
+DROP TABLE IF EXISTS `post`;
+CREATE TABLE `post` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` text,
+  `content` text,
+  `post_type` text,
+  `thumb` text,
+  `up_num` int(11) DEFAULT 0,
+  `down_num` int(11) DEFAULT 0,
+  `reply_num` int(11) DEFAULT 0,
+  `view_num` int(11) DEFAULT 0,
+  `follow_num` int(11) DEFAULT 0,
+  `author_id` int(11) DEFAULT NULL,
+  `last_reply` int(11) DEFAULT NULL,
   `updated` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)

@@ -57,3 +57,6 @@ static/cover/
 
 # thumb
 static/thumb/
+*.name
+*.xml
+*.iml

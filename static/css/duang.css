@@ -726,6 +726,10 @@ a.tb:hover {
     background-image: url(/static/img/youku.png);
 }
 
+.video-pptv {
+    background-image: url(/static/img/pptv.jpg);
+}
+
 .zbx-content {
     border: 1px solid #efefef;
     padding: 10px;
