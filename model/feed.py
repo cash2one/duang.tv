@@ -22,7 +22,7 @@ class FeedModel(Query):
         where = "feed.post_id = %s " % post_id
         return self.where(where).delete()
 
-    def get_index_feeds(self, feed_type, post_type, time1, time2, num = 10, current_page = 1):
+    def get_index_feeds(self, feed_type, post_type, time1, time2, num = 6, current_page = 1):
         where = "feed.feed_type = '%s' AND feed.post_type = '%s' AND (feed.updated between '%s' and '%s')" % (feed_type, post_type, time1, time2)
         order = "feed.updated DESC, feed.created DESC, feed.id DESC"
         field = "feed.*"

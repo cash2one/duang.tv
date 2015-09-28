@@ -32,23 +32,23 @@
 <div class="card-list">
 <div class="card-inner">
 {% set i=0 %}
-{% for basketball_video in basketball_videos %}
-{% set basketball_new=basketball_news[i] %}
-{%if basketball_video or basketball_new%}
-{% set feed0=basketball_video[0] %}
+{% for basketball_game in basketball_games %}
+{% set basketball_video=basketball_videos[i] %}
+{%if basketball_game or basketball_video%}
+{% set feed0=basketball_game[0] %}
 <div class="card">
 <div class="nav-tab">
 <div class="main-tab">
 <i class="icon-basketball"></i>
-<a href="" class="tab-item">{{feed0.updated}}</a>
+<a href="" class="tab-item">{%if feed0%}{{feed0.updated}}{%endif%}</a>
 </div>
 </div>
-{%if basketball_video%}
+{%if basketball_game%}
 <div class="feed">
 
   <div class="feed-down">
   <ul class="tags">
-  {% for feed in basketball_video %}
+  {% for feed in basketball_game %}
   <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
 {%endfor%}
 </ul>
@@ -56,12 +56,12 @@
 </div>
 {%endif%}
 
-{%if basketball_new%}
+{%if basketball_video%}
 <div class="feed">
 
   <div class="feed-down">
   <ul class="tags">
-  {% for feed in basketball_new %}
+  {% for feed in basketball_video %}
   <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
 {%endfor%}
 </ul>

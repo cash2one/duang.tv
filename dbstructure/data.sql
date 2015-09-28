@@ -41,8 +41,22 @@ INSERT INTO `tag` VALUES (2, "亚冠", "", "", 1, 1, 0, 0, 0, "2015-08-27 00:00:
 INSERT INTO `tag` VALUES (3, "高拉特", "", "", 1, 1, 0, 0, 0, "2015-08-27 00:00:00");
 
 INSERT INTO `section` VALUES (1, '全场集锦', 0, 'football');
-INSERT INTO `section` VALUES (2, '进球视频', 0, 'football');
-INSERT INTO `section` VALUES (3, '精彩花絮', 0, 'football');
+INSERT INTO `section` VALUES (2, '个人集锦', 0, 'football');
+INSERT INTO `section` VALUES (3, '进球视频', 0, 'football');
+INSERT INTO `section` VALUES (4, '精彩花絮', 0, 'football');
+INSERT INTO `section` VALUES (5, '全场集锦', 0, 'basketball');
+INSERT INTO `section` VALUES (6, '个人集锦', 0, 'basketball');
+INSERT INTO `section` VALUES (7, '精彩花絮', 0, 'basketball');
+
+INSERT INTO `section` VALUES (8, '乐视视频', 0, 'football');
+INSERT INTO `section` VALUES (9, 'QQ视频', 0, 'football');
+INSERT INTO `section` VALUES (10, 'CNTV视频', 0, 'football');
+INSERT INTO `section` VALUES (11, '新浪视频', 0, 'football');
+
+INSERT INTO `section` VALUES (12, '乐视视频', 0, 'basketball');
+INSERT INTO `section` VALUES (13, 'QQ视频', 0, 'basketball');
+INSERT INTO `section` VALUES (14, 'CNTV视频', 0, 'basketball');
+INSERT INTO `section` VALUES (15, '新浪视频', 0, 'basketball');
 
 INSERT INTO `object_video` VALUES (1, 1, 1, 'post', 0);
 INSERT INTO `object_video` VALUES (2, 2, 1, 'post', 0);

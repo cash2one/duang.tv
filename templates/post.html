@@ -17,7 +17,16 @@
             <div class="header">
                 <a href="/">直波侠</a>
                 <span class="chevron">&nbsp;›&nbsp;</span>
+                {%if post.post_type == 'video' or post.post_type == 'game'%}
+                {%if post.feed_type == 'football'%}
+                <a href="/football">足球视频</a>
+                {%endif%}
+                {%if post.feed_type == 'basketball'%}
+                <a href="/football">篮球视频</a>
+                {%endif%}
+                {%else%}
                 <a href="/node/{{post.node_name}}">{{post.node_name}}</a>
+                {%endif%}
                 <div class="sep10"></div>
                 <h1>{{post.title}}</h1>
                 <div class="votes">
@@ -1044,7 +1053,7 @@
           var video_content = $(this).parent().find('.video-content');
           if (video_content.is(":hidden")) {
             var video_src = $(this).attr('data-src');
-            video_src = '<iframe webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" height="411" width="648" src="'+video_src+'" frameborder="0"></iframe>';
+            video_src = '<iframe allowfullscreen height="411" width="648" src="'+video_src+'" frameborder="0"></iframe>';
             video_content.html(video_src);
           } else {
             video_content.html('');

@@ -58,7 +58,7 @@ class IndexHandler(BaseHandler):
         p = int(self.get_argument("p", "1"))
 
         now_time = datetime.datetime.now()
-        yes_time = now_time + datetime.timedelta(days=-1)
+        yes_time = now_time + datetime.timedelta(days=-3)
 
         print now_time.strftime('%Y-%m-%d %H:%M:%S')
         print yes_time.strftime('%Y-%m-%d %H:%M:%S')
@@ -110,16 +110,16 @@ class NbaHandler(BaseHandler):
 
         today_time = datetime.date.today()
 
+        basketball_games = []
         basketball_videos = []
-        basketball_news = []
         for i in range((p-1)*page_days, p*page_days):
             time2 = today_time + datetime.timedelta(days=-i)
             time1 = time2 + datetime.timedelta(days=-1)
+            basketball_games.append(self.feed_model.get_index_feeds("basketball", "game", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S')))
             basketball_videos.append(self.feed_model.get_index_feeds("basketball", "video", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S')))
-            basketball_news.append(self.feed_model.get_index_feeds("basketball", "new", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S')))
         
+        template_variables["basketball_games"] = basketball_games
         template_variables["basketball_videos"] = basketball_videos
-        template_variables["basketball_news"] = basketball_news
         template_variables["last_page"] = all_pages
         template_variables["page"] = p
 

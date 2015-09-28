@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" /> {% endblock %} {% block main %}
 <div class="col-xs-12 col-md-9">
     <div class="main">
-        {%if 1%}
+        {%if 0%}
         <div class="card">
             <div class="nav-tab">
                 <div class="main-tab">
@@ -45,14 +45,7 @@
                 <div class="feed-down">
                     <ul class="tags">
                         {% for feed in football_games.list %}
-                        <li class="video-tag"><span>{{feed.feed_title}}</span>
-                            {%if feed.post_id%}
-                            <a class="" href="/p/{{feed.post_id}}">集锦</a>
-                            {%endif%}
-                            {%if feed.post_id2%}
-                            <a class="" href="/p/{{feed.post_id2}}">录像</a>
-                            {%endif%}
-                        </li>
+                        <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
                         {%endfor%}
                     </ul>
                 </div>
@@ -69,29 +62,12 @@
                 </div>
             </div>
             {%endif%}
-        </div>
-        {%endif%} 
-        {%if basketball_games.list or basketball_videos.list%}
-        <div class="card">
-            <div class="nav-tab">
-                <div class="main-tab">
-                    <i class="icon-basketball"></i>
-                    <a href="/nba" class="tab-item">篮球推荐</a>
-                </div>
-            </div>
             {%if basketball_games.list%}
             <div class="feed">
                 <div class="feed-down">
                     <ul class="tags">
                         {% for feed in basketball_games.list %}
-                        <li class="video-tag"><span>{{feed.feed_title}}</span>
-                            {%if feed.post_id%}
-                            <a class="" href="/p/{{feed.post_id}}">集锦</a>
-                            {%endif%}
-                            {%if feed.post_id2%}
-                            <a class="" href="/p/{{feed.post_id2}}">录像</a>
-                            {%endif%}
-                        </li>
+                        <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
                         {%endfor%}
                     </ul>
                 </div>
@@ -109,7 +85,8 @@
             </div>
             {%endif%}
         </div>
-        {%endif%}
+        {%endif%} 
+
 
         <div class="card">
             <div class="nav-tab">
@@ -315,7 +292,6 @@
                     <thead>
                         <tr>
                             <th>时间</th>
-                            <th>项目</th>
                             <th>赛事</th>
                             <th>比赛对阵</th>
                             <th>直播频道</th>

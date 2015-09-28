@@ -60,3 +60,4 @@ static/thumb/
 *.name
 *.xml
 *.iml
+*.pyc

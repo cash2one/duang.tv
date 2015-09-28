@@ -54,6 +54,9 @@
                     </form>
                     
                     <ul class="nav navbar-nav navbar-right">
+                        <li {%if active_nav == '热榜'%}class="active"{%endif%}>
+                            <a href="/hot">热榜</a>
+                        </li>
                         <li {%if active_nav == '直播'%}class="active"{%endif%}>
                             <a href="/live">直播</a>
                         </li>
@@ -65,6 +68,9 @@
                         </li>
                         <li {%if active_nav == '社区'%}class="active"{%endif%}>
                             <a href="/bbs">社区</a>
+                        </li>
+                        <li {%if active_nav == '商城'%}class="active"{%endif%}>
+                            <a href="/mall">商城</a>
                         </li>
                         {%if user_info%}
                         <li class="dropdown {%if view_user and user_info.uid == view_user.uid%}active{%endif%}">
