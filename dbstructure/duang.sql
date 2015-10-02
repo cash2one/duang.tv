@@ -128,15 +128,7 @@ CREATE TABLE `reply` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `live`;
-CREATE TABLE `live` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `game` text,
-  `team` text,
-  `post_id` int(11) DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 
 -- ----------------------------
 --  Table structure for `vote`
@@ -444,6 +436,7 @@ CREATE TABLE `video` (
   `view_num` int(11) DEFAULT 0,
   `up_num` int(11) DEFAULT 0,
   `down_num` int(11) DEFAULT 0,
+  `open_type` text,
   `updated` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -486,5 +479,18 @@ CREATE TABLE `post` (
   `last_reply` int(11) DEFAULT NULL,
   `updated` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `live`;
+CREATE TABLE `live` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sport` text,
+  `game` text,
+  `team` text,
+  `signal_text` text,
+  `hot` int(11) DEFAULT 0,
+  `post_id` int(11) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

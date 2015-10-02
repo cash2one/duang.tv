@@ -75,7 +75,7 @@
                 <div class="section-content">
                     {% endif %}
                     <div class="zbx-video">
-                        <div class="video-title" data-src="{{video.link}}">
+                        <div class="video-title" data-src="{{video.link}}" {%if video.open_type=='new'%}data-open="new"{%endif%}>
                             <div class="votes">
                                 <a href="javascript:" class="vote up vote-video {%if video.vote_up_down and video.vote_up_down=='up'%}voted{%endif%} {%if user_info == none%}unlogin{%endif%}" title="赞同" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}" {%endif%} data-id="{{video.id}}"
                 data-type="up">
@@ -1050,17 +1050,21 @@
         });
 
         $(document).on('click', '.video-title', function() {
-          var video_content = $(this).parent().find('.video-content');
-          if (video_content.is(":hidden")) {
-            var video_src = $(this).attr('data-src');
-            video_src = '<iframe allowfullscreen height="411" width="648" src="'+video_src+'" frameborder="0"></iframe>';
-            video_content.html(video_src);
+          var open_type = $(this).attr('data-open');
+          var video_src = $(this).attr('data-src');
+          if (open_type=='new') {
+            window.open(video_src);
           } else {
-            video_content.html('');
+            var video_content = $(this).parent().find('.video-content');
+            if (video_content.is(":hidden")) {
+                video_src = '<iframe allowfullscreen height="411" width="648" src="'+video_src+'" frameborder="0"></iframe>';
+                video_content.html(video_src);
+            } else {
+                video_content.html('');
+            }
+            video_content.toggle();
           }
-          video_content.toggle();
         });
-
 
         $('.feed').hover( function () {
             $(this).find('.feed-body .op_area').toggle();

@@ -328,13 +328,15 @@
                             <td>{{live.date.strftime('%m月%d日')}}</td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         {% endif %}
                         <tr>
                             <th scope="row">{{live.date.strftime('%H:%M')}}</th>
+                            <td>{{live.sport}}</td>
                             <td>{{live.game}}</td>
                             <td><a href="/p/{{live.post_id}}">{{live.team}}</a></td>
-                            <td><a href="/p/{{live.post_id}}">CCTV5+</a></td>
+                            <td><a href="/p/{{live.post_id}}">{{live.signal_text}}</a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
