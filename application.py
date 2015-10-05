@@ -112,6 +112,8 @@ class Application(tornado.web.Application):
             (r"/bbs", handler.index.BbsHandler),
             (r"/live", handler.index.LiveHandler),
             (r"/get/nodes", handler.index.GetNodesHandler),
+
+            (r"/pages/(.*)", handler.index.PageHandler),
         ]
 
         tornado.web.Application.__init__(self, handlers, **settings)

@@ -1687,3 +1687,9 @@ class GetTagHandler(BaseHandler):
             follow = None
         tag_tip = self.render_string("tooltip/tag-tip.html", user_info=user_info, follow=follow, view_tag=view_tag, follow_users=follow_users)
         self.write(tag_tip)   
+
+class PageHandler(BaseHandler):
+    def get(self, page_name, template_variables = {}):
+        user_info = self.current_user
+        template_variables["user_info"] = user_info
+        self.render("/admin/remark/"+page_name, **template_variables)
