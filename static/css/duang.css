@@ -4,6 +4,7 @@ body {
 
 .navbar-default {
     background-color: #ffffff;
+    opacity: .96;
 }
 
 .nav-tab {
@@ -92,7 +93,7 @@ textarea {
 .feed-left,
 .feed-right {
     display: table-cell;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .feed-left {
