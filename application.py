@@ -21,6 +21,7 @@ import tornado.web
 
 import handler.index
 import handler.user
+import handler.admin
 
 from tornado.options import define, options
 from lib.loader import Loader
@@ -114,6 +115,7 @@ class Application(tornado.web.Application):
             (r"/get/nodes", handler.index.GetNodesHandler),
 
             (r"/pages/(.*)", handler.index.PageHandler),
+            (r"/admin", handler.admin.IndexAdminHandler),
         ]
 
         tornado.web.Application.__init__(self, handlers, **settings)
