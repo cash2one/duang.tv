@@ -187,19 +187,6 @@ CREATE TABLE `tag_parent` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-
-
--- ----------------------------
---  Table structure for `category`
--- ----------------------------
-DROP TABLE IF EXISTS `category`;
-CREATE TABLE `category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text,
-  `tag_num` int(11) DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
 -- ----------------------------
 --  Table structure for `tag_type`
 -- ----------------------------
@@ -350,6 +337,17 @@ CREATE TABLE `nav` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+--  Table structure for `category`
+-- ----------------------------
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text,
+  `order_num` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 --  Table structure for `node`
 -- ----------------------------
 DROP TABLE IF EXISTS `node`;
@@ -358,6 +356,7 @@ CREATE TABLE `node` (
   `name` text,
   `thumb` text,
   `intro` text,
+  `category` int(11) DEFAULT NULL,
   `post_num` int(11) DEFAULT 0,
   `follow_num` int(11) DEFAULT 0,
   `created` datetime DEFAULT NULL,
@@ -469,6 +468,8 @@ CREATE TABLE `post` (
   `content` text,
   `post_type` text,
   `feed_type` text,
+  `open_type` text,
+  `post_link` text,
   `thumb` text,
   `up_num` int(11) DEFAULT 0,
   `down_num` int(11) DEFAULT 0,

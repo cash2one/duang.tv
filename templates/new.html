@@ -1,9 +1,15 @@
-{% extends 'layout.html' %} {% block title %}
+{% extends 'layout.html' %} 
+
+{% block title %}
 <title>发帖 - 直波侠</title>
-{% endblock %} {% block stylesheet %}
+{% endblock %} 
+
+{% block stylesheet %}
 <link href="/static/summernote-0.5.2-dist/summernote.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="/static/jquery-ui-1.11.0/jquery-ui.css">
-<link href="/static/aehlke-tag-it-1d84585/css/jquery.tagit.css" rel="stylesheet" type="text/css"> {% endblock %} {% block main %}
+<link rel="stylesheet" href="/static/admin/remark/vendor/select2/select2.css">
+{% endblock %} 
+
+{% block main %}
 <div class="col-xs-12 col-md-9">
     <div class="card new">
         <ul id="type_tab" class="nav nav-tabs" role="tablist" id="myTab">
@@ -25,9 +31,21 @@
                         <input type="hidden" name="content" id="pContent" value="">
                     </div>
                     <div class="tag">
-                        <input type="hidden" name="node" id="pSingleField" value="">
+                        <input type="hidden" id="pSingleField" value="">
                         <ul id="pTags" class=""></ul>
                     </div>
+                    <select name="node">
+                        <option></option>
+                        {%set i=0%}
+                        {%for category in categorys%}
+                        <optgroup label="{{category.name}}">
+                            {%for node in nodes[i]%}
+                            <option value="{{node.name}}">{{node.name}}</option>
+                            {%endfor%}
+                        </optgroup>
+                        {%set i=i+1%}
+                        {%endfor%}
+                    </select>
                 </form>
             </div>
         </div>
@@ -125,8 +143,8 @@
 {% endblock %} {% block javascript %}
 <script src="/static/summernote-0.5.2-dist/summernote.js"></script>
 <script src="/static/summernote-0.5.2-dist/summernote-zh-CN.js"></script>
-<script src="/static/jquery-ui-1.11.0/jquery-ui.js"></script>
-<script src="/static/aehlke-tag-it-1d84585/js/tag-it.js"></script>
+<script src="/static/admin/remark/vendor/select2/select2.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
     $('#type_tab a').click(function(e) {
@@ -203,26 +221,11 @@ $(document).ready(function() {
         },
     });
 
-    var sampleTags = [];
-    $.getJSON('/get/tags', function(data) {
-        $.each(data, function(key, val) {
-            sampleTags.push(val);
-        });
-    });
-
-
-    $("#pTags").tagit({
-        placeholderText: '添加合适的节点，让更多的人发现',
-        availableTags: sampleTags,
-        singleField: true,
-        allowSpaces: true, //标签中是否允许空格
-        singleFieldNode: $('#pSingleField') //将值保存到mySingleField元素
-    });
-
+    
     $(document).on('click', '#pPostBtn', function() {
         var title = $('#pTitle').val();
-        var tag = $('#pSingleField').val();
-        if (!title.trim() || !tag.trim()) {
+        var node = $('select').val();
+        if (!title.trim() || !node.trim()) {
             $('#alertModal').modal('show');
             return;
         }
@@ -241,6 +244,11 @@ $(document).ready(function() {
                 alert('邀请发送失败!');
             }
         });
+    });
+
+    $('select').select2({
+        placeholder: "请选择一个合适的节点",
+        allowClear: true
     });
 });
 </script>

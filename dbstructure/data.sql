@@ -1,5 +1,16 @@
-INSERT INTO `node` VALUES (1, "广州恒大", "", "", 1, 0, "2015-08-27 00:00:00");
+
 INSERT INTO `post_node` VALUES (1, 1, 1);
+
+INSERT INTO `category` VALUES (1, '足球', 0);
+INSERT INTO `category` VALUES (2, 'NBA', 0);
+
+INSERT INTO `node` VALUES (1, "广州恒大", "", "", 1, 0, 0, "2015-08-27 00:00:00");
+INSERT INTO `node` VALUES (2, "皇马", "", "", 1, 0, 0, "2015-08-27 00:00:00");
+INSERT INTO `node` VALUES (3, "亚冠", "", "", 1, 0, 0, "2015-08-27 00:00:00");
+
+INSERT INTO `node` VALUES (4, "亚锦赛", "", "", 2, 0, 0, "2015-08-27 00:00:00");
+INSERT INTO `node` VALUES (5, "林书豪", "", "", 2, 0, 0, "2015-08-27 00:00:00");
+INSERT INTO `node` VALUES (6, "勇士", "", "", 2, 0, 0, "2015-08-27 00:00:00");
 
 INSERT INTO `nav` VALUES (1, "全部", NULL, "basketball", 1, NULL, 0);
 INSERT INTO `nav` VALUES (2, "骑士", 1, "basketball", 2, NULL, 0);
@@ -140,24 +151,6 @@ INSERT INTO `notice_type` VALUES (6, '在主题中提到了你');
 INSERT INTO `notice_type` VALUES (7, '在回复中提到了你');
 INSERT INTO `notice_type` VALUES (15, '关注了你');
 INSERT INTO `notice_type` VALUES (16, '赞了你的主题');
-
-
-
-INSERT INTO `category` VALUES (1, '其它', 0);
-INSERT INTO `category` VALUES (2, '彩票、旅行、充值、票务', 0);
-INSERT INTO `category` VALUES (3, '营养保健', 0);
-INSERT INTO `category` VALUES (4, '食品饮料、酒类、生鲜', 0);
-INSERT INTO `category` VALUES (5, '母婴、玩具乐器', 0);
-INSERT INTO `category` VALUES (6, '汽车用品', 0);
-INSERT INTO `category` VALUES (7, '运动户外', 0);
-INSERT INTO `category` VALUES (8, '鞋靴、箱包、钟表、奢侈品', 0);
-INSERT INTO `category` VALUES (9, '个护化妆', 0);
-INSERT INTO `category` VALUES (10, '服饰内衣、珠宝首饰', 0);
-INSERT INTO `category` VALUES (11, '家居、家具、家装、厨具', 0);
-INSERT INTO `category` VALUES (12, '电脑、办公', 0);
-INSERT INTO `category` VALUES (13, '手机、数码、京东通信', 0);
-INSERT INTO `category` VALUES (14, '家用电器', 0);
-INSERT INTO `category` VALUES (15, '图书、音像、数字商品', 0);
 
 INSERT INTO `tag_type` VALUES (1, '默认', '其它');
 INSERT INTO `tag_type` VALUES (2, '文章类型', '关注的文章');

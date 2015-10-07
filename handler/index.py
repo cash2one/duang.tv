@@ -46,8 +46,8 @@ secret_key = "Ge61JJtUSC5myXVrntdVOqAZ5L7WpXR_Taa9C8vb"
 q = Auth(access_key, secret_key)
 bucket = BucketManager(q)
 
-page_days = 1
-all_pages = 2
+page_days = 7  #每页的天数
+all_pages = 20 #总共的页数
 
 THRESHOLD = 2
 class IndexHandler(BaseHandler):
@@ -60,9 +60,6 @@ class IndexHandler(BaseHandler):
         now_time = datetime.datetime.now()
         yes_time = now_time + datetime.timedelta(days=-3)
 
-        print now_time.strftime('%Y-%m-%d %H:%M:%S')
-        print yes_time.strftime('%Y-%m-%d %H:%M:%S')
-
         template_variables["football_games"] = self.feed_model.get_index_feeds("football", "game", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
         template_variables["football_videos"] = self.feed_model.get_index_feeds("football", "video", yes_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
         
@@ -72,9 +69,12 @@ class IndexHandler(BaseHandler):
 
         pass_time = now_time + datetime.timedelta(hours=-2)
         future_time = now_time + datetime.timedelta(days=+14)
-        print pass_time.strftime('%Y-%m-%d %H:%M:%S')
-        print future_time.strftime('%Y-%m-%d %H:%M:%S')
         template_variables["lives"] = self.live_model.get_index_lives(pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
+
+        template_variables["hot_nodes"] = self.node_model.get_all_nodes()
+        template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
+
+        template_variables["all_hots"] = self.post_model.get_all_hot_posts()
 
         if is_mobile_browser(self):
             self.render("mobile/index.html", **template_variables)
@@ -108,16 +108,15 @@ class NbaHandler(BaseHandler):
         template_variables["gen_random"] = gen_random
         p = int(self.get_argument("p", "1"))
 
-        today_time = datetime.date.today()
+        today_time = datetime.datetime.now()
 
         basketball_games = []
         basketball_videos = []
         for i in range((p-1)*page_days, p*page_days):
             time2 = today_time + datetime.timedelta(days=-i)
             time1 = time2 + datetime.timedelta(days=-1)
-            basketball_games.append(self.feed_model.get_index_feeds("basketball", "game", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S')))
-            basketball_videos.append(self.feed_model.get_index_feeds("basketball", "video", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S')))
-        
+            basketball_games.append(self.feed_model.get_index_feeds("basketball", "game", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S'), num = 100)['list'])
+            basketball_videos.append(self.feed_model.get_index_feeds("basketball", "video", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S'), num = 100)['list'])
         template_variables["basketball_games"] = basketball_games
         template_variables["basketball_videos"] = basketball_videos
         template_variables["last_page"] = all_pages
@@ -129,6 +128,9 @@ class NbaHandler(BaseHandler):
         template_variables["all_navs"] = all_navs
         template_variables["all_subnavs"] = all_subnavs
         template_variables["active_nav"] = "NBA"
+
+        template_variables["hot_nodes"] = self.node_model.get_all_nodes()
+        template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
 
         if is_mobile_browser(self):
             self.render("nba.html", **template_variables)
@@ -142,18 +144,17 @@ class FootballHandler(BaseHandler):
         template_variables["gen_random"] = gen_random
         p = int(self.get_argument("p", "1"))
 
-        today_time = datetime.date.today()
+        today_time = datetime.datetime.now()
 
+        basketball_games = []
         basketball_videos = []
-        basketball_news = []
         for i in range((p-1)*page_days, p*page_days):
             time2 = today_time + datetime.timedelta(days=-i)
             time1 = time2 + datetime.timedelta(days=-1)
-            basketball_videos.append(self.feed_model.get_index_feeds("basketball", "video", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S')))
-            basketball_news.append(self.feed_model.get_index_feeds("basketball", "new", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S')))
-        
+            basketball_games.append(self.feed_model.get_index_feeds("football", "game", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S'), num = 100)['list'])
+            basketball_videos.append(self.feed_model.get_index_feeds("football", "video", time1.strftime('%Y-%m-%d %H:%M:%S'), time2.strftime('%Y-%m-%d %H:%M:%S'), num = 100)['list'])
+        template_variables["basketball_games"] = basketball_games
         template_variables["basketball_videos"] = basketball_videos
-        template_variables["basketball_news"] = basketball_news
         template_variables["last_page"] = all_pages
         template_variables["page"] = p
 
@@ -163,6 +164,9 @@ class FootballHandler(BaseHandler):
         template_variables["all_navs"] = all_navs
         template_variables["all_subnavs"] = all_subnavs
         template_variables["active_nav"] = "足球"
+
+        template_variables["hot_nodes"] = self.node_model.get_all_nodes()
+        template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
 
         if is_mobile_browser(self):
             self.render("football.html", **template_variables)
@@ -197,6 +201,9 @@ class BbsHandler(BaseHandler):
         all_navs = self.nav_model.get_all_navs_by_type("basketball")
         all_subnavs = self.nav_model.get_all_subnavs_by_type("basketball")
 
+        template_variables["hot_nodes"] = self.node_model.get_all_nodes()
+        template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
+
         template_variables["all_navs"] = all_navs
         template_variables["all_subnavs"] = all_subnavs
         template_variables["active_nav"] = "社区"
@@ -222,6 +229,10 @@ class PostHandler(BaseHandler):
         
         template_variables["related_posts"] = self.post_tag_model.get_post_related_posts(post_id)
         template_variables["tags"] = self.post_tag_model.get_post_all_tags(post_id)
+
+        template_variables["hot_nodes"] = self.node_model.get_all_nodes()
+        template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
+
         if(user_info):  
             post = self.post_model.get_post_by_post_id2(post_id, user_info.uid)
             template_variables["post"] = post
@@ -315,6 +326,15 @@ class NewHandler(BaseHandler):
     def get(self, template_variables = {}):
         user_info = self.current_user
         template_variables["user_info"] = user_info
+
+        nodes = []
+        categorys = self.category_model.get_all_categorys()
+        for category in categorys:
+            nodes.append(self.node_model.get_nodes_by_category(category.id))
+            print self.node_model.get_nodes_by_category(category.id)
+        template_variables["nodes"] = nodes
+        template_variables["categorys"] = categorys
+
         if(user_info):
             if is_mobile_browser(self):
                 self.render("mobile/new.html", **template_variables)
@@ -343,6 +363,7 @@ class NewHandler(BaseHandler):
             "view_num": 1,
             "follow_num": 1,
             "post_type": "bbs",
+            "feed_type": "bbs",
             "updated": time.strftime('%Y-%m-%d %H:%M:%S'),
             "created": time.strftime('%Y-%m-%d %H:%M:%S'),
         }

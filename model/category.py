@@ -27,4 +27,8 @@ class CategoryModel(Query):
         where = "category.id = %s" % category_id
         return self.where(where).data(category_info).save()
 
+    def get_all_categorys(self):
+        order = "category.order_num DESC, category.id DESC"
+        return self.order(order).select()
+
 

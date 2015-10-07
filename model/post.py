@@ -21,7 +21,7 @@ class PostModel(Query):
                 LEFT JOIN node ON post_node.node_id = node.id\
                 LEFT JOIN vote ON vote.author_id = %s AND post.id = vote.obj_id AND vote.obj_type = 'post'" % user_id
         field = "post.*, \
-                author_user.username as author_username, \
+                author_user.username as author_name, \
                 author_user.avatar as author_avatar, \
                 author_user.sign as author_sign, \
                 node.name as node_name, \
@@ -65,6 +65,34 @@ class PostModel(Query):
                 LEFT JOIN post_node ON post.id = post_node.post_id\
                 LEFT JOIN node ON post_node.node_id = node.id"
         order = "post.created DESC, post.id DESC"
+        field = "post.*, \
+                author_user.username as author_username, \
+                author_user.avatar as author_avatar, \
+                last_reply_user.username as last_reply_username, \
+                node.name as node_name"
+        return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
+
+    def get_all_hot_posts(self, num = 20, current_page = 1):
+        where = "post.feed_type = 'hot'"
+        join = "LEFT JOIN user AS author_user ON post.author_id = author_user.uid\
+                LEFT JOIN user AS last_reply_user ON post.last_reply = last_reply_user.uid\
+                LEFT JOIN post_node ON post.id = post_node.post_id\
+                LEFT JOIN node ON post_node.node_id = node.id"
+        order = "post.created DESC, post.id DESC"
+        field = "post.*, \
+                author_user.username as author_username, \
+                author_user.avatar as author_avatar, \
+                last_reply_user.username as last_reply_username, \
+                node.name as node_name"
+        return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
+
+    def get_hot_bbs_posts(self, num = 10, current_page = 1):
+        where = "post.post_type = 'bbs'"
+        join = "LEFT JOIN user AS author_user ON post.author_id = author_user.uid\
+                LEFT JOIN user AS last_reply_user ON post.last_reply = last_reply_user.uid\
+                LEFT JOIN post_node ON post.id = post_node.post_id\
+                LEFT JOIN node ON post_node.node_id = node.id"
+        order = "post.reply_num DESC, post.up_num DESC, post.created DESC, post.id DESC"
         field = "post.*, \
                 author_user.username as author_username, \
                 author_user.avatar as author_avatar, \

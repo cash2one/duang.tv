@@ -86,11 +86,19 @@ textarea {
 }
 
 .card .feed .avatar {
-    text-align: center;
+    text-align: top;
 }
 
 .feed-body,
-.feed-left,
+.feed-left {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.col-md-3 .feed-body {
+    vertical-align: middle;
+}
+
 .feed-right {
     display: table-cell;
     vertical-align: middle;
@@ -109,7 +117,6 @@ textarea {
 .card .feed .count {
     width: 100px;
     text-align: right;
-    padding-top: 15px;
 }
 
 img.avatar-48 {
@@ -801,6 +808,10 @@ a:active {
     word-break: break-all;
 }
 
+a:hover {
+    color: #4d5256;
+}
+
 .card.new {
     padding: 10px;
 }
@@ -844,4 +855,12 @@ html,body{height:100%}
 }
 .video-tag a {
     margin-left: 10px;
+}
+.select2 {
+    width: 660px !important;
+}
+.header .fr img.avatar {
+    width: 73px;
+    height: 73px;
+    border-radius: 4px
 }

@@ -19,3 +19,8 @@ class NodeModel(Query):
     def get_node_by_node_name(self, node_name):
         where = "node.name = '%s'" % node_name
         return self.where(where).find()
+
+    def get_nodes_by_category(self, category_id):
+        where = "node.category = %s" % category_id
+        order = "node.post_num DESC, node.id DESC"
+        return self.where(where).order(order).select()
