@@ -204,6 +204,6 @@ INSERT INTO `balance_type` VALUES (10, '收到谢意', '收到', '的谢意');
 INSERT INTO `balance_type` VALUES (11, '发送邀请', '发送', '邀请');
 INSERT INTO `balance_type` VALUES (12, '邀请成功', '邀请', '成功');
 
-INSERT INTO `ads` VALUES (1, 1, 1, 'http://mmm-cdn.qiniudn.com/1111.png', '/');
+INSERT INTO `ads` VALUES (1, 1, 1, 'mm', 'http://avati.qiniudn.com/mm.jpg', '/p/1');
 
 INSERT INTO `post` VALUES (1, '亚冠-高拉特双响张琳芃伤退 恒大2-0城南进8强', '', 'video', '', 0, 0, 0, 0, 0, 1, NULL, NULL);

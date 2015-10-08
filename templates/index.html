@@ -123,7 +123,8 @@
                     <div class="fr"><a href="/hot" class="item_node">more</a></div>
                 </div>
             </div>
-
+<div class="card-list">
+<div class="card-inner">
 {%for post in all_hots.list%}
 <div class="feed">
 <div class="feed-up">
@@ -145,9 +146,18 @@
 </div>
 {%endfor%}
 
-<div class="next jscroll-next-parent">
-                <a href="/?p=2" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+
+            {% if all_hots.page.next!=all_hots.page.current %}
+            <div class="next jscroll-next-parent">
+                <a href="/?p={{all_hots.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
             </div>
+            {%else%}
+            <div class="next jscroll-next-parent">
+                <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+            </div>
+            {%endif%}
+          </div>
+          </div>
 
         </div>
 
@@ -223,11 +233,13 @@
         <div class="inner">
             <div class="fr" id="money"><a href="/balance" class="balance_area" style="">70 <img src="//cdn.v2ex.com/static/img/silver.png" alt="S" align="absmiddle" border="0" style="padding-bottom: 2px;"> 12 <img src="//cdn.v2ex.com/static/img/bronze.png" alt="B" align="absmiddle" border="0"></a></div><a href="/notifications" class="fade-header">0 条未读提醒</a></div>
     </div>
+    {%if ad%}
     <div class="card">
         <div class="feed">
-            <a href="h/" target="_blank"><img src="http://avati.qiniudn.com/mm.jpg" border="0" width="250" alt="100offer"></a>
+            <a href="{{ad.link}}" target="_blank"><img src="{{ad.img}}" border="0" width="250" alt="{{ad.title}}"></a>
         </div>
     </div>
+    {%endif%}
     <div class="card">
         <div class="feed">
             <span class="fade-header">今日热议主题</span>
@@ -258,4 +270,17 @@
         </div>
     </div>
 </div>
-{% endblock %} {% block javascript %} {% endblock %}
+{% endblock %} 
+
+{% block javascript %} 
+<script src="/static/jscroll-master/jquery.jscroll.js"></script>
+<script type="text/javascript">
+        $('.card-list').jscroll({
+            loadingHtml: '<a href="/?p={{all_hots.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
+            contentSelector: '.card-inner',
+            nextSelector: 'a.jscroll-next:last',
+            autoTrigger: false,
+            callback: function(newElems) {},
+        });
+</script>
+{% endblock %}

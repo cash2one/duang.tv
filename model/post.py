@@ -58,7 +58,7 @@ class PostModel(Query):
         where = "post.author_id = %s" % author_id
         return self.where(where).count()
 
-    def get_all_bbs_posts(self, num = 20, current_page = 1):
+    def get_all_bbs_posts(self, num = 2, current_page = 1):
         where = "post.post_type = 'bbs'"
         join = "LEFT JOIN user AS author_user ON post.author_id = author_user.uid\
                 LEFT JOIN user AS last_reply_user ON post.last_reply = last_reply_user.uid\
@@ -72,7 +72,7 @@ class PostModel(Query):
                 node.name as node_name"
         return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
 
-    def get_all_hot_posts(self, num = 20, current_page = 1):
+    def get_all_hot_posts(self, num = 1, current_page = 1):
         where = "post.feed_type = 'hot'"
         join = "LEFT JOIN user AS author_user ON post.author_id = author_user.uid\
                 LEFT JOIN user AS last_reply_user ON post.last_reply = last_reply_user.uid\

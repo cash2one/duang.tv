@@ -304,6 +304,7 @@ CREATE TABLE `ads` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ad_type` int(11) DEFAULT NULL,
   `show` int(11) DEFAULT NULL,
+  `title` text,
   `img` text,
   `link` text,
   PRIMARY KEY (`id`)

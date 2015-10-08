@@ -20,7 +20,7 @@ class AdsModel(Query):
         where = "ads.show = 1"
         order = "RAND()"
         limit = "1"
-        return self.where(where).order(order).limit(limit).select()
+        return self.where(where).order(order).limit(limit).find()
 
 
 

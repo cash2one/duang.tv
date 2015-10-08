@@ -73,8 +73,8 @@ class IndexHandler(BaseHandler):
 
         template_variables["hot_nodes"] = self.node_model.get_all_nodes()
         template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
-
-        template_variables["all_hots"] = self.post_model.get_all_hot_posts()
+        template_variables["all_hots"] = self.post_model.get_all_hot_posts(current_page = p)
+        template_variables["ad"] = self.ads_model.get_rand_ad()
 
         if is_mobile_browser(self):
             self.render("mobile/index.html", **template_variables)
@@ -195,8 +195,6 @@ class BbsHandler(BaseHandler):
         template_variables["user_info"] = user_info
         template_variables["gen_random"] = gen_random
         p = int(self.get_argument("p", "1"))
-        template_variables["page"] = p
-        template_variables["last_page"] = all_pages
 
         all_navs = self.nav_model.get_all_navs_by_type("basketball")
         all_subnavs = self.nav_model.get_all_subnavs_by_type("basketball")
@@ -208,13 +206,40 @@ class BbsHandler(BaseHandler):
         template_variables["all_subnavs"] = all_subnavs
         template_variables["active_nav"] = "社区"
 
+        print p
         all_posts = self.post_model.get_all_bbs_posts(current_page = p)
+        print all_posts
         template_variables["all_posts"] = all_posts
 
         if is_mobile_browser(self):
             self.render("bbs.html", **template_variables)
         else:
             self.render("bbs.html", **template_variables)
+
+class HotHandler(BaseHandler):
+    def get(self, template_variables = {}):
+        user_info = self.current_user
+        template_variables["user_info"] = user_info
+        template_variables["gen_random"] = gen_random
+        p = int(self.get_argument("p", "1"))
+        template_variables["page"] = p
+        template_variables["last_page"] = all_pages
+
+        all_navs = self.nav_model.get_all_navs_by_type("basketball")
+
+        template_variables["hot_nodes"] = self.node_model.get_all_nodes()
+        template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
+
+        template_variables["all_navs"] = all_navs
+        template_variables["active_nav"] = "热榜"
+
+        all_hots = self.post_model.get_all_hot_posts(current_page = p)
+        template_variables["all_hots"] = all_hots
+
+        if is_mobile_browser(self):
+            self.render("hot.html", **template_variables)
+        else:
+            self.render("hot.html", **template_variables)
 
 class PostHandler(BaseHandler):
     def get(self, post_id, template_variables = {}):

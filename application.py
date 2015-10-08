@@ -111,6 +111,7 @@ class Application(tornado.web.Application):
             (r"/nba", handler.index.NbaHandler),
             (r"/football", handler.index.FootballHandler),
             (r"/bbs", handler.index.BbsHandler),
+            (r"/hot", handler.index.HotHandler),
             (r"/live", handler.index.LiveHandler),
             (r"/get/nodes", handler.index.GetNodesHandler),
 

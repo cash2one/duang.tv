@@ -1,7 +1,7 @@
 {% extends 'layout.html' %} 
 
 {% block title %}
-<title>NBA - 直波侠</title>
+<title>热榜  - 直波侠</title>
 {% endblock %} 
 
 {% block stylesheet %}
@@ -12,7 +12,9 @@
 <div class="col-xs-12 col-md-9">
 <div class="main">
 
-<div class="nav-bar">
+<div class="card">
+
+<div class="">
   <div class="nav-tab">
 <div class="main-tab">
 {% set i=0 %}
@@ -21,104 +23,45 @@
 {% set i=i+1 %}
 {%endfor%}
 </div>
-<div class="sub-tab">
-{% for subnav in all_subnavs %}
-<a href="javascript:;" class="sub-item" {%if all_navs[0].id != subnav.parent_id%}style="display:none;"{%endif%} data-parent="{{subnav.parent_id}}"  data-id="{{subnav.id}}">{{subnav.nav_name}}</a>
-{%endfor%}
-</div>
 </div>
 </div>
 
 <div class="card-list">
 <div class="card-inner">
-{% set i=0 %}
-{% for basketball_game in basketball_games %}
-{% set basketball_video=basketball_videos[i] %}
-{%if basketball_game or basketball_video%}
-{% set feed0=basketball_video[0] %}
-<div class="card">
-<div class="nav-tab">
-<div class="main-tab">
-<i class="icon-basketball"></i>
-<a href="" class="tab-item">{%if feed0%}{{feed0.updated}}{%endif%}</a>
-</div>
-</div>
-{%if basketball_game%}
+{% for post in all_hots.list %}
 <div class="feed">
-
-  <div class="feed-down">
-  <ul class="tags">
-                        {% for feed in basketball_game %}
-                        <li class="video-tag"><span>{{feed.feed_title}}</span>
-                            {%if feed.post_id%}
-                            <a class="" href="/p/{{feed.post_id}}">集锦</a>
-                            {%endif%}
-                            {%if feed.post_id2%}
-                            <a class="" href="/p/{{feed.post_id2}}">录像</a>
-                            {%endif%}
-                        </li>
-                        {%endfor%}
-                    </ul>
+<div class="feed-up">
+<div class="avatar feed-left">
+    <a href="/u/{{post.author_username}}"><img class="feed-object avatar-48" src="{{post.author_avatar}}-thumb"></a>
+  </div>
+  <div class="infos feed-body">
+    <div class="title feed-heading">
+      <a title="{{post.title}}" href="/p/{{post.id}}">{{post.title}}</a>
+    </div>
+    <div class="info">
+      <span class="small"><div class="votes"></div><a class="node" href="/go/{{post.node_name}}">{{post.node_name}}</a> &nbsp;•&nbsp; <strong><a href="/u/{{post.author_username}}">{{post.author_username}}</a></strong> &nbsp;•&nbsp; {{post.updated|pretty_date}}{%if post.last_reply%} &nbsp;•&nbsp; 最后回复来自 <strong><a href="/u/{{post.last_reply_username}}">{{post.last_reply_username}}</a></strong>{%endif%}</span>
+    </div>
+  </div>
+  <div class="count feed-right">
+      <a class="count-num" href="/p/{{post.id}}">{{post.reply_num}}</a>
+  </div>
   </div>
 </div>
-{%endif%}
-
-{%if basketball_video%}
-<div class="feed">
-
-  <div class="feed-down">
-  <ul class="tags">
-  {% for feed in basketball_video %}
-  <li><a class="video-tag" href="/p/{{feed.post_id}}">{{feed.feed_title}}</a></li>
-{%endfor%}
-</ul>
-  </div>
-</div>
-{%endif%}
-</div>
-{%endif%}
-{% set i=i+1 %}
 {%endfor%}
 
-
-{% if page!= last_page %}
-<div class="card next jscroll-next-parent">
-<a href="/nba?p={{page+1}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
-</div>
-{% else %}
-<div class="card next jscroll-next-parent">
-<a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
-</div>
-{% endif %}
-
-</div>
-
-</div>
-
-
-<div class="nav-card" style="display:none;">
-  <div class="card">
-<div class="nav-tab">
-<div class="main-tab">
-<i class="icon-basketball"></i>
-<a href="" class="tab-item"></a>
-</div>
-</div>
-
-<div class="feed">
-  <div class="feed-down">
-  <ul class="tags">
-</ul>
-  </div>
-</div>
-
-<div class="nav-load-more next jscroll-next-parent">
-<a href="javascript:;" class="load-more-btn infscr-loading">更多</a>
-</div>
+            {% if all_hots.page.next!=all_hots.page.current %}
+            <div class="next jscroll-next-parent">
+                <a href="/?p={{all_hots.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+            </div>
+            {%else%}
+            <div class="next jscroll-next-parent">
+                <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+            </div>
+            {%endif%}
+          </div>
+        </div>
 
 </div>
-</div>
-
 </div>
 </div>
 
@@ -151,12 +94,6 @@
                     </div>
 
 <div class="card">
-<div class="feed">
-<a href="h/" target="_blank"><img src="http://avati.qiniudn.com/mm.jpg" border="0" width="250"  alt="100offer"></a>
-</div>
-</div>
-
-<div class="card">
         <div class="feed">
             <span class="fade-header">今日热议主题</span>
         </div>
@@ -187,7 +124,6 @@
     </div>
 
 
-
 </div>
 {% endblock %} 
 
@@ -195,7 +131,7 @@
 <script src="/static/jscroll-master/jquery.jscroll.js"></script>
 <script type="text/javascript">
         $('.card-list').jscroll({
-            loadingHtml: '<a href="/nba?p={{page+1}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
+            loadingHtml: '<a href="/?p={{all_hots.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
             contentSelector: '.card-inner',
             nextSelector: 'a.jscroll-next:last',
             autoTrigger: false,
