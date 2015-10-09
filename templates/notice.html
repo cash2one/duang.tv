@@ -9,83 +9,73 @@
             <div class="main-tab">
                 <i class="icon-live"></i>
                 <a href="" class="tab-item">我的消息</a>
+                <div class="fr f12" style="margin-top: 3px;"><span class="snow">总共收到&nbsp;</span><strong class="gray">{{all_count}}</strong><span class="snow">&nbsp;条消息</span></div>
             </div>
         </div>
 
-            <div class="feed feed-list notice-feeds">
+            <div class="feed-list notice-feeds">
                 <div class="feeds-inner">
                     {%for notice in notices.list%} 
                     {%if notice.notice_type==1 or notice.notice_type==4 or notice.notice_type==5 or notice.notice_type==8 or notice.notice_type==11 or notice.notice_type==12 or notice.notice_type==7 or notice.notice_type==14%}
                     <div class="feed">
-                        <div class="user-wrapper">
-                            <div class="user-title">
-                                <div class="time">{{notice.created|pretty_date}}</div>
-                                <div class="user-meta meta">
-                                    <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{notice.username}}" href="/u/{{notice.username}}">{{notice.username}}</a>
-                                    {{notice.notice_text}}
+                        <div class="feed-up">
+                            <div class="avatar feed-left">
+                                <a href="/u/{notice.username}}"><img class="feed-object avatar-24" src="{{notice.avatar}}-thumb"></a>
+                            </div>
+                            <div class="infos feed-body">
+                                <div class="info">
+                                    <span class="small"><strong><a href="/u/{{notice.username}}">{{notice.username}}</a></strong> {{notice.notice_text}} <a title="{{notice.post_title}}" href="/p/{{notice.post_id}}#{{notice.reply_id}}">{{notice.post_title}}</a> {{notice.created|pretty_date}}</span>
                                 </div>
-                                <div class="feed-title">
-                                    <h2>
-                                        <a href="/p/{{notice.post_id}}#{{notice.reply_id}}">{{notice.post_title}}</a>
-                                    </h2>
+                                <div class="summary">
+                                    <div class="content-text hidden">{{notice.reply_content|index_content_process}}</div>
+                                    <div class="summary-text"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="summary">
-                            <div class="content-text hidden">{{notice.reply_content|index_content_process}}</div>
-                            <div class="summary-text"></div>
-                        </div>
                     </div>
+
                     {%endif%} 
                     {%if notice.notice_type==2 or notice.notice_type==3 or notice.notice_type==9 or notice.notice_type==10 or notice.notice_type==16 or notice.notice_type==17%}
                     <div class="feed">
-                        <div class="user-wrapper">
-                            <div class="user-title">
-                                <div class="time">{{notice.created|pretty_date}}</div>
-                                <div class="user-meta meta">
-                                    <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{notice.username}}" href="/u/{{notice.username}}">{{notice.username}}</a>
-                                    {{notice.notice_text}}
-                                </div>
-                                <div class="feed-title">
-                                    <h2>
-                                        <a href="/p/{{notice.post_id}}">{{notice.post_title}}</a>
-                                    </h2>
+                        <div class="feed-up">
+                            <div class="avatar feed-left">
+                                <a href="/u/{notice.username}}"><img class="feed-object avatar-24" src="{{notice.avatar}}-thumb"></a>
+                            </div>
+                            <div class="infos feed-body">
+                                <div class="info">
+                                    <span class="small"><strong><a href="/u/{{notice.username}}">{{notice.username}}</a></strong> {{notice.notice_text}} <a title="{{notice.post_title}}" href="/p/{{notice.post_id}}">{{notice.post_title}}</a> {{notice.created|pretty_date}}</span>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     {%endif%} 
                     {%if notice.notice_type==6 or notice.notice_type==13%}
                     <div class="feed">
-                        <div class="user-wrapper">
-                            <div class="user-title">
-                                <div class="time">{{notice.created|pretty_date}}</div>
-                                <div class="user-meta meta">
-                                    <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{notice.username}}" href="/u/{{notice.username}}">{{notice.username}}</a>
-                                    {{notice.notice_text}}
+                        <div class="feed-up">
+                            <div class="avatar feed-left">
+                                <a href="/u/{notice.username}}"><img class="feed-object avatar-24" src="{{notice.avatar}}-thumb"></a>
+                            </div>
+                            <div class="infos feed-body">
+                                <div class="info">
+                                    <span class="small"><strong><a href="/u/{{notice.username}}">{{notice.username}}</a></strong> {{notice.notice_text}} <a title="{{notice.post_title}}" href="/p/{{notice.post_id}}">{{notice.post_title}}</a> {{notice.created|pretty_date}}</span>
                                 </div>
-                                <div class="feed-title">
-                                    <h2>
-                                        <a href="/p/{{notice.post_id}}">{{notice.post_title}}</a>
-                                    </h2>
+                                <div class="summary">
+                                    <div class="content-text hidden">{{notice.post_content|index_content_process}}</div>
+                                    <div class="summary-text"></div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="summary">
-                            <div class="content-text hidden">{{notice.post_content|index_content_process}}</div>
-                            <div class="summary-text"></div>
                         </div>
                     </div>
                     {%endif%} 
                     {%if notice.notice_type==15%}
                     <div class="feed">
-                        <div class="user-wrapper">
-                            <div class="user-title">
-                                <div class="time">{{notice.created|pretty_date}}</div>
-                                <div class="user-meta meta">
-                                    <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{notice.username}}" href="/u/{{notice.username}}">{{notice.username}}</a>
-                                    {{notice.notice_text}}
+                        <div class="feed-up">
+                            <div class="avatar feed-left">
+                                <a href="/u/{notice.username}}"><img class="feed-object avatar-24" src="{{notice.avatar}}-thumb"></a>
+                            </div>
+                            <div class="infos feed-body">
+                                <div class="info">
+                                    <span class="small"><strong><a href="/u/{{notice.username}}">{{notice.username}}</a></strong> {{notice.notice_text}} {{notice.created|pretty_date}}</span>
                                 </div>
                             </div>
                         </div>

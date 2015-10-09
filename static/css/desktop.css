@@ -1418,7 +1418,6 @@ a.reply-user-link:hover {
 }
 .notice-feeds .feed {
     padding-bottom: 15px;
-    margin-bottom: 30px;
 }
 .answer-text iframe, .summary-text iframe, .topic-content iframe {
     height: 399px;
@@ -1761,8 +1760,19 @@ background-position: center right;
     width: 422px;
 }
 
-.summary-text {
-    line-height: 1.7;
+.summary {
+    display: inline-block;
+    background-color: rgba(236,249,250,.8);
+    border-color: #ecf9fa;
+    padding: 5px 10px 5px 10px;
+    font-size: 14px;
+    line-height: 120%;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    word-break: break-all;
+    word-wrap: break-word;
+    margin-top: 10px;
 }
 
 .summary-text3 {

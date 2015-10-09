@@ -37,6 +37,10 @@ class NoticeModel(Query):
         where = "notice.readed = 0 AND notice.author_id = %s" % author_id
         return self.where(where).count()
 
+    def get_user_all_notice_count(self, author_id):
+        where = "notice.author_id = %s" % author_id
+        return self.where(where).count()
+
     def set_user_notice_as_read(self, author_id):
         where = "notice.author_id = %s" % author_id
         return self.data({

@@ -864,3 +864,57 @@ html,body{height:100%}
     height: 73px;
     border-radius: 4px
 }
+
+.login-header {
+    color: #ccc;
+    font-size: 14px;
+}
+
+.card .center {
+    text-align: -webkit-center;
+}
+.signup-text {
+    margin-top: 10px;
+}
+.signin-btn {
+    width: 200px;
+}
+
+.nav-tab .main-tab a.more-btn {
+    color: #ccc;
+    margin-right: 0px;
+}
+.nav-tab .main-tab a.more-btn:hover {
+    color: #555;
+}
+.avatar-24 {
+    width: 24px;
+    height: 24px;
+}
+.f12 {
+    font-size: 12px;
+}
+.snow {
+    color: #e2e2e2;
+}
+
+.badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1;
+    color: #76838f;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #e4eaec;
+    border-radius: 10px;
+}
+.badge {
+    padding: 3px 6px;
+}
+.badge-danger {
+    color: #fff;
+    background-color: #f96868;
+}

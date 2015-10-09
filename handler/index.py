@@ -50,6 +50,29 @@ page_days = 7  #每页的天数
 all_pages = 20 #总共的页数
 
 THRESHOLD = 2
+
+def get_user_card(self):
+    user_info = self.current_user
+    if user_info:
+        gold_coins = (user_info.income - user_info.expend )/ 10000
+        silver_coins = (user_info.income - user_info.expend )% 10000     
+        bronze_coins = silver_coins  % 100
+        silver_coins = silver_coins / 100
+        notice_count = self.notice_model.get_user_unread_notice_count(user_info.uid)
+        follow_posts = self.follow_model.get_user_follow_posts_count(user_info.uid)
+        follow_users = self.follow_model.get_user_followees_count(user_info.uid)
+
+        user_card = {
+            "gold_coins": gold_coins,
+            "silver_coins": silver_coins,
+            "bronze_coins": bronze_coins,
+            "notice_count": notice_count,
+            "follow_posts": follow_posts,
+            "follow_users": follow_users,
+            "live_count": 0,
+        }
+        return user_card
+
 class IndexHandler(BaseHandler):
     def get(self, template_variables = {}):
         user_info = self.current_user
@@ -75,6 +98,9 @@ class IndexHandler(BaseHandler):
         template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
         template_variables["all_hots"] = self.post_model.get_all_hot_posts(current_page = p)
         template_variables["ad"] = self.ads_model.get_rand_ad()
+
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
 
         if is_mobile_browser(self):
             self.render("mobile/index.html", **template_variables)
@@ -1326,6 +1352,7 @@ class NoticeHandler(BaseHandler):
         if(user_info):
             template_variables["active_tab"] = "me"
             template_variables["notices"] = self.notice_model.get_user_all_notices(user_info.uid, current_page = p)
+            template_variables["all_count"] = self.notice_model.get_user_all_notice_count(user_info.uid)
             if user_info.view_follow:
                 template_variables["post_count"] = self.follow_model.get_user_all_follow_post_feeds_count(user_info.uid, user_info.view_follow, time.strftime('%Y-%m-%d %H:%M:%S'))
             else:

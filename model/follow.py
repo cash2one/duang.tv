@@ -301,3 +301,7 @@ class FollowModel(Query):
         order = "tag.tag_type DESC, tag.id DESC"
         field = "tag.*"
         return self.where(where).order(order).join(join).field(field).select()
+
+    def get_user_follow_posts_count(self, view_user):
+        where = "follow.author_id = %s AND follow.obj_type = 'p'" % view_user
+        return self.where(where).count()
