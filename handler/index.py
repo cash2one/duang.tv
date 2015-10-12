@@ -122,6 +122,10 @@ class LiveHandler(BaseHandler):
         future_time = now_time + datetime.timedelta(days=+14)
         template_variables["lives"] = self.live_model.get_index_lives(pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
 
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
+
         if is_mobile_browser(self):
             self.render("mobile/live.html", **template_variables)
         else:
@@ -158,6 +162,10 @@ class NbaHandler(BaseHandler):
         template_variables["hot_nodes"] = self.node_model.get_all_nodes()
         template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
 
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
+
         if is_mobile_browser(self):
             self.render("nba.html", **template_variables)
         else:
@@ -193,6 +201,10 @@ class FootballHandler(BaseHandler):
 
         template_variables["hot_nodes"] = self.node_model.get_all_nodes()
         template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
+
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
 
         if is_mobile_browser(self):
             self.render("football.html", **template_variables)
@@ -232,10 +244,12 @@ class BbsHandler(BaseHandler):
         template_variables["all_subnavs"] = all_subnavs
         template_variables["active_nav"] = "社区"
 
-        print p
         all_posts = self.post_model.get_all_bbs_posts(current_page = p)
-        print all_posts
         template_variables["all_posts"] = all_posts
+
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
 
         if is_mobile_browser(self):
             self.render("bbs.html", **template_variables)
@@ -262,6 +276,10 @@ class HotHandler(BaseHandler):
         all_hots = self.post_model.get_all_hot_posts(current_page = p)
         template_variables["all_hots"] = all_hots
 
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
+
         if is_mobile_browser(self):
             self.render("hot.html", **template_variables)
         else:
@@ -283,6 +301,10 @@ class PostHandler(BaseHandler):
 
         template_variables["hot_nodes"] = self.node_model.get_all_nodes()
         template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
+
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
 
         if(user_info):  
             post = self.post_model.get_post_by_post_id2(post_id, user_info.uid)
@@ -1371,11 +1393,10 @@ class FollowsHandler(BaseHandler):
         user_info = self.current_user
         template_variables["user_info"] = user_info
         p = int(self.get_argument("p", "1"))
-        active_tab = self.get_argument('tab', "question")
+        active_tab = self.get_argument('tab', "post")
         template_variables["active_tab"] = active_tab
         view_user = self.user_model.get_user_by_username(username)
         template_variables["view_user"] = view_user
-        template_variables["feeds1"] = self.follow_model.get_user_follow_questions(view_user.uid, current_page = p)
         template_variables["feeds2"] = self.follow_model.get_user_follow_posts(view_user.uid, current_page = p)
         template_variables["tags"] = self.follow_model.get_user_follow_tags(view_user.uid)
 

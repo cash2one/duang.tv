@@ -248,6 +248,8 @@ class UserHandler(BaseHandler):
         user_info = self.current_user
         template_variables["user_info"] = user_info
         p = int(self.get_argument("p", "1"))
+        active_tab = self.get_argument('tab', "post")
+        template_variables["active_tab"] = active_tab
 
         view_user = self.user_model.get_user_by_username(username)
         template_variables["view_user"] = view_user

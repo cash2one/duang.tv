@@ -42,8 +42,6 @@ CREATE TABLE `user` (
   `renren` text,
   `followees` int(11) DEFAULT 0,
   `followers` int(11) DEFAULT 0,
-  `questions` int(11) DEFAULT 0,
-  `answers` int(11) DEFAULT 0,
   `posts` int(11) DEFAULT 0,
   `comments` int(11) DEFAULT 0,
   `up_num` int(11) DEFAULT 0,

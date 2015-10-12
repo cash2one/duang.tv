@@ -2,6 +2,7 @@
 <title>@{{view_user.username}} 的关注 - 买买买</title>
 {% endblock %} {% block main %}
 <div class="col-xs-12 col-md-9">
+    <div class="card">
     <div id="gh-banner">
         <div id="c4-header-bg-container" class=" has-custom-banner" {%if view_user.cover %}style="background-image: url({{view_user.cover}}-cover)" {%endif%}>
             <div class="hd-banner">
@@ -53,20 +54,19 @@
             </div>
         </div>
     </div>
+</div>
 
+<div class="card">
     <div class="tag-feed">
         <ul id="type_tab" class="nav nav-tabs" role="tablist" id="myTab">
-            <li {%if active_tab=="question" %}class="active" {%endif%}>
-                <a href="#question" role="tab" data-toggle="tab">关注的问题</a>
-            </li>
             <li {%if active_tab=="post" %}class="active" {%endif%}>
-                <a href="#post" role="tab" data-toggle="tab">收藏的文章</a>
+                <a href="#post" role="tab" data-toggle="tab">主题收藏</a>
             </li>
             <li {%if active_tab=="followees" %}class="active" {%endif%}>
-                <a href="#followees" role="tab" data-toggle="tab">关注了</a>
+                <a href="#followees" role="tab" data-toggle="tab">我关注的人</a>
             </li>
             <li {%if active_tab=="followers" %}class="active" {%endif%}>
-                <a href="#followers" role="tab" data-toggle="tab">关注者</a>
+                <a href="#followers" role="tab" data-toggle="tab">关注我的人</a>
             </li>
             <li {%if active_tab=="tags" %}class="active" {%endif%}>
                 <a href="#tags" role="tab" data-toggle="tab">关注的标签</a>
@@ -74,109 +74,76 @@
         </ul>
 
         <div class="tab-content">
-            <div class="tab-pane {%if active_tab=="question" %}active{%endif%}" id="question">
-                <div class="feed-list1">
-                    <div class="feeds-inner1">
-                        {%for feed in feeds1.list%}
-                        <div class="feed">
-                            <div class="user-wrapper">
-                                <div class="user-title">
-                                    <div class="time">{{feed.created|pretty_date}}</div>
-                                    <div class="user-meta meta">
-                                        <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{feed.author_username}}" href="/u/{{feed.author_username}}">{{feed.author_username}}</a>
-                                        提出了问题
-                                    </div>
-                                    <div class="feed-title">
-                                        <h2>
-                                            <a href="/p/{{feed.post_id}}">{{feed.title}}</a>
-                                        </h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {%endfor%} {% if feeds1.page.next!=feeds1.page.current %}
-                        <div class="next jscroll-next-parent">
-                            <a href="/follows/{{view_user.username}}?p={{feeds1.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
-                        </div>
-                        {%else%}
-                        <div class="next jscroll-next-parent">
-                            <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
-                        </div>
-                        {%endif%}
-                    </div>
-                </div>
-            </div>
-
             <div class="tab-pane {%if active_tab=="post" %}active{%endif%}" id="post">
                 <div class="feed-list2">
-                    <div class="feeds-inner2">
-                        {%for feed in feeds2.list%}
-                        <div class="feed">
-                            <div class="user-wrapper">
-                                <div class="user-title">
-                                    <div class="time">{{feed.created|pretty_date}}</div>
-                                    <div class="user-meta meta">
-                                        <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{feed.author_username}}" href="/u/{{feed.author_username}}">{{feed.author_username}}</a>
-                                        提出了问题
+                        <div class="feeds-inner2">
+                            {% for feed in feeds2.list %}
+                            <div class="feed">
+
+                                <div class="feed-up">
+                                    <div class="avatar feed-left">
+                                        <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{feed.author_username}}" href="/u/{{feed.author_username}}">
+                                            <img class="feed-object avatar-48" src="{{feed.author_avatar}}-48px" alt=""></a>
                                     </div>
-                                    <div class="feed-title">
-                                        <h2>
-                                            <a href="/p/{{feed.post_id}}">{{feed.title}}</a>
-                                        </h2>
+                                    <div class="infos feed-body">
+                                        <div class="title feed-heading">
+                                            <a title="{{feed.title}}" href="/p/{{feed.id}}">{{feed.title}}</a>
+                                        </div>
+                                        <div class="info">
+                                            <span class="small"><div class="votes"></div><a class="node" href="/go/{{feed.node_name}}">{{feed.node_name}}</a> &nbsp;•&nbsp; <strong><a href="/u/{{feed.author_username}}">{{feed.author_username}}</a></strong> &nbsp;•&nbsp; {{feed.updated|pretty_date}}{%if feed.last_reply_username%} &nbsp;•&nbsp; 最后回复来自 <strong><a href="/u/{{feed.last_reply_username}}">{{feed.last_reply_username}}</a></strong>{%endif%}</span>
+                                        </div>
+                                    </div>
+                                    <div class="count feed-right">
+                                        <a class="count-num" href="/p/{{feed.id}}">{{feed.reply_num}}</a>
                                     </div>
                                 </div>
                             </div>
+                            {% endfor %} 
+                        {% if feeds2.page.next!=feeds2.page.current %}
+                            <div class="next jscroll-next-parent">
+                                <a href="/follows/{{view_user.username}}?p={{feeds2.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
+                            </div>
+                            {% else %}
+                            <div class="next jscroll-next-parent">
+                                <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
+                            </div>
+                            {% endif %}
                         </div>
-                        {%endfor%} {% if feeds2.page.next!=feeds2.page.current %}
-                        <div class="next jscroll-next-parent">
-                            <a href="/follows/{{view_user.username}}?p={{feeds2.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
-                        </div>
-                        {%else%}
-                        <div class="next jscroll-next-parent">
-                            <a href="javascript:;" id="load-more" class="load-more-btn infscr-loading" style="display: block;">没有更多了</a>
-                        </div>
-                        {%endif%}
                     </div>
-                </div>
             </div>
 
             <div class="tab-pane {%if active_tab==" followees " %}active{%endif%}" id="followees">
                 <div class="feed-list3">
                     <div class="feeds-inner3">
                         {%for feed in feeds3.list%}
-                        <div class="feed feed-f">
-                            <div class="btn-right">
-                                <a id="followBtn" data-obj="{{feed.uid}}" data-type="u" type="button" class="btn btn-f {% if feed.author_follow_id %} btn-danger {% else %}btn-success{% endif %} {%if user_info == none%}unlogin{%endif%}" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}"
-                                {%endif%}>{% if feed.author_follow_id %}取消关注{% else %}关注{% endif %}</a>
-                            </div>
-
-                            <div class="user-wrapper-f">
-                                <div class="user-avatar-f tipped_ajax_user" data-tipped="/get/user/{{feed.username}}">
-                                    <a href="/u/{{feed.username}}">
-                                        <img src="{{feed.avatar}}-avatar" width="50px" height="50px" alt="" class="avatar-img-f">
-                                    </a>
-                                </div>
-                                <div class="user-title-f">
-                                    <div class="feed-title">
-                                        <h2>
+                        <div class="feed">
+                                <div class="feed-up">
+                                    <div class="avatar feed-left">
+                                        <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{feed.username}}" href="/u/{{feed.username}}">
+                                            <img class="feed-object avatar-48" src="{{feed.avatar}}-48px" alt=""></a>
+                                    </div>
+                                    <div class="infos feed-body">
+                                        <div class="title feed-heading">
                                             <a class="tipped_ajax_user" data-tipped="/get/user/{{feed.username}}" href="/u/{{feed.username}}">{{feed.username}}</a>
-                                        </h2>
+                                        </div>
+                                        {% if feed.sign %}
+                                            <div class="user-meta-s meta">{{feed.sign}}</div>
+                                        {% endif %}
+                                        <div class="info">
+                                            <span class="small">
+                                                <a target="_blank" href="/follows/{{feed.username}}?tab=followers" class="zg-link-gray-normal">{{feed.followers}} 关注者</a>
+                                        /
+                                        <a target="_blank" href="/u/{{feed.username}}?tab=post" class="zg-link-gray-normal">{{feed.posts}} 主题</a>
+                                        /
+                                        <a target="_blank" href="/u/{{feed.username}}?tab=reply" class="zg-link-gray-normal">{{feed.comments}} 回复</a>  
+                                            </span>
+                                        </div>
                                     </div>
-                                    {% if feed.sign %}
-                                    <div class="user-meta-s meta">{{feed.sign}}</div>
-                                    {% endif %}
-                                    <div class="user-meta-f meta">
-                                        <a target="_blank" href="/people/luwangshan/followers" class="zg-link-gray-normal">{{feed.followees}} 关注者</a>
-                                        /
-                                        <a target="_blank" href="/people/luwangshan/asks" class="zg-link-gray-normal">{{feed.questions}} 提问</a>
-                                        /
-                                        <a target="_blank" href="/people/luwangshan/answers" class="zg-link-gray-normal">{{feed.answers}} 回答</a>
-                                        /
-                                        <a target="_blank" href="/people/luwangshan" class="zg-link-gray-normal">{{feed.posts}} 文章</a>
+                                    <div class="count feed-right">
+                                        <a id="followBtn" data-obj="{{feed.uid}}" data-type="u" type="button" class="btn btn-f {% if feed.author_follow_id %} btn-danger {% else %}btn-success{% endif %} {%if user_info == none%}unlogin{%endif%}" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}"{%endif%}>{% if feed.author_follow_id %}取消关注{% else %}关注{% endif %}</a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         {%endfor%} {% if feeds3.page.next!=feeds3.page.current %}
                         <div class="next jscroll-next-parent">
                             <a href="/follows/{{view_user.username}}?p={{feeds3.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
@@ -194,39 +161,34 @@
                 <div class="feed-list4">
                     <div class="feeds-inner4">
                         {%for feed in feeds4.list%}
-                        <div class="feed feed-f">
-                            <div class="btn-right">
-                                <a id="followBtn" data-obj="{{feed.uid}}" data-type="u" type="button" class="btn btn-f {% if feed.author_follow_id %} btn-danger {% else %}btn-success{% endif %} {%if user_info == none%}unlogin{%endif%}" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}"
-                                {%endif%}>{% if feed.author_follow_id %}取消关注{% else %}关注{% endif %}</a>
-                            </div>
-
-                            <div class="user-wrapper-f">
-                                <div class="user-avatar-f tipped_ajax_user" data-tipped="/get/user/{{feed.username}}">
-                                    <a href="/u/{{feed.username}}">
-                                        <img src="{{feed.avatar}}-avatar" width="50px" height="50px" alt="" class="avatar-img-f">
-                                    </a>
-                                </div>
-                                <div class="user-title-f">
-                                    <div class="feed-title">
-                                        <h2>
+                        <div class="feed">
+                                <div class="feed-up">
+                                    <div class="avatar feed-left">
+                                        <a class="user-link tipped_ajax_user" data-tipped="/get/user/{{feed.username}}" href="/u/{{feed.username}}">
+                                            <img class="feed-object avatar-48" src="{{feed.avatar}}-48px" alt=""></a>
+                                    </div>
+                                    <div class="infos feed-body">
+                                        <div class="title feed-heading">
                                             <a class="tipped_ajax_user" data-tipped="/get/user/{{feed.username}}" href="/u/{{feed.username}}">{{feed.username}}</a>
-                                        </h2>
+                                        </div>
+                                        {% if feed.sign %}
+                                            <div class="user-meta-s meta">{{feed.sign}}</div>
+                                        {% endif %}
+                                        <div class="info">
+                                            <span class="small">
+                                                <a target="_blank" href="/follows/{{feed.username}}?tab=followers" class="zg-link-gray-normal">{{feed.followers}} 关注者</a>
+                                        /
+                                        <a target="_blank" href="/u/{{feed.username}}?tab=post" class="zg-link-gray-normal">{{feed.posts}} 主题</a>
+                                        /
+                                        <a target="_blank" href="/u/{{feed.username}}?tab=reply" class="zg-link-gray-normal">{{feed.comments}} 回复</a>  
+                                            </span>
+                                        </div>
                                     </div>
-                                    {% if feed.sign %}
-                                    <div class="user-meta-s meta">{{feed.sign}}</div>
-                                    {% endif %}
-                                    <div class="user-meta-f meta">
-                                        <a target="_blank" href="/people/luwangshan/followers" class="zg-link-gray-normal">{{feed.followees}} 关注者</a>
-                                        /
-                                        <a target="_blank" href="/people/luwangshan/asks" class="zg-link-gray-normal">{{feed.questions}} 提问</a>
-                                        /
-                                        <a target="_blank" href="/people/luwangshan/answers" class="zg-link-gray-normal">{{feed.answers}} 回答</a>
-                                        /
-                                        <a target="_blank" href="/people/luwangshan" class="zg-link-gray-normal">{{feed.posts}} 文章</a>
+                                    <div class="count feed-right">
+                                        <a id="followBtn" data-obj="{{feed.uid}}" data-type="u" type="button" class="btn btn-f {% if feed.author_follow_id %} btn-danger {% else %}btn-success{% endif %} {%if user_info == none%}unlogin{%endif%}" {%if user_info==none%}data-link="{{link}}" data-link2="{{link2}}"{%endif%}>{% if feed.author_follow_id %}取消关注{% else %}关注{% endif %}</a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         {%endfor%} {% if feeds4.page.next!=feeds4.page.current %}
                         <div class="next jscroll-next-parent">
                             <a href="/follows/{{view_user.username}}?p={{feeds4.page.next}}" id="load-more" class="jscroll-next load-more-btn infscr-loading" style="display: block;">更多</a>
@@ -256,8 +218,10 @@
         </div>
     </div>
 </div>
+</div>
 
 <div class=" col-xs-12 col-md-3">
+    <div class="card">
     {%if view_user.uid==user_info.uid%}
     <div class="sidenav container-box">
         <ul class="nav nav-list">
@@ -307,6 +271,7 @@
         </div>
     </div>
     {%endif%}
+</div>
 </div>
 {% endblock %} 
 
@@ -431,13 +396,6 @@
             });
         }); 
         {% endif %}
-
-        $('.feed-list1').jscroll({
-            loadingHtml: '<a href="/u/{{view_user.user_name}}?p={{feeds1.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',
-            contentSelector: '.feeds-inner1',
-            nextSelector: 'a.jscroll-next:last',
-            autoTrigger: false,
-        });
 
         $('.feed-list2').jscroll({
             loadingHtml: '<a href="/u/{{view_user.user_name}}?p={{feeds2.page.next}}" id="load-more" class="load-more-btn infscr-loading" style="display: block;">加载中...</a>',

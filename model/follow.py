@@ -223,26 +223,20 @@ class FollowModel(Query):
         field = "post.*"
         return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
 
-    def get_user_follow_questions(self, author_id, num = 10, current_page = 1):
-        where = "follow.author_id = %s AND follow.obj_type = 'q'" % author_id
-        join = "LEFT JOIN post ON follow.obj_id = post.id\
-                LEFT JOIN user AS post_user ON post.author_id = post_user.uid "
-        order = "post.created DESC, post.id DESC"
-        field = "post.*,\
-                post.id as post_id, \
-                post_user.username as author_username, \
-                post_user.avatar as author_avatar"
-        return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)   
-
     def get_user_follow_posts(self, author_id, num = 10, current_page = 1):
         where = "follow.author_id = %s AND follow.obj_type = 'p'" % author_id
         join = "LEFT JOIN post ON follow.obj_id = post.id\
-                LEFT JOIN user AS post_user ON post.author_id = post_user.uid "
+                LEFT JOIN user AS post_user ON post.author_id = post_user.uid\
+                LEFT JOIN user AS last_reply_user ON post.last_reply = last_reply_user.uid\
+                LEFT JOIN post_node ON post.id = post_node.post_id\
+                LEFT JOIN node ON post_node.node_id = node.id"
         order = "post.created DESC, post.id DESC"
         field = "post.*,\
                 post.id as post_id, \
                 post_user.username as author_username, \
-                post_user.avatar as author_avatar"
+                post_user.avatar as author_avatar, \
+                last_reply_user.username as last_reply_username, \
+                node.name as node_name"
         return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)     
 
     def get_user_followees(self, view_user, author_id, num = 10, current_page = 1):

@@ -72,15 +72,15 @@
         <div class="tag-feed">
 
             <ul id="type_tab" class="nav nav-tabs" role="tablist" id="myTab">
-                <li class="active">
+                <li {%if active_tab=="post" %}class="active" {%endif%}>
                     <a href="#post" role="tab" data-toggle="tab">主题 {{feeds1_len}}</a>
                 </li>
-                <li>
+                <li {%if active_tab=="reply" %}class="active" {%endif%}>
                     <a href="#reply" role="tab" data-toggle="tab">回复 {{feeds2_len}}</a>
                 </li>
             </ul>
-            {% if 0 %}
-            <div class="fr" id="money">
+            {% if 1 %}
+            <div class="fr" id="money" style="position: absolute;right: 10px;top: 212px;">
                 <a href="{%if user_info.uid==view_user.uid%}/balance{%else%}javascript:;{%endif%}" class="balance_area" alt="{{gold_coins}} 金币，{{silver_coins}} 银币，{{bronze_coins}} 铜币">
                     {%if gold_coins!=0%}{{gold_coins}}
                     <img src="/static/img/gold.png" align="absmiddle" border="0" style="padding-bottom: 2px;">
@@ -91,7 +91,7 @@
             </div>
             {% endif %}
             <div class="tab-content">
-                <div class="tab-pane active" id="post">
+                <div class="tab-pane {%if active_tab=="post" %}active{%endif%}" id="post">
                     <div class="feed-list1">
                         <div class="feeds-inner1">
                             {% for feed in feeds1.list %}
@@ -134,7 +134,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="reply">
+                <div class="tab-pane {%if active_tab=="reply" %}active{%endif%}" id="reply">
                     <div class="feed-list2">
                         <div class="feeds-inner2">
                             {% for feed in feeds2.list %}
