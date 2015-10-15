@@ -258,6 +258,8 @@ class UserHandler(BaseHandler):
         template_variables["followees_count"] = self.follow_model.get_user_followees_count(view_user.uid)
         template_variables["followers_count"] = self.follow_model.get_user_followers_count(view_user.uid)
 
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        
         gold_coins = (view_user.income - view_user.expend )/ 10000
         silver_coins = (view_user.income - view_user.expend )% 10000     
         bronze_coins = silver_coins  % 100

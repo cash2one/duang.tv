@@ -1,10 +1,18 @@
-{% extends 'layout.html' %} {% block title %}
+{% extends 'layout.html' %} 
+
+{% block title %}
 <title>首页 - 直波侠</title>
-{% endblock %} {% block stylesheet %}
-<link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" /> {% endblock %} {% block main %}
+{% endblock %} 
+
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="/static/admin/remark/fonts/web-icons/web-icons.min.css"> 
+{% endblock %} 
+
+{% block main %}
 <div class="col-xs-12 col-md-9">
     <div class="main">
-        {%if 1%}
+        {%if now_lives%}
         <div class="card">
             <div class="nav-tab">
                 <div class="main-tab">
@@ -16,18 +24,9 @@
             <div class="feed">
                 <div class="feed-down">
                     <ul class="tags">
-                        <li><a class="video-tag" href="/p/1">德甲第34轮 拜仁慕尼黑 - 美因茨05</a></li>
-                        <li><a class="video-tag" href="/">汉堡 - 沙尔克04</a></li>
-                        <li><a class="video-tag" href="/">法兰克福 - 勒沃库森</a></li>
-                        
-                    </ul>
-                </div>
-            </div>
-            <div class="feed">
-                <div class="feed-down">
-                    <ul class="tags">
-                        <li><a class="video-tag" href="/">NBA西部决赛3 火箭 - 勇士</a></li>
-                        <li><a class="video-tag" href="/">NBA东部决赛3 骑士 - 老鹰</a></li>
+                        {% for live in now_lives %}
+                        <li><a class="video-tag" href="/p/{{live.post_id}}">{%if user_info and live.follow_id%}<span class="wb-heart wb-heart-red"></span>{%endif%}{{live.team}}</a></li>
+                        {%endfor%}
                     </ul>
                 </div>
             </div>
@@ -118,7 +117,7 @@
         <div class="card">
             <div class="nav-tab">
                 <div class="main-tab">
-                    <i class="icon-basketball"></i>
+                    <i class="icon-hot"></i>
                     <a href="" class="tab-item">今日热榜</a>
                     <div class="fr"><a href="/hot" class="item_node more-btn">more</a></div>
                 </div>
@@ -178,6 +177,7 @@
                             <th>赛事</th>
                             <th>比赛对阵</th>
                             <th>直播频道</th>
+                            <th style="text-align: center;">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -185,6 +185,7 @@
                         <tr class="success">
                             <td>{{live.date|get_weekday}}</td>
                             <td>{{live.date.strftime('%m月%d日')}}</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -196,6 +197,7 @@
                             <td>{{live.game}}</td>
                             <td><a href="/p/{{live.post_id}}">{{live.team}}</a></td>
                             <td><a href="/p/{{live.post_id}}">{{live.signal_text}}</a></td>
+                            <td style="text-align: center;"><a class="text-like wb-heart {%if user_info%}{%if live.follow_id%}followed{%endif%}{%else%}unlogin{%endif%}" href="javascript:void(0)" role="button" data-obj="{{live.id}}"></a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -301,6 +303,35 @@
             nextSelector: 'a.jscroll-next:last',
             autoTrigger: false,
             callback: function(newElems) {},
+        });
+
+        $(document).on('click', 'td .text-like', function() {
+            var text_like = $(this);
+            if ($(this).hasClass('unlogin')) {
+                return;
+            }
+            var obj_id = $(this).attr('data-obj');
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/follow",
+                data: JSON.stringify({
+                    obj_id: obj_id,
+                    obj_type: "l"
+                }),
+                success: function(msg) {
+                    if (text_like.hasClass('followed')) {
+                        text_like.removeClass('followed');
+                    } else {
+                        text_like.addClass('followed');
+                    }
+                },
+                error: function(msg) {
+                    alert("error");
+                }
+            });
         });
 </script>
 {% endblock %}

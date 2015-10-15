@@ -114,6 +114,7 @@ class Application(tornado.web.Application):
             (r"/hot", handler.index.HotHandler),
             (r"/live", handler.index.LiveHandler),
             (r"/get/nodes", handler.index.GetNodesHandler),
+            (r"/go/(.*)", handler.index.NodeHandler),
 
             (r"/pages/(.*)", handler.index.PageHandler),
             (r"/admin", handler.admin.IndexAdminHandler),

@@ -61,6 +61,7 @@ def get_user_card(self):
         notice_count = self.notice_model.get_user_unread_notice_count(user_info.uid)
         follow_posts = self.follow_model.get_user_follow_posts_count(user_info.uid)
         follow_users = self.follow_model.get_user_followees_count(user_info.uid)
+        follow_lives = self.follow_model.get_user_follow_lives_count(user_info.uid)
 
         user_card = {
             "gold_coins": gold_coins,
@@ -69,7 +70,7 @@ def get_user_card(self):
             "notice_count": notice_count,
             "follow_posts": follow_posts,
             "follow_users": follow_users,
-            "live_count": 0,
+            "live_count": follow_lives,
         }
         return user_card
 
@@ -92,8 +93,7 @@ class IndexHandler(BaseHandler):
 
         pass_time = now_time + datetime.timedelta(hours=-2)
         future_time = now_time + datetime.timedelta(days=+14)
-        template_variables["lives"] = self.live_model.get_index_lives(pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
-
+        
         template_variables["hot_nodes"] = self.node_model.get_all_nodes()
         template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
         template_variables["all_hots"] = self.post_model.get_all_hot_posts(current_page = p)
@@ -101,6 +101,11 @@ class IndexHandler(BaseHandler):
 
         if user_info:
             template_variables["user_card"] = get_user_card(self)
+            template_variables["lives"] = self.live_model.get_index_lives_with_follow(user_info.uid, pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
+            template_variables["now_lives"] = self.live_model.get_index_lives_with_follow(user_info.uid, pass_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
+        else:
+            template_variables["lives"] = self.live_model.get_index_lives(pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
+            template_variables["now_lives"] = self.live_model.get_index_lives(pass_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
 
         if is_mobile_browser(self):
             self.render("mobile/index.html", **template_variables)
@@ -115,16 +120,23 @@ class LiveHandler(BaseHandler):
         p = int(self.get_argument("p", "1"))
         template_variables["active_nav"] = "直播"
 
+        template_variables["hot_nodes"] = self.node_model.get_all_nodes()
+        template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
+
         now_time = datetime.datetime.now()
         yes_time = now_time + datetime.timedelta(days=-1)
 
         pass_time = now_time + datetime.timedelta(hours=-2)
         future_time = now_time + datetime.timedelta(days=+14)
-        template_variables["lives"] = self.live_model.get_index_lives(pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
 
         template_variables["ad"] = self.ads_model.get_rand_ad()
         if user_info:
             template_variables["user_card"] = get_user_card(self)
+            template_variables["lives"] = self.live_model.get_index_lives_with_follow(user_info.uid, pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
+            template_variables["now_lives"] = self.live_model.get_index_lives_with_follow(user_info.uid, pass_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
+        else:
+            template_variables["lives"] = self.live_model.get_index_lives(pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
+            template_variables["now_lives"] = self.live_model.get_index_lives(pass_time.strftime('%Y-%m-%d %H:%M:%S'), now_time.strftime('%Y-%m-%d %H:%M:%S'))
 
         if is_mobile_browser(self):
             self.render("mobile/live.html", **template_variables)
@@ -255,6 +267,32 @@ class BbsHandler(BaseHandler):
             self.render("bbs.html", **template_variables)
         else:
             self.render("bbs.html", **template_variables)
+
+class NodeHandler(BaseHandler):
+    def get(self, node_name, template_variables = {}):
+        user_info = self.current_user
+        template_variables["user_info"] = user_info
+        template_variables["gen_random"] = gen_random
+        p = int(self.get_argument("p", "1"))
+
+        node = self.node_model.get_node_by_node_name(node_name)
+        template_variables["node"] = node
+        template_variables["hot_nodes"] = self.node_model.get_all_nodes()
+        template_variables["hot_posts"] = self.post_model.get_hot_bbs_posts()
+
+        template_variables["active_nav"] = "社区"
+
+        template_variables["all_posts"] = self.post_node_model.get_bbs_posts_by_node(node.id, current_page = p)
+        template_variables["posts_count"] = self.post_node_model.get_bbs_posts_by_node_count(node.id)
+
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
+
+        if is_mobile_browser(self):
+            self.render("node.html", **template_variables)
+        else:
+            self.render("node.html", **template_variables)
 
 class HotHandler(BaseHandler):
     def get(self, template_variables = {}):
@@ -408,6 +446,10 @@ class NewHandler(BaseHandler):
         template_variables["nodes"] = nodes
         template_variables["categorys"] = categorys
 
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
+
         if(user_info):
             if is_mobile_browser(self):
                 self.render("mobile/new.html", **template_variables)
@@ -449,7 +491,6 @@ class NewHandler(BaseHandler):
         # process node
         nodeStr = form.node.data
         node = self.node_model.get_node_by_node_name(nodeStr)
-        print node.name
         self.post_node_model.add_new_post_node({"post_id": post_id, "node_id": node.id})
 
         # create @username notification
@@ -484,19 +525,25 @@ class EditHandler(BaseHandler):
     def get(self, post_id, template_variables = {}):
         user_info = self.current_user
         template_variables["user_info"] = user_info
+
+        nodes = []
+        categorys = self.category_model.get_all_categorys()
+        for category in categorys:
+            nodes.append(self.node_model.get_nodes_by_category(category.id))
+            print self.node_model.get_nodes_by_category(category.id)
+        template_variables["nodes"] = nodes
+        template_variables["categorys"] = categorys
+
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
         if(user_info):
             post = self.post_model.get_post_by_post_id(post_id)
             template_variables["post"] = post
-            tags = self.post_tag_model.get_post_all_tags(post_id)
-            tagStr = ''
-            i=0
-            for tag in tags["list"]:
-                if i==0:
-                    tagStr = tag.tag_name
-                else:
-                    tagStr = tagStr + ','+tag.tag_name
-                i=i+1
-            template_variables["tagStr"] = tagStr 
+
+            current_node = self.post_node_model.get_node_by_post_id(post_id)
+            template_variables["current_node"] = current_node
+            
             if is_mobile_browser(self):
                 self.render("mobile/edit.html", **template_variables)
             else:
@@ -507,8 +554,6 @@ class EditHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self, post_id, template_variables = {}):
         template_variables = {}
-
-        post_type = self.get_argument('t', "q")
 
         # validate the fields
         form = NewForm(self)
@@ -526,49 +571,12 @@ class EditHandler(BaseHandler):
         self.post_model.update_post_by_post_id(post_id, post_info)
         self.redirect("/p/"+str(post_id))
 
-        tags = self.post_tag_model.get_post_all_tags(post_id)
-        for tag in tags["list"]:
-            if(post_type == 'q'):
-                self.tag_model.update_tag_by_tag_id(tag.tag_id, {"question_num": tag.tag_question_num-1})
-            else:
-                self.tag_model.update_tag_by_tag_id(tag.tag_id, {"post_num": tag.tag_post_num-1})
-        self.post_tag_model.delete_post_tag_by_post_id(post_id)
-        # process tags
-        tagStr = form.tag.data
-        print tagStr
-        if tagStr:
-            tagNames = tagStr.split(',')  
-            for tagName in tagNames:  
-                tag = self.tag_model.get_tag_by_tag_name(tagName)
-                if tag:
-                    self.post_tag_model.add_new_post_tag({"post_id": post_id, "tag_id": tag.id})
-                    if(post_type == 'q'):
-                        self.tag_model.update_tag_by_tag_id(tag.id, {"question_num": tag.question_num+1})
-                    else:
-                        self.tag_model.update_tag_by_tag_id(tag.id, {"post_num": tag.post_num+1})
-                else:
-                    if(post_type == 'q'):
-                        tag_info = {
-                            "name": tagName, 
-                            "question_num": 1, 
-                            "is_new": 1, 
-                            "post_add": post_id, 
-                            "user_add":  self.current_user["uid"], 
-                            "created": time.strftime('%Y-%m-%d %H:%M:%S')
-                        }
-                    else:
-                        tag_info = {
-                            "name": tagName, 
-                            "post_num": 1, 
-                            "is_new": 1, 
-                            "post_add": post_id, 
-                            "user_add":  self.current_user["uid"], 
-                            "created": time.strftime('%Y-%m-%d %H:%M:%S')
-                        }                  
-                    tag_id = self.tag_model.add_new_tag(tag_info)
-                    self.post_tag_model.add_new_post_tag({"post_id": post_id, "tag_id": tag_id})
-                    category = self.category_model.get_category_by_id(1)
-                    self.category_model.update_category_by_id(1, {"tag_num":category.tag_num+1})
+        # update post_node
+        nodeStr = form.node.data
+        new_node = self.node_model.get_node_by_node_name(nodeStr)
+        old_node = self.post_node_model.get_node_by_post_id(post_id)
+        self.post_node_model.update_post_node_by_post_node_id(old_node.post_node_id, {"node_id": new_node.id})
+
   
 
 class TagHandler(BaseHandler):
@@ -1371,6 +1379,9 @@ class NoticeHandler(BaseHandler):
         template_variables["user_info"] = user_info
         template_variables["gen_random"] = gen_random
         p = int(self.get_argument("p", "1"))
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
         if(user_info):
             template_variables["active_tab"] = "me"
             template_variables["notices"] = self.notice_model.get_user_all_notices(user_info.uid, current_page = p)
@@ -1399,6 +1410,7 @@ class FollowsHandler(BaseHandler):
         template_variables["view_user"] = view_user
         template_variables["feeds2"] = self.follow_model.get_user_follow_posts(view_user.uid, current_page = p)
         template_variables["tags"] = self.follow_model.get_user_follow_tags(view_user.uid)
+        template_variables["ad"] = self.ads_model.get_rand_ad()
 
         if(user_info):            
             template_variables["follow"] = self.follow_model.get_follow(user_info.uid, view_user.uid, 'u')
@@ -1707,6 +1719,9 @@ class BalanceHandler(BaseHandler):
         user_info = self.current_user
         template_variables["user_info"] = user_info
         p = int(self.get_argument("p", "1"))
+        template_variables["ad"] = self.ads_model.get_rand_ad()
+        if user_info:
+            template_variables["user_card"] = get_user_card(self)
         if(user_info):
             gold_coins = (user_info.income - user_info.expend )/ 10000
             silver_coins = (user_info.income - user_info.expend )% 10000     

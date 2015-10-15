@@ -112,7 +112,7 @@
                     </div>
             </div>
 
-            <div class="tab-pane {%if active_tab==" followees " %}active{%endif%}" id="followees">
+            <div class="tab-pane {%if active_tab=="followees" %}active{%endif%}" id="followees">
                 <div class="feed-list3">
                     <div class="feeds-inner3">
                         {%for feed in feeds3.list%}
@@ -157,7 +157,7 @@
                 </div>
             </div>
 
-            <div class="tab-pane {%if active_tab==" followers " %}active{%endif%}" id="followers">
+            <div class="tab-pane {%if active_tab=="followers" %}active{%endif%}" id="followers">
                 <div class="feed-list4">
                     <div class="feeds-inner4">
                         {%for feed in feeds4.list%}
@@ -202,7 +202,7 @@
                 </div>
             </div>
 
-            <div class="tab-pane {%if active_tab==" tags " %}active{%endif%}" id="tags">
+            <div class="tab-pane {%if active_tab=="tags" %}active{%endif%}" id="tags">
                 <div class="feed-list4">
                     <div class="feeds-inner4">
                         <ul class="tag-ranking-list">
@@ -272,6 +272,13 @@
     </div>
     {%endif%}
 </div>
+{%if ad%}
+    <div class="card">
+        <div class="feed">
+            <a href="{{ad.link}}" target="_blank"><img src="{{ad.img}}" border="0" width="250" alt="{{ad.title}}"></a>
+        </div>
+    </div>
+    {%endif%}
 </div>
 {% endblock %} 
 

@@ -27,3 +27,11 @@ class LiveModel(Query):
         order = "live.date ASC, live.id ASC"
         field = "live.*"
         return self.where(where).order(order).field(field).select()
+
+    def get_index_lives_with_follow(self, user_id, time1, time2):
+        where = "live.date between '%s' and '%s'" % (time1, time2)
+        join = "LEFT JOIN follow ON live.id = follow.obj_id AND 'l' = follow.obj_type AND follow.author_id = %s" % user_id
+        order = "live.date ASC, live.id ASC"
+        field = "live.*, \
+                follow.id as follow_id"
+        return self.where(where).order(order).join(join).field(field).select()

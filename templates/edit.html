@@ -1,53 +1,25 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-<title>编辑问题 - 买买买</title>
+<title>编辑帖子 - 直波侠</title>
 {% endblock %}
 
 {% block stylesheet %}
 <link href="/static/summernote-0.5.2-dist/summernote.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="/static/jquery-ui-1.11.0/jquery-ui.css">
-<link href="/static/aehlke-tag-it-1d84585/css/jquery.tagit.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/static/admin/remark/vendor/select2/select2.css">
 {% endblock %}
 
 {% block main %}
 <div class="col-xs-12 col-md-9">
-    <div class="new">
+    <div class="card new">
         <ul id="type_tab" class="nav nav-tabs" role="tablist" id="myTab">
-            {% if post.post_type == 'q' %}
             <li class="active">
-                <a href="#question" role="tab" data-toggle="tab">问 答</a>
+                <a href="#post" role="tab" data-toggle="tab">帖 子</a>
             </li>
-            {% else %}
-            <li class="active">
-                <a href="#post" role="tab" data-toggle="tab">文 章</a>
-            </li>
-            {% endif %}
         </ul>
         <div class="tab-content">
-            {% if post.post_type == 'q' %}
-            <div class="tab-pane active" id="question">
-                <form class="mt10" action='/edit/{{post.id}}?t=q' method="POST" id="qForm">
-                    <div class="new-btn">
-                        <a id="qPostBtn" class="btn btn-sm btn-success">立即发布{{ xsrf_form_html() }}</a>
-                    </div>
-                    <div class="title">
-                        <input type="text" id="qTitle" name="title" class="form-control" placeholder="输入你的问题" value="{{post.title}}">
-                    </div>
-                    <div class="content">
-                        <div id="qSummernote" class="description"></div>
-                        <input type="hidden" name="content" id="qContent" value="">
-                        <div id="qContentText2" style="display: none;">{{post.content}}</div>
-                    </div>
-                    <div class="tag">
-                        <input type="hidden" name="tag" id="qSingleField" value="{{tagStr}}">
-                        <ul id="qTags" class=""></ul>
-                    </div>
-                </form>
-            </div>
-            {% else %}
             <div class="tab-pane active" id="post">
-                <form class="mt10" action='/edit/{{post.id}}?t=p' method="POST" id="pForm">
+                <form class="mt10" action='/edit/{{post.id}}' method="POST" id="pForm">
                     <div class="new-btn">
                         <a id="pPostBtn" class="btn btn-sm btn-success">立即发布{{ xsrf_form_html() }}</a>
                     </div>
@@ -63,61 +35,123 @@
                         <input type="hidden" name="tag" id="pSingleField" value="{{tagStr}}">
                         <ul id="pTags" class=""></ul>
                     </div>
+                    <select name="node">
+                        <option></option>
+                        {%set i=0%}
+                        {%for category in categorys%}
+                        <optgroup label="{{category.name}}">
+                            {%for node in nodes[i]%}
+                            <option value="{{node.name}}" {%if node.name == current_node.name%}selected="selected"{%endif%}>{{node.name}}</option>
+                            {%endfor%}
+                        </optgroup>
+                        {%set i=i+1%}
+                        {%endfor%}
+                    </select>
                 </form>
             </div>
-            {% endif %}
         </div>
     </div>
 </div>
 
 <div class=" col-xs-12 col-md-3">
-    <ul class="nav nav-list">
-        <li class="nav-item">
-            <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/u/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="user" {%endif%}> <i class="icon-home"></i>
-                我的主页
-            </a>
-        </li>
-        <li class="nav-item">
-            <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/follows/{{user_info.username}}{%endif%}" {% if user_info==none%}data-link="follows" {%endif%}> <i class="icon-follow"></i>
-                我的所有关注
-            </a>
-        </li>
-        <li class="nav-item">
-            <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/notifications{%endif%}" {% if user_info==none%}data-link="notifications" {%endif%}>
-                <i class="icon-message"></i>
-                我的消息 {%if notice_count%}
-                <span class="badge message-badge">{{notice_count}}</span>
-                {%endif%}
-            </a>
-        </li>
-        <li class="nav-item">
-            <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/invitations{%endif%}" {% if user_info==none%}data-link="invitations" {%endif%}>
-                <i class="icon-invitation"></i>
-                邀请我回答的问题 {%if invite_count%}
-                <span class="badge invite-badge">{{invite_count}}</span>
-                {%endif%}
-            </a>
-        </li>
-        <li class="nav-item">
-            <a {% if user_info==none%}class="unlogin" {%endif%} href="{% if user_info == none%}javascript:;{%else%}/list{%endif%}" {% if user_info==none%}data-link="list" {%endif%}>
-                <i class="icon-list"></i>
-                欲望清单
-            </a>
-        </li>
-        <li class="divider"></li>
-        <li class="nav-item">
-            <a {%if user_info==none%}class="unlogin" {%endif%} href="javascript:;" id="inviteJoin" {% if user_info !=none%}data-toggle="modal" data-target="#inviteJoinModal" {%endif%}>
-                <i class="icon-invite"></i>
-                邀请朋友加入
-            </a>
-        </li>
-    </ul>
+    {%if user_info%}
+    <div class="card">
+        <div class="cell">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td width="48" valign="top">
+                            <a href="/u/{{user_info.username}}"><img src="{{user_info.avatar}}" class="avatar" border="0" align="default" style="max-width: 48px; max-height: 48px;"></a>
+                        </td>
+                        <td width="10" valign="top"></td>
+                        <td width="auto" align="left"><span class="bigger"><a href="/u/{{user_info.username}}">{{user_info.username}}</a></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="sep10"></div>
+            <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 5px;margin-bottom: 5px;">
+                <tbody>
+                    <tr>
+                        <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=live" class="dark" style="display: block;"><span class="bigger">{{user_card.live_count}}</span><div class="sep3"></div><span class="fade-header">关注直播</span></a></td>
+                        <td width="34%" style="border-left: 1px solid rgba(100, 100, 100, 0.1); border-right: 1px solid rgba(100, 100, 100, 0.1);" align="center"><a href="/follows/{{user_info.username}}?tab=post" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_posts}}</span><div class="sep3"></div><span class="fade-header">主题收藏</span></a></td>
+                        <td width="33%" align="center"><a href="/follows/{{user_info.username}}?tab=followees" class="dark" style="display: block;"><span class="bigger">{{user_card.follow_users}}</span><div class="sep3"></div><span class="fade-header">特别关注</span></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="inner">
+            <div class="fr" id="money">
+                    <a href="/balance" class="balance_area" alt="{{user_card.gold_coins}} 金币，{{user_card.silver_coins}} 银币，{{user_card.bronze_coins}} 铜币">{%if user_card.gold_coins!=0%}{{user_card.gold_coins}} <img src="/static/img/gold.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if user_card.silver_coins!=0%}{{user_card.silver_coins}} <img src="/static/img/silver.png" align="absmiddle" border="0" style="padding-bottom: 2px;"> {%endif%}{%if user_card.bronze_coins!=0%}{{user_card.bronze_coins}}<img src="/static/img/bronze.png" align="absmiddle" border="0">{%endif%}</a>
+                </div>
+            <a href="/notifications" class="fade-header">{%if user_card.notice_count!=0%}<span class="badge badge-danger">{{user_card.notice_count}}</span>{%else%}{{user_card.notice_count}}{%endif%} 条未读提醒</a></div>
+    </div>
+    {%else%}
+    <div class="card">
+      <div class="feed">
+            <span class="login-header">可能是东半球颜值最高的体育聚合社区</span>
+        </div>
+      <div class="feed center">
+        <a class="unlogin signup-switch" href="javascript:;">
+                                <button class="signin-btn btn btn-success">立即加入</button>
+        </a>
+      
+      <div class="signup-text">
+      已注册用户请 &nbsp;<a class="unlogin" href="javascript:;">登录</a>
+      </div>
+    </div>
+    </div>
+    {%endif%}
+    {%if ad%}
+    <div class="card">
+        <div class="feed">
+            <a href="{{ad.link}}" target="_blank"><img src="{{ad.img}}" border="0" width="250" alt="{{ad.title}}"></a>
+        </div>
+    </div>
+    {%endif%}
+</div>
+<div id="alertModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">
+                    发帖格式可能不符合规范
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="header">如果符合下列情况，请修改：</div>
+                <ul class="options clearfix">
+                    <li class="">
+                        <label>
+                            标题不能为空
+                        </label>
+                    </li>
+                    <li class="">
+                        <label>
+                            问题标题必须以问号结尾
+                        </label>
+                    </li>
+                    <li class="">
+                        <label>
+                            标签不能为空
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">知道了</button>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
 {% block javascript %}
-<script src="/static/jquery-ui-1.11.0/jquery-ui.js"></script>
-<script src="/static/aehlke-tag-it-1d84585/js/tag-it.js"></script>
+<script src="/static/admin/remark/vendor/select2/select2.min.js"></script>
 <script src="/static/summernote-0.5.2-dist/summernote.js"></script>
 <script src="/static/summernote-0.5.2-dist/summernote-zh-CN.js"></script>
 
@@ -176,56 +210,7 @@ $(document).ready(function() {
         });
     });
 
-    {% if post.post_type == 'q' %}
-    $('#qSummernote').summernote({
-        height: 200, // set editor height
-        minHeight: 200, // set minimum height of editor
-        maxHeight: 600, // set maximum height of editor
-        focus: true,
-        toolbar: [
-            ['style', ['style']],
-            ['style', ['bold', 'italic', 'underline', 'strikethrough' , 'clear']],
-            //['fontsize', ['fontsize']],
-            //['color', ['color']],
-            ['para', ['ul', 'ol' /*, 'paragraph'*/ ]],
-            //['height', ['height']],
-            //['table', ['table']],
-            ['insert', ['link', 'picture', 'video', 'shopping']], // no insert buttons
-            //['insert', ['link']],
-            ['view', ['fullscreen' /*, 'codeview'*/ ]],
-        ],
-        lang: 'zh-CN',
-        onImageUpload: function(files, editor, editable) {
-            $('.note-group-select-from-files h5').text('正在上传图片');
-            $('.note-image-input').addClass('uploading');
-            sendFile(files[0], editor, editable);
-        },
-        onShoppingUpload: function(sUrl, editor, editable) {
-            sendShopping(sUrl, editor, editable);
-        },
-    });
-    var qContent = $('#qContentText2').html();
-    $('#qSummernote').code(qContent);
 
-    $("#qTags").tagit({
-        placeholderText: '添加合适的标签',
-        availableTags: sampleTags,
-        singleField: true,
-        allowSpaces: true, //标签中是否允许空格
-        singleFieldNode: $('#qSingleField') //将值保存到mySingleField元素
-    });
-
-    $(document).on('click', '#qPostBtn', function() {
-        var title = $('#qTitle').val();
-        var tag = $('#qSingleField').val();
-        if (!title.trim() || (title.indexOf("?") < 0 && title.indexOf("？") < 0) || !tag.trim()) {
-            $('#alertModal').modal('show');
-            return;
-        }
-        $('#qContent').val($('#qSummernote').code());
-        $('#qForm').submit();
-    });
-    {% else %}
     $('#pSummernote').summernote({
         height: 200, // set editor height
         minHeight: 200, // set minimum height of editor
@@ -256,25 +241,21 @@ $(document).ready(function() {
     var pContent = $('#pContentText2').html();
     $('#pSummernote').code(pContent); 
 
-    $("#pTags").tagit({
-        placeholderText: '添加合适的标签',
-        availableTags: sampleTags,
-        singleField: true,
-        allowSpaces: true, //标签中是否允许空格
-        singleFieldNode: $('#pSingleField') //将值保存到mySingleField元素
+    $('select').select2({
+        placeholder: "请选择一个合适的节点",
+        allowClear: true
     });
 
     $(document).on('click', '#pPostBtn', function() {
         var title = $('#pTitle').val();
-        var tag = $('#pSingleField').val();
-        if (!title.trim() || !tag.trim()) {
+        var node = $('select').val();
+        if (!title.trim() || !node.trim()) {
             $('#alertModal').modal('show');
             return;
         }
         $('#pContent').val($('#pSummernote').code());
         $('#pForm').submit();
     });
-    {% endif %}
 });
 </script>
 {% endblock %}

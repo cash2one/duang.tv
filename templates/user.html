@@ -107,13 +107,7 @@
                                             <a title="{{feed.title}}" href="/p/{{feed.id}}">{{feed.title}}</a>
                                         </div>
                                         <div class="info">
-                                            <span class="small">
-                                                <div class="votes"></div>
-                                                <a class="node" href="/go/qna">国际足球</a>
-                                                &nbsp;•&nbsp; <strong><a class="user-link tipped_ajax_user" data-tipped="/get/user/{{feed.author_username}}" href="/u/{{feed.author_username}}">{{feed.author_username}}</a></strong> 
-                                                &nbsp;•&nbsp; 1 分钟前 &nbsp;•&nbsp; 最后回复来自
-                                                <strong><a href="/member/momo5269">gggli</a></strong> 
-                                            </span>
+                                            <span class="small"><div class="votes"></div><a class="node" href="/go/{{feed.node_name}}">{{feed.node_name}}</a> &nbsp;•&nbsp; <strong><a href="/u/{{feed.author_username}}">{{feed.author_username}}</a></strong> &nbsp;•&nbsp; {{feed.updated|pretty_date}}{%if feed.last_reply_username%} &nbsp;•&nbsp; 最后回复来自 <strong><a href="/u/{{feed.last_reply_username}}">{{feed.last_reply_username}}</a></strong>{%endif%}</span>
                                         </div>
                                     </div>
                                     <div class="count feed-right">
@@ -139,27 +133,21 @@
                         <div class="feeds-inner2">
                             {% for feed in feeds2.list %}
                             <div class="feed">
-                                <div class="feed-up">
-                                    <div class="avatar feed-left tipped_ajax_user" data-tipped="/get/user/{{feed.author_username}}">
-                                        <a href="/u/{{feed.author_username}}">
-                                            <img class="feed-object avatar-48" src="{{ feed.author_avatar}}-48px" alt=""></a>
-                                    </div>
-                                    <div class="infos feed-body">
-                                        <div class="info">
-                                            <span class="small">
-                                                <strong>
-                                                    <a class="tipped_ajax_user" data-tipped="/get/user/{{feed.author_username}}" href="/u/{{feed.author_username}}">{{feed.author_username}}</a>
-                                                </strong>
-                                                &nbsp;&nbsp;
-                                                <span class="time">{{feed.created|pretty_date}}</span>
-                                            </span>
-                                        </div>
-                                        <div class="reply_content">{{feed.content|desktop_content_process}}</div>
-
-                                    </div>
-
+                        <div class="feed-up">
+                            <div class="avatar feed-left">
+                                <a href="/u/feed.author_username}}"><img class="feed-object avatar-24" src="{{feed.author_avatar}}-thumb"></a>
+                            </div>
+                            <div class="infos feed-body">
+                                <div class="info">
+                                    <span class="small"><strong><a href="/u/{{feed.author_username}}">{{feed.author_username}}</a></strong> 回复了主题 <a title="{{feed.post_title}}" href="/p/{{feed.post_id}}#{{feed.id}}">{{feed.post_title}}</a> {{feed.created|pretty_date}}</span>
+                                </div>
+                                <div class="summary">
+                                    <div class="content-text hidden">{{feed.content|desktop_content_process|index_content_process}}</div>
+                                    <div class="summary-text"></div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                             {% endfor %} 
                         {% if feeds2.page.next!=feeds2.page.current %}
                             <div class="next jscroll-next-parent">
@@ -247,6 +235,13 @@
     </div>
         {% endif %}
     </div>
+    {%if ad%}
+    <div class="card">
+        <div class="feed">
+            <a href="{{ad.link}}" target="_blank"><img src="{{ad.img}}" border="0" width="250" alt="{{ad.title}}"></a>
+        </div>
+    </div>
+    {%endif%}
 </div>
 {% endblock %} 
 

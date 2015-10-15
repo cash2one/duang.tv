@@ -300,6 +300,18 @@ ul.tags *:after {
     background-image: url(/static/img/timer.png);
 }
 
+.icon-hot {
+    background-image: url(/static/img/hot.png);
+}
+
+.icon-notice {
+    background-image: url(/static/img/notice.png);
+}
+
+.icon-balance {
+    background-image: url(/static/img/balance.png);
+}
+
 .avatar-24 {
     width: 24px;
     height: 24px;
@@ -408,7 +420,6 @@ body {
 
 .global_footer .footer_inner .inner_copyr .inner_copy {
     background-image: url(http://static.zealer.com/page/img/img_e90c75f2_font2.png);
-    background-image: -webkit-image-set(url(http://static.zealer.com/page/img/img_e90c75f2_font2.png) 1x, url(http://static.zealer.com/page/img/img_e90c768a_font2@2x.png) 2x);
     background-repeat: no-repeat;
     display: inline-block;
     height: 16px;
@@ -917,4 +928,34 @@ html,body{height:100%}
 .badge-danger {
     color: #fff;
     background-color: #f96868;
+}
+.header a.btn {
+    color: #fff;
+}
+
+
+[class*=" wb-"], [class^=wb-] {
+    position: relative;
+    display: inline-block;
+    font-family: 'Web Icons';
+    font-style: normal;
+    font-weight: 400;
+    -webkit-transform: translate(0,0);
+    -ms-transform: translate(0,0);
+    -o-transform: translate(0,0);
+    transform: translate(0,0);
+    text-rendering: auto;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+a.text-like {
+    color: #a3afb7!important;
+}
+a.text-like:hover, a.text-like.followed {
+    color: #f96868!important;
+}
+.wb-heart-red {
+    color: #f96868!important;
+    margin-right: 5px;
 }

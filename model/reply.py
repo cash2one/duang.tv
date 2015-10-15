@@ -82,11 +82,13 @@ class ReplyModel(Query):
 
     def get_user_all_replys(self, author_id, num = 10, current_page = 1):
         where = "reply.author_id = %s" % author_id
-        join = "LEFT JOIN user AS author_user ON reply.author_id = author_user.uid"
+        join = "LEFT JOIN post ON reply.post_id = post.id\
+                LEFT JOIN user AS author_user ON reply.author_id = author_user.uid"
         order = "reply.created DESC, reply.id DESC"
         field = "reply.*, \
                 author_user.username as author_username, \
-                author_user.avatar as author_avatar"
+                author_user.avatar as author_avatar, \
+                post.title as post_title"
         return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
 
     def get_user_all_replys_count(self, author_id):

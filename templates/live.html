@@ -1,35 +1,37 @@
-{% extends 'layout.html' %} {% block title %}
+{% extends 'layout.html' %} 
+
+{% block title %}
 <title>直播 - 直波侠</title>
-{% endblock %} {% block stylesheet %}
-<link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css" /> {% endblock %} {% block main %}
+{% endblock %} 
+
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/font-awesome-4.1.0/css/font-awesome.min.css"/> 
+<link rel="stylesheet" href="/static/admin/remark/fonts/web-icons/web-icons.min.css">
+{% endblock %} 
+
+{% block main %}
 <div class="col-xs-12 col-md-9">
     <div class="main">
+        {%if now_lives%}
         <div class="card">
             <div class="nav-tab">
                 <div class="main-tab">
                     <i class="icon-live"></i>
-                    <a href="" class="tab-item">正在直播</a>
+                    <a href="/live" class="tab-item">正在直播</a>
+                    <div class="fr"><a href="/live" class="item_node more-btn">more</a></div>
                 </div>
             </div>
             <div class="feed">
                 <div class="feed-down">
                     <ul class="tags">
-                        <li><a class="video-tag" href="/p/1">德甲第34轮 拜仁慕尼黑 - 美因茨05</a></li>
-                        <li><a class="video-tag" href="/">汉堡 - 沙尔克04</a></li>
-                        <li><a class="video-tag" href="/">法兰克福 - 勒沃库森</a></li>
-                        <li><a class="video-tag" href="/">门兴 - 奥格斯堡</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="feed">
-                <div class="feed-down">
-                    <ul class="tags">
-                        <li><a class="video-tag" href="/">NBA西部决赛3 火箭 - 勇士</a></li>
-                        <li><a class="video-tag" href="/">NBA东部决赛3 骑士 - 老鹰</a></li>
+                        {% for live in now_lives %}
+                        <li><a class="video-tag" href="/p/{{live.post_id}}">{%if user_info and live.follow_id%}<span class="wb-heart wb-heart-red"></span>{%endif%}{{live.team}}</a></li>
+                        {%endfor%}
                     </ul>
                 </div>
             </div>
         </div>
+        {%endif%}
         <div class="card">
             <div class="nav-tab">
                 <div class="main-tab">
@@ -42,9 +44,11 @@
                     <thead>
                         <tr>
                             <th>时间</th>
+                            <th>项目</th>
                             <th>赛事</th>
                             <th>比赛对阵</th>
                             <th>直播频道</th>
+                            <th style="text-align: center;">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,13 +58,17 @@
                             <td>{{live.date.strftime('%m月%d日')}}</td>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         {% endif %}
                         <tr>
                             <th scope="row">{{live.date.strftime('%H:%M')}}</th>
+                            <td>{{live.sport}}</td>
                             <td>{{live.game}}</td>
                             <td><a href="/p/{{live.post_id}}">{{live.team}}</a></td>
-                            <td><a href="/p/{{live.post_id}}">CCTV5+</a></td>
+                            <td><a href="/p/{{live.post_id}}">{{live.signal_text}}</a></td>
+                            <td style="text-align: center;"><a class="text-like wb-heart {%if user_info%}{%if live.follow_id%}followed{%endif%}{%else%}unlogin{%endif%}" href="javascript:void(0)" role="button" data-obj="{{live.id}}"></a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -129,152 +137,62 @@
         <div class="feed">
             <span class="fade-header">今日热议主题</span>
         </div>
+        {%for post in hot_posts.list%}
         <div class="feed">
             <div class="feed-up">
                 <div class="avatar feed-left">
-                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/images.jpeg-thumb" alt=""></a>
+                    <a href="/u/{{post.author_username}}"><img class="feed-object avatar-24" src="{{post.author_avatar}}" alt=""></a>
                 </div>
                 <div class="infos feed-body">
                     <div class="title feed-heading">
-                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">巴萨历史最强攻击组合</a>
+                        <a title="{{post.title}}" href="/p/{{post.id}}">{{post.title}}</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="feed">
-            <div class="feed-up">
-                <div class="avatar feed-left">
-                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/Img384994476.jpg-thumb" alt=""></a>
-                </div>
-                <div class="infos feed-body">
-                    <div class="title feed-heading">
-                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">15年1月21日库里22分10助大战哈登33分6助回顾</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="feed">
-            <div class="feed-up">
-                <div class="avatar feed-left">
-                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/20060927000202008fb.jpg-thumb" alt=""></a>
-                </div>
-                <div class="infos feed-body">
-                    <div class="title feed-heading">
-                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">还是那熟悉的味道 </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="feed">
-            <div class="feed-up">
-                <div class="avatar feed-left">
-                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/119660859.jpg-thumb" alt=""></a>
-                </div>
-                <div class="infos feed-body">
-                    <div class="title feed-heading">
-                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">刺激！火箭vs快船系列赛七场大战十佳球</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="feed">
-            <div class="feed-up">
-                <div class="avatar feed-left">
-                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/b2b13867.jpg-thumb" alt=""></a>
-                </div>
-                <div class="infos feed-body">
-                    <div class="title feed-heading">
-                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">霍华德谈胜快船：幸亏没像他们那样被逆转</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="feed">
-            <div class="feed-up">
-                <div class="avatar feed-left">
-                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/20061018201001f08c5.jpg-thumb" alt=""></a>
-                </div>
-                <div class="infos feed-body">
-                    <div class="title feed-heading">
-                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">哈维本周四将召开新闻发布会</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="feed">
-            <div class="feed-up">
-                <div class="avatar feed-left">
-                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/1-1404112314140-L.jpg-thumb" alt=""></a>
-                </div>
-                <div class="infos feed-body">
-                    <div class="title feed-heading">
-                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">韦德职业生涯高光进攻集锦</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="feed">
-            <div class="feed-up">
-                <div class="avatar feed-left">
-                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/7bcd64a60ab5301c038bdf3b1d3a4f97_crop_north.png-thumb" alt=""></a>
-                </div>
-                <div class="infos feed-body">
-                    <div class="title feed-heading">
-                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">豪哥：练出爆发力 林书豪身穿湖人队服训练</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="feed">
-            <div class="feed-up">
-                <div class="avatar feed-left">
-                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/BbsImg143175384320829_770-920.jpg-thumb" alt=""></a>
-                </div>
-                <div class="infos feed-body">
-                    <div class="title feed-heading">
-                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">汤普森：不想再回休城</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="feed">
-            <div class="feed-up">
-                <div class="avatar feed-left">
-                    <a href="/"><img class="feed-object avatar-24" src="http://avati.qiniudn.com/MSN-logo-442x442.png-thumb" alt=""></a>
-                </div>
-                <div class="infos feed-body">
-                    <div class="title feed-heading">
-                        <a title="05月20日 亚冠1/8决赛首回合" href="/topics/25553">晚报：哈登45分季后赛新高 火箭胜勇士拒横扫</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {%endfor%}
     </div>
     <div class="card">
         <div class="feed">
-            <span class="fade-header">热门标签</span>
+            <span class="fade-header">热门节点</span>
         </div>
         <div class="feed">
-            <a href="/go/mesos" class="item_node">林书豪</a>
-            <a href="/go/mesos" class="item_node">火箭</a>
-            <a href="/go/mesos" class="item_node">广州恒大</a>
-            <a href="/go/mesos" class="item_node">哈登</a>
-            <a href="/go/mesos" class="item_node">霍华德</a>
-            <a href="/go/mesos" class="item_node">皇家马德里</a>
-            <a href="/go/mesos" class="item_node">巴萨</a>
-            <a href="/go/mesos" class="item_node">亚冠</a>
-            <a href="/go/mesos" class="item_node">中国国足</a>
-            <a href="/go/mesos" class="item_node">NBA</a>
-            <a href="/go/mesos" class="item_node">韦德</a>
-            <a href="/go/mesos" class="item_node">詹姆斯</a>
-            <a href="/go/mesos" class="item_node">C罗</a>
-            <a href="/go/mesos" class="item_node">梅西</a>
-            <a href="/go/mesos" class="item_node">内马尔</a>
-            <a href="/go/mesos" class="item_node">哥斯达黎加</a>
-            <a href="/go/mesos" class="item_node">法网</a>
-            <a href="/go/mesos" class="item_node">NCAA</a>
-            <a href="/go/mesos" class="item_node">勇士</a>
+            {%for node in hot_nodes%}
+            <a href="/go/{{node.name}}" class="item_node">{{node.name}}</a>
+            {%endfor%}
         </div>
     </div>
 </div>
-{% endblock %} {% block javascript %} {% endblock %}
+{% endblock %} 
+{% block javascript %} 
+<script type="text/javascript">
+        $(document).on('click', 'td .text-like', function() {
+            var text_like = $(this);
+            if ($(this).hasClass('unlogin')) {
+                return;
+            }
+            var obj_id = $(this).attr('data-obj');
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/follow",
+                data: JSON.stringify({
+                    obj_id: obj_id,
+                    obj_type: "l"
+                }),
+                success: function(msg) {
+                    if (text_like.hasClass('followed')) {
+                        text_like.removeClass('followed');
+                    } else {
+                        text_like.addClass('followed');
+                    }
+                },
+                error: function(msg) {
+                    alert("error");
+                }
+            });
+        });
+</script>
+{% endblock %}

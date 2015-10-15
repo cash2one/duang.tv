@@ -20,12 +20,15 @@
                 {%endif%}
                 <a href="/">直波侠</a>
                 <span class="chevron">&nbsp;›&nbsp;</span>
-                {%if post.post_type == 'video' or post.post_type == 'game'%}
+                {%if post.post_type == 'video' or post.post_type == 'game' or post.post_type == 'live'%}
                 {%if post.feed_type == 'football'%}
                 <a href="/football">足球视频</a>
                 {%endif%}
                 {%if post.feed_type == 'basketball'%}
                 <a href="/football">篮球视频</a>
+                {%endif%}
+                {%if post.post_type == 'live'%}
+                <a href="/live">比赛直播</a>
                 {%endif%}
                 {%else%}
                 <a href="/go/{{post.node_name}}">{{post.node_name}}</a>
@@ -586,53 +589,6 @@
             });
         });
 
-        $(document).on('click', '.vote-video', function() {
-            var vote_id = $(this).attr('data-id');
-            var vote_type = $(this).attr('data-type');
-            var vote_btn = $(this);
-            var vote_up = $(this).parent().find('.up');
-            var vote_down = $(this).parent().find('.down');
-            var vote_up_num = $(this).parent().find('.up').find('.count');
-            var vote_down_num = $(this).parent().find('.down').find('.count');
-            $.getJSON('/vote/video/' + vote_id + '?vote=' + vote_type, function(data) {
-                if (data.success != 0) {
-                    if (vote_btn.hasClass('voted')) {
-                        vote_btn.removeClass('voted');
-                        if (vote_type == 'up') {
-                            vote_up_num.text(parseInt(vote_up_num.text()) - 1);
-                        } else {
-                            vote_down_num.text(parseInt(vote_down_num.text()) - 1);
-                        }
-                    } else {
-                        vote_btn.addClass('voted');
-                        if (vote_type == 'up') {
-                            vote_up_num.text(parseInt(vote_up_num.text()) + 1);
-                            if (vote_down.hasClass('voted')) {
-                                vote_down.removeClass('voted');
-                                vote_down_num.text(parseInt(vote_down_num.text()) - 1);
-                            }
-                        } else {
-                            vote_down_num.text(parseInt(vote_down_num.text()) + 1);
-                            if (vote_up.hasClass('voted')) {
-                                vote_up.removeClass('voted');
-                                vote_up_num.text(parseInt(vote_up_num.text()) - 1);
-                            }
-                        }
-                    }
-                    if ('0' == vote_up_num.text()) {
-                        vote_up_num.addClass('zero');
-                    } else {
-                        vote_up_num.removeClass('zero');
-                    }
-                    if ('0' == vote_down_num.text()) {
-                        vote_down_num.addClass('zero');
-                    } else {
-                        vote_down_num.removeClass('zero');
-                    }
-                }
-            });
-        });
-
         $(document).on('click', '.invite', function() {
             var post_id = $(this).attr('data-id');
 
@@ -930,6 +886,54 @@
             }
             video_content.toggle();
           }
+        });
+
+
+        $(document).on('click', '.video-title .votes .vote', function() {
+            var vote_id = $(this).attr('data-id');
+            var vote_type = $(this).attr('data-type');
+            var vote_btn = $(this);
+            var vote_up = $(this).parent().find('.up');
+            var vote_down = $(this).parent().find('.down');
+            var vote_up_num = $(this).parent().find('.up').find('.count');
+            var vote_down_num = $(this).parent().find('.down').find('.count');
+            $.getJSON('/vote/video/' + vote_id + '?vote=' + vote_type, function(data) {
+                if (data.success != 0) {
+                    if (vote_btn.hasClass('voted')) {
+                        vote_btn.removeClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                        }
+                    } else {
+                        vote_btn.addClass('voted');
+                        if (vote_type == 'up') {
+                            vote_up_num.text(parseInt(vote_up_num.text()) + 1);
+                            if (vote_down.hasClass('voted')) {
+                                vote_down.removeClass('voted');
+                                vote_down_num.text(parseInt(vote_down_num.text()) - 1);
+                            }
+                        } else {
+                            vote_down_num.text(parseInt(vote_down_num.text()) + 1);
+                            if (vote_up.hasClass('voted')) {
+                                vote_up.removeClass('voted');
+                                vote_up_num.text(parseInt(vote_up_num.text()) - 1);
+                            }
+                        }
+                    }
+                    if ('0' == vote_up_num.text()) {
+                        vote_up_num.addClass('zero');
+                    } else {
+                        vote_up_num.removeClass('zero');
+                    }
+                    if ('0' == vote_down_num.text()) {
+                        vote_down_num.addClass('zero');
+                    } else {
+                        vote_down_num.removeClass('zero');
+                    }
+                }
+            });
         });
 
         $('.feed').hover( function () {
