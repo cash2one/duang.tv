@@ -289,9 +289,18 @@ class FollowModel(Query):
         where = "follow.obj_id = %s AND follow.obj_type = 't'" % tag_id
         return self.where(where).count()
 
-    def get_user_follow_lives_count(self, view_user):
+    def get_user_follow_lives_count(self, view_user, time1, time2):
         where = "follow.author_id = %s AND follow.obj_type = 'l'" % view_user
-        return self.where(where).count()
+        join = "LEFT JOIN live ON live.date between '%s' and '%s' AND follow.obj_id = live.id" % (time1, time2)
+        return self.where(where).join(join).count()
+
+    def get_user_follow_lives(self, view_user, time1, time2):
+        where = "follow.author_id = %s AND follow.obj_type = 'l'" % view_user
+        join = "LEFT JOIN live ON live.date between '%s' and '%s' AND follow.obj_id = live.id" % (time1, time2)
+        order = "live.date ASC, live.id ASC"
+        field = "live.*, \
+                follow.id as follow_id"
+        return self.where(where).order(order).join(join).field(field).select()
 
     def get_user_follow_tags(self, author_id):
         where = "follow.author_id = %s AND follow.obj_type = 't'" % author_id

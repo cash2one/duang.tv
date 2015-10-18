@@ -750,7 +750,7 @@ a.tb:hover {
 }
 
 .video-tiantian {
-    background-image: url(/static/img/tiantian.jpg);
+    background-image: url(/static/img/tiantian.png);
 }
 
 .zbx-content {
@@ -958,4 +958,13 @@ a.text-like:hover, a.text-like.followed {
 .wb-heart-red {
     color: #f96868!important;
     margin-right: 5px;
+}
+.card .feed table {
+    font-size: 14px;
+}
+.date-header.scroll-to-fixed-fixed{
+    background-color: #dff0d8;
+}
+.date-header.scroll-to-fixed-fixed:hover{
+    background-color: #d0e9c6;
 }

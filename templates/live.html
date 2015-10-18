@@ -53,7 +53,7 @@
                     </thead>
                     <tbody>
                         {% set t='' %} {% for live in lives %} {% if t != live.date.strftime('%Y-%m-%d') %} {% set t = live.date.strftime('%Y-%m-%d') %}
-                        <tr class="success">
+                        <tr class="date-header success">
                             <td>{{live.date|get_weekday}}</td>
                             <td>{{live.date.strftime('%m月%d日')}}</td>
                             <td></td>
@@ -165,6 +165,7 @@
 </div>
 {% endblock %} 
 {% block javascript %} 
+<script src="/static/ScrollToFixed-master/jquery-scrolltofixed-min.js"></script>
 <script type="text/javascript">
         $(document).on('click', 'td .text-like', function() {
             var text_like = $(this);
@@ -192,6 +193,17 @@
                 error: function(msg) {
                     alert("error");
                 }
+            });
+        });
+
+        var headers = $('.date-header');
+        headers.each(function(i) {
+            var header = $(headers[i]);
+            var next = headers[i + 1];
+
+            header.scrollToFixed({
+                marginTop: 50,
+                zIndex: 999
             });
         });
 </script>

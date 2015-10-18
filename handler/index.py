@@ -61,7 +61,10 @@ def get_user_card(self):
         notice_count = self.notice_model.get_user_unread_notice_count(user_info.uid)
         follow_posts = self.follow_model.get_user_follow_posts_count(user_info.uid)
         follow_users = self.follow_model.get_user_followees_count(user_info.uid)
-        follow_lives = self.follow_model.get_user_follow_lives_count(user_info.uid)
+        now_time = datetime.datetime.now()
+        pass_time = now_time + datetime.timedelta(hours=-2)
+        future_time = now_time + datetime.timedelta(days=+300)
+        follow_lives = self.follow_model.get_user_follow_lives_count(user_info.uid, pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
 
         user_card = {
             "gold_coins": gold_coins,
@@ -1411,6 +1414,12 @@ class FollowsHandler(BaseHandler):
         template_variables["feeds2"] = self.follow_model.get_user_follow_posts(view_user.uid, current_page = p)
         template_variables["tags"] = self.follow_model.get_user_follow_tags(view_user.uid)
         template_variables["ad"] = self.ads_model.get_rand_ad()
+
+        now_time = datetime.datetime.now()
+        pass_time = now_time + datetime.timedelta(hours=-2)
+        future_time = now_time + datetime.timedelta(days=+14)
+        print self.follow_model.get_user_follow_lives(user_info.uid, pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
+        template_variables["lives"] = self.follow_model.get_user_follow_lives(user_info.uid, pass_time.strftime('%Y-%m-%d %H:%M:%S'), future_time.strftime('%Y-%m-%d %H:%M:%S'))
 
         if(user_info):            
             template_variables["follow"] = self.follow_model.get_follow(user_info.uid, view_user.uid, 'u')

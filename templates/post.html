@@ -889,7 +889,7 @@
         });
 
 
-        $(document).on('click', '.video-title .votes .vote', function() {
+        $(document).on('click', '.video-title .votes .vote', function(e) {
             var vote_id = $(this).attr('data-id');
             var vote_type = $(this).attr('data-type');
             var vote_btn = $(this);
@@ -934,6 +934,7 @@
                     }
                 }
             });
+            e.stopPropagation();
         });
 
         $('.feed').hover( function () {
